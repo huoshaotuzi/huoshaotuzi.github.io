@@ -296,39 +296,44 @@ hexo s
 
 默认博客页面太丑，想换一个怎么办？
 
-网上找到其他人分享的主题：[https://github.com/litten/hexo-theme-yilia](https://github.com/litten/hexo-theme-yilia)
+网上找到其他人分享的主题：[https://github.com/zhvala/hexo-material-x-black](https://github.com/zhvala/hexo-material-x-black)
 
 然后把它下载下来，点击右侧 Clone or download：
 
 下载下来并且解压，把解压后的文件复制到博客项目的 themes 目录下。
 
-或者直接进入 themes 目录，然后直接 clone 下来：
+或者直接 clone 到 themes 目录下并且命名为 material-x：
 
 ```
-cd themes
-git clone https://github.com/litten/hexo-theme-yilia
+git clone https://github.com/xaoxuu/hexo-theme-material-x themes/material-x
 ```
 
 主题文件都很大，等下载完成就可以了。
 
 主题下载下来以后，目录结构如下：
 
-![](https://ae01.alicdn.com/kf/H7aa975131f6146959e8998ddb5df14ce0.png)
+![3g86hV.png](https://s2.ax1x.com/2020/03/01/3g86hV.png)
 
 themes 下面的文件夹都是主题。
 
-接着编辑 .config.yml，大约在 93 行：
+接着编辑 .config.yml，拉到底部，修改 theme 字段：
 
 ```
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: hexo-theme-yilia
+theme: material-x
 ```
 
-theme 默认是 landscape，改成刚刚下载的主题 hexo-theme-yilia。
+theme 默认是 landscape，改成刚刚下载的主题 material-x（即文件夹的名字）。
 
-然后执行下面几个命令（如果之前启动了博客项目，记得按 Ctrl+C 先关掉）：
+然后安装主题所需的依赖：
+
+```
+npm i -S hexo-generator-search hexo-generator-feed hexo-renderer-less hexo-autoprefixer hexo-generator-json-content hexo-recommended-posts
+```
+
+接着执行下面几个命令（如果之前启动了博客项目，记得按 Ctrl+C 先关掉）：
 
 ```
 hexo clean
@@ -336,7 +341,9 @@ hexo g
 hexo s
 ```
 
-访问 `http://localhost:4000`，主题已经更新。
+访问 `http://localhost:4000`，可以发现主题已经被更换成新的了。
+
+在 Github 上还有更多主题可以选择：[点击此处获取更多主题](https://github.com/search?q=hexo+theme&type=Repositories)
 
 ## 发布博客！
 
