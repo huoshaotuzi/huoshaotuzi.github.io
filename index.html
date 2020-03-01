@@ -251,7 +251,7 @@
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-01T16:18:31+08:00">
+            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-01T18:07:11+08:00">
   <a class='notlink'>
     <i class="fas fa-save" aria-hidden="true"></i>
     <p>更新于：2020年3月1日</p>
@@ -418,31 +418,32 @@
 <p>访问 <code>http://localhost:4000</code>，可以发现主题已经被更换成新的了。</p>
 <p>在 Github 上还有更多主题可以选择：<a href="https://github.com/search?q=hexo+theme&type=Repositories" target="_blank" rel="noopener">点击此处获取更多主题</a></p>
 <h2 id="发布博客！"><a href="#发布博客！" class="headerlink" title="发布博客！"></a>发布博客！</h2><p>上面的步骤只能在自己的电脑打开博客项目，现在我们要把博客发到外网去，让别人来参观你的博客！</p>
+<p>— 小剧场 —</p>
 <p>你是想要节操，还是想白嫖域名和服务器？</p>
-<p>我是想要节操还白嫖域名和服务器！</p>
+<p>我是想要节操还把域名和服务器嫖了！</p>
 <p>嫖不成。</p>
 <p>啪一声，你把 300 块大洋拍在桌子上。</p>
-<p>这个能不能保留节操？</p>
+<p>这个能不能换来节操？</p>
 <p>能，但是钱包空了。</p>
 <p>啪一声，你把节操拍在桌子上，300 块大洋收回兜里。</p>
 <p>嫖谁的？</p>
 <p>GitHub 的！</p>
 <p>就那个全球最大同性交流社区？</p>
-<p>对。</p>
+<p>正是。</p>
 <p>敢问君为何方神圣？</p>
 <p>GitHub 基佬是也。</p>
-<p>（小剧场完）</p>
+<p>— 小剧场（完） —</p>
 <p>没错，我们要白嫖 GitHub 提供的免费域名和空间——GitHub Pages！</p>
-<p>白嫖 GitHub Pages 提供的服务来部署我们的博客项目。</p>
+<p>GitHub Pages 提供了免费的服务可以让我们部署博客项目。</p>
 <p>Github：<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a></p>
 <p>注册一个账户并登陆。</p>
 <p>接着点击左侧 Repositories 旁边的按钮 New 创建一个新的仓库，如图：</p>
 <p><img src="https://user-images.githubusercontent.com/28209810/75619699-608b2d80-5bba-11ea-8bff-2570abd32650.png" alt="image"></p>
 <p>仓库的配置有两点需要注意，如果你没按照下面的要求，你的博客就访问不了：</p>
 <p>1、仓库名称必须为：你的 GitHub 用户名.github.io，比如我的 Github 用户名是 huoshaotuzi，那么仓库的名字就是：huoshaotuzi.github.io</p>
-<p>2、仓库必须为 Public 公开权限，如果选择 Private，就不能白嫖了，这也是上面的小剧场所说的出卖节操的原因，一旦公开权限，你的仓库 <strong>任何人都能访问</strong> 。</p>
+<p>2、仓库必须为 Public 公开权限，如果选择 Private，就不能白嫖了，这也是上面的小剧场所说的出卖节操的原因，一旦公开权限，你的仓库 <strong>任何人都能访问</strong>，你的仓库设置成 Public，相当于你光着屁股暴露在 Github 几百万基佬面前，知道啥意思了吧？</p>
 <p>创建好仓库后，可以看到如下的仓库信息：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/75619801-8107b780-5bbb-11ea-9b9b-77f1eb0b4078.png" alt="image"></p>
+<p><img src="https://user-images.githubusercontent.com/28209810/75619801-8107b780-5bbb-11ea-9b9b-77f1eb0b4078.png" alt="image"><br>（xxoo 是随便取的名字，不要问 xxoo 是什么意思，问了也不会告诉你。）</p>
 <p>在这里把 SSH 后面的仓库地址复制下来，后面会用到。</p>
 <p>接着返回到你博客的目录下，执行命令安装 git 插件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
@@ -493,6 +494,71 @@
 <p>如果你希望可以用 www 访问，那就再添加一条记录，主机记录填 www，其他跟上面的一样：</p>
 <p><img src="https://ae01.alicdn.com/kf/H638380f92dbf4ff0bd97f57117e225fcv.png" alt=""></p>
 <p>完成这一步你就可以通过购买的域名访问到博客了！</p>
+<h2 id="指定服务器！"><a href="#指定服务器！" class="headerlink" title="指定服务器！"></a>指定服务器！</h2><p>不想出卖节操，就买台服务器自己安装环境，这样可以保证代码不被其他基佬看到。</p>
+<h3 id="1、域名和服务器的选择"><a href="#1、域名和服务器的选择" class="headerlink" title="1、域名和服务器的选择"></a>1、域名和服务器的选择</h3><p>选服务器可是很有讲究的，看你网站的受众，如果是面向海外用户，就选国外的服务器；如果面向国内用户，那就买国内的服务器。服务器放在哪很大程度上会影响你网站的打开速度。</p>
+<p>再者，如果你选国内服务器，那还得有备案的域名才能用，至于如何备案，服务器提供商会告诉你。</p>
+<p>这里只讲技术，不讨论那些无关技术的东西。</p>
+<p>但是有一点务必注意，你的域名在哪买的跟在哪备案没关系，比方说你在阿里云买域名，可以到腾讯云去备案。</p>
+<p>但是你在哪备案就一定要买那里的服务器，不然备了案也不能解析到服务器。</p>
+<p>比如你在阿里云备案，那你就要买阿里云的服务器，买腾讯云的服务器就是不行。</p>
+<p>你在阿里云备案，想用腾讯云服务器，就得备案转移。</p>
+<p>（备案和备案转移极其麻烦，审核周期动辄十天半个月，工信部拖你 1 个月也没办法）</p>
+<p>想要搭建博客，最好提前买个域名进行备案。</p>
+<p>除了在哪备案的问题，还需要知道在我们国家大陆地区，有的域名是备不了案的，买域名的时候不要觉得很酷瞎买，像程序员特喜欢的 io 域名在国内是备不了案的。备不了案的域名只能选择国外主机。</p>
+<p>只建议购买：com、cn、net 这三个老牌域名。</p>
+<p>非主流域名即使能备案，搜索引擎也很难收录，对你以后的发展非常不好。</p>
+<p>有条件或者嫌备案麻烦的，可以购买香港或者台湾地区的服务器，靠近大陆，延迟相对低一点，域名即买即用。</p>
+<h3 id="2、服务器环境"><a href="#2、服务器环境" class="headerlink" title="2、服务器环境"></a>2、服务器环境</h3><p>服务器推荐 Centos 系统，如果是小白也可以选 Windows Server。</p>
+<p>要让网站解析到服务器，首先需要安装 Web 服务器，老牌的 Web 服务器软件有 Apache，Windows 的 IIS。</p>
+<p>这两个本人几乎没用过，就不在这里介绍了。</p>
+<p>推荐使用 Nginx。</p>
+<p>以 Centos 为例，安装十分简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;blog.conf</span><br></pre></td></tr></table></figure>
+
+<p>按下 i 键插入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    server_name blog.huotuyouxi.com;</span><br><span class="line">    root &#x2F;var&#x2F;www&#x2F;blog;</span><br><span class="line">    index index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后按 Esc，输入 <code>wq!</code> 保存。</p>
+<p>接着重启 Nginx：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>在这里，<code>server_name</code> 是你的域名。</p>
+<p><code>root</code> 是你的博客项目路径，可以下载 FileZilla 把博客上传到服务器，或者直接使用 <code>git clone</code> 下来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;var&#x2F;www</span><br><span class="line">git clone &lt;你的博客仓库地址&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后你在哪买的域名，就登录到控制台把域名解析到服务器的公网 IP。</p>
+<p>解析的方法在上面已经有介绍了，这里不再重复。</p>
+<p>3、更新博客内容</p>
+<p>前面的文章介绍了如何编写和更新博客：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>更新博客内容并且推送到 Github 上面，你就可以回到服务器上，然后执行 <code>git pull</code> 把最新的博客内容拉取下来，实现博客的更新。</p>
+<p>其中，<code>hexo g</code> 和 <code>hexo d</code> 两个命令可以简写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d -g</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有兴趣的可以去了解一下 Git 自动构建，延伸的内容太多了，本文写不下</p>
+</blockquote>
+<h3 id="4、博客代码备份"><a href="#4、博客代码备份" class="headerlink" title="4、博客代码备份"></a>4、博客代码备份</h3><p>使用 <code>hexo d</code> 上传到 Github 的只是编译后的静态文件，博客的代码并没有上传到仓库里。</p>
+<p>这样一旦你的博客代码丢失，你就无法继续更新了。</p>
+<p>为了避免这种情况，我们要把博客代码也上传到仓库里，最好是上传到同一个仓库。</p>
+<p>回到本地的博客项目，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b develop</span><br><span class="line">git push origin develop</span><br></pre></td></tr></table></figure>
+
+<p>这两个步骤，第一个是切换到新的分支 <code>develop</code>（名字可以随便取），然后把新的分支推送到远程仓库。</p>
+<p>如此一来，你的博客代码也被保存至仓库里。</p>
+<p>前往 Github 查看，点击 Branch 即可看到新的分支：</p>
+<p><img src="https://s2.ax1x.com/2020/03/01/3g2BzF.png" alt="git 分支"></p>
+<p>还记得最早我们在 _config.yml 设置的 Github 仓库地址吗？</p>
+<p><img src="https://s2.ax1x.com/2020/03/01/3g2gd1.png" alt="hexo github 配置"></p>
+<p>这里我们把静态文件的分支设置成 master，因此我们可以专注于在 develop 分支上写博文，然后用 <code>hexo d -g</code> 进行推送，不需要进行分支切换，十分方便！</p>
+<p>把博客代码上传到远程仓库，即使你在另一台电脑上面也可以把项目克隆下来，然后执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout develop</span><br></pre></td></tr></table></figure>
+
+<p>切换到 develop 分支上去写博文。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>借助 hexo 可以快速搭建属于自己的博客，平时学习到新东西的时候就可以记录下来，养成良好的习惯有助于学习成果的积累。</p>
 
       
