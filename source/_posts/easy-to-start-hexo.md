@@ -1,8 +1,11 @@
 ---
 title: 猴子都能学会的hexo博客安装教程
 date: 2020-03-01 10:49:10
-tags: Hexo
+tags:
+ - Hexo
+ - 技术
 categories: Hexo
+
 ---
 ## hexo 简介
 
