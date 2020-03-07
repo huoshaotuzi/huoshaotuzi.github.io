@@ -18,7 +18,7 @@
 
   <!-- 页面元数据 -->
   
-    <title>分类：技术 - 火兔の小窝</title>
+    <title>Category: 技术 - 火兔の小窝</title>
   
   
 
@@ -274,7 +274,7 @@
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-07T22:26:00+08:00">
+            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-07T22:46:14+08:00">
   <a class='notlink'>
     <i class="fas fa-save" aria-hidden="true"></i>
     <p>更新于：2020年3月7日</p>
@@ -298,58 +298,16 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一次翻车了，重新记录。</p>
-<h2 id="Gitlab-硬件要求"><a href="#Gitlab-硬件要求" class="headerlink" title="Gitlab 硬件要求"></a>Gitlab 硬件要求</h2><p>Gitlab 十分吃机器的配置，Gitlab 官方推荐 2核 4G，最低建议 1 核 2G，再低的话可能会像我上次那样直接翻车或者运行起来十分卡顿。</p>
-<p>由于是个人学习，就不打算将其部署到线上的服务器上了，这一次我采用在本地安装的方式搭建 Gitlab。</p>
-<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>拉取 Gitlab 官方最新版本镜像：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
-
-<p>由于镜像较大，建议换成国内镜像提高下载速度。</p>
-<h3 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h3><p>下载完成后，再执行 <code>run</code> 启动容器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --detach \</span><br><span class="line">    --hostname localhost \</span><br><span class="line">    --publish 4443:443 --publish 999:80 --publish 22:22 \</span><br><span class="line">    --name gitlab \</span><br><span class="line">    --restart always \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;logs:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;data:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line">    gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
-
-<p><code>run</code> 参数说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--detach：让容器在后台运行</span><br><span class="line">--hostname：主机地址，本地使用 localhost，可以换成域名</span><br><span class="line">--publish：宿主机的端口映射到容器的端口，由于我本地已经有其他容器使用了 443 和 80 端口，因此我改成了 4443 和 999 端口。</span><br><span class="line">--name：自定义容器的名称</span><br><span class="line">--restart：容器重启策略，在退出时容器应该如何重启或不应该重启，always 始终重启 </span><br><span class="line">--volume：宿主机映射到容器的卷，用来做容器数据的持久化，这里我将卷的目录设置为 ~&#x2F;docker&#x2F;gitlab</span><br></pre></td></tr></table></figure>
-
-<p><code>run</code> 命令执行后，可以执行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;docker&#x2F;gitlab</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-
-<p>可以看到自动生成了以下几个文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config	data	logs</span><br></pre></td></tr></table></figure>
-
-<p>这些文件就是宿主机与容器之间通过卷映射的文件（容器数据持久化）。</p>
-<p>执行 <code>docker ps</code> 可以看到容器运行状态：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143262-d0a23c00-ce41-11e9-81d3-4b727313dacf.png" alt="image"></p>
-<h3 id="Gitlab-初始化"><a href="#Gitlab-初始化" class="headerlink" title="Gitlab 初始化"></a>Gitlab 初始化</h3><p>容器启动后，需要稍等几分钟，然后再访问 <code>127.0.0.1:999</code>，如果直接访问的话可能 Gitlab 还未完全启动，这个时候是访问不了的。</p>
-<p>第一次访问时，需要设置管理员（root 用户）密码：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143324-10692380-ce42-11e9-98a9-f7372dc57b02.png" alt="image"></p>
-<p>初始化密码设置完成后，返回到登录页面，使用账户 root 以及刚才设置的密码进行登录：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143342-31317900-ce42-11e9-98df-6ea83f67a14a.png" alt="image"></p>
-<p>登录成功后，就可以操作界面啦！</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143494-dba99c00-ce42-11e9-864a-861c4a2adacc.png" alt="image"></p>
-<h3 id="添加-SSH-key"><a href="#添加-SSH-key" class="headerlink" title="添加 SSH key"></a>添加 SSH key</h3><p>在开始使用之前，需要添加 <code>ssh key</code> 才能拉取或者推送到仓库，执行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;.ssh</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-
-<p>查看是否生成过 <code>ssh key</code>，如果当前目录下没有文件，则需要创建新的 <code>ssh key</code>，执行以下命令生成 <code>ssh key</code>，<code>-C</code> 参数后面是你的邮箱地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your_email@example.com&quot;</span><br></pre></td></tr></table></figure>
-
-<p>完成后在当前目录下会生成 <code>ssh key</code>，包含两个文件，这是一对密匙：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id_rsa		id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p>其中，<code>id_rsa.pub</code> 是公钥，我们需要的就是这个文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-
-<p>将输出的密匙字符串复制下来（注意是把所有的内容都复制下来，包括邮箱）。</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64162429-dca5f200-ce71-11e9-8812-5d3a965ea569.png" alt="image"></p>
-<p>接着返回 Gitlab，点击左上角个人头像，选择 <code>Settings</code>：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64161700-a320b700-ce70-11e9-8444-2370d88bff56.png" alt="image"></p>
-<p>选择左侧菜单 <code>SSH Keys</code>，将你的 <code>ssh key</code> 黏贴到方框内，然后点击 <code>Add key</code> 即可：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64162574-27276e80-ce72-11e9-95e6-e2e23ca57098.png" alt="image"></p>
-<p>接下来就可以愉快的开始使用 Gitlab 啦！</p>
-<h2 id="为什么安装后的-Gitlab-可以直接访问？"><a href="#为什么安装后的-Gitlab-可以直接访问？" class="headerlink" title="为什么安装后的 Gitlab 可以直接访问？"></a>为什么安装后的 Gitlab 可以直接访问？</h2><p>这是由于 Gitlab 内置了 nginx 服务器，所以才能在安装完成后通过地址进行访问。</p>
-<p>完结撒花～ ҉٩(<em>´︶`</em>)۶҉ ??</p>
-
+      Docker环境搭建Gitlab。
+      
+        
+          <div class="button readmore">
+            <a href="/docker-install-gitlab/" class="flat-box">
+              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+              Read More
+            </a>
+          </div>
+        
       
     </div>
     <!-- 
@@ -411,7 +369,7 @@
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-07T22:27:25+08:00">
+            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-07T22:47:55+08:00">
   <a class='notlink'>
     <i class="fas fa-save" aria-hidden="true"></i>
     <p>更新于：2020年3月7日</p>
@@ -435,79 +393,16 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      <h2 id="Satis-介绍"><a href="#Satis-介绍" class="headerlink" title="Satis 介绍"></a>Satis 介绍</h2><p>Satis 是开源的静态 Composer 仓库生成器，可用于托管公司私有包的元数据。</p>
-<p>环境要求：PHP &gt;= 7.2</p>
-<h2 id="安装-Gitlab"><a href="#安装-Gitlab" class="headerlink" title="安装 Gitlab"></a>安装 Gitlab</h2><p>Centos 搭建 Gitlab：<a href="https://idce.com/document/VnmQ" target="_blank" rel="noopener">Centos 系统安装 Gitlab</a><br>Docker 搭建 Gitlab：<a href="https://idce.com/document/QRy0" target="_blank" rel="noopener">再战！Docker 安装 Gitlab</a></p>
-<h2 id="上传-Composer-包"><a href="#上传-Composer-包" class="headerlink" title="上传 Composer 包"></a>上传 Composer 包</h2><p>Composer 包开发教程：<a href="https://idce.com/document/0b60" target="_blank" rel="noopener">从零开始开发自己的包</a></p>
-<p>在 Gitlab 新建一个仓库，把自己开发完成的包上传到这个仓库，上传完成后的仓库如下：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64165187-204f2a80-ce77-11e9-9532-fbe4a9239a37.png" alt="image"></p>
-<p>包的配置文件 <code>composer.json</code> 如下：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64166482-c7cd5c80-ce79-11e9-8b25-7719a08c156e.png" alt="image"></p>
-<p>包的名字叫做：<code>huotu/test</code>，我们后面需要用到。</p>
-<p>这个仓库的地址就是我们私有包的地址，接下来拿这个包作为演示。</p>
-<h2 id="安装-Satis"><a href="#安装-Satis" class="headerlink" title="安装 Satis"></a>安装 Satis</h2><p>可以使用两种方式安装 Satis。</p>
-<h3 id="1、Composer-安装"><a href="#1、Composer-安装" class="headerlink" title="1、Composer 安装"></a>1、Composer 安装</h3><p>可以直接使用 <code>composer</code> 命令安装 Satis： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer create-project composer&#x2F;satis --stability&#x3D;dev --keep-vcs</span><br></pre></td></tr></table></figure>
-
-<h3 id="2、从-GitHub-下载"><a href="#2、从-GitHub-下载" class="headerlink" title="2、从 GitHub 下载"></a>2、从 GitHub 下载</h3><p>使用 <code>git clone</code> 将 Satis 下载到本地：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;composer&#x2F;satis.git</span><br></pre></td></tr></table></figure>
-
-<h2 id="添加-Satis-配置文件"><a href="#添加-Satis-配置文件" class="headerlink" title="添加 Satis 配置文件"></a>添加 Satis 配置文件</h2><p>在下载好的 satis 目录下，创建 <code>satis.json</code> 配置文件，一个示例的配置文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;My Repository&quot;,</span><br><span class="line">  &quot;homepage&quot;: &quot;http:&#x2F;&#x2F;packages.example.org&quot;,</span><br><span class="line">  &quot;repositories&quot;: [</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;https:&#x2F;&#x2F;github.com&#x2F;mycompany&#x2F;privaterepo&quot; &#125;,</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http:&#x2F;&#x2F;svn.example.org&#x2F;private&#x2F;repo&quot; &#125;,</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;https:&#x2F;&#x2F;github.com&#x2F;mycompany&#x2F;privaterepo2&quot; &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;require&quot;: &#123;</span><br><span class="line">    &quot;company&#x2F;package&quot;: &quot;*&quot;,</span><br><span class="line">    &quot;company&#x2F;package2&quot;: &quot;*&quot;,</span><br><span class="line">    &quot;company&#x2F;package3&quot;: &quot;2.0.0&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;require-all&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>name：仓库的名字，将会展示在页面上</li>
-<li>homepage：satis 访问地址</li>
-<li>repositories：包所在的地址</li>
-<li>require：获取指定的包</li>
-<li>require-all：如果为 true 表示获取所有包</li>
-</ul>
-<p>根据自己的情况进行配置，这里我们拿刚刚上传到 Gitlab 的包演示，配置如下文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;My Repository&quot;,</span><br><span class="line">  &quot;homepage&quot;: &quot;http:&#x2F;&#x2F;satis.com&quot;,</span><br><span class="line">  &quot;repositories&quot;: [</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http:&#x2F;&#x2F;gitlab.com&#x2F;huotu&#x2F;test&quot; &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;require-all&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>http://satis.com</code> 为 satis 访问页面地址，<code>http://gitlab.com/huotu/test</code> 为私有包所在地址。</p>
-<h2 id="Composer-配置"><a href="#Composer-配置" class="headerlink" title="Composer 配置"></a>Composer 配置</h2><p>由于我们使用 <code>http</code>，在这里需要修改设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer config -g secure-http false</span><br></pre></td></tr></table></figure>
-
-<h2 id="生成-Satis-索引页面"><a href="#生成-Satis-索引页面" class="headerlink" title="生成 Satis 索引页面"></a>生成 Satis 索引页面</h2><p>在 satis 目录下执行命令 <code>composer install</code> 安装所需依赖，然后再执行如下命令生成 satis 页面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">php bin&#x2F;satis build &lt;configuration file&gt; &lt;build dir&gt;</span><br><span class="line"></span><br><span class="line"># 示例 ：</span><br><span class="line">php bin&#x2F;satis build satis.json public&#x2F;</span><br><span class="line"></span><br><span class="line"># 跳过 Gitlab 密码验证</span><br><span class="line">php bin&#x2F;satis build -n satis.json public&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>执行完命令后，在当前目录生成了 public 文件夹，接着配置 nginx，将域名指向这个目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name satis.com;</span><br><span class="line">    root &#x2F;www&#x2F;satis&#x2F;public;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        try_files $uri &#x3D;404;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>重启 nginx，不出意外就可以通过域名访问 satis 了！</p>
-<blockquote>
-<p>使用域名记得添加解析到服务器</p>
-</blockquote>
-<p>访问 <code>http://satis.com</code>（这个是你配置的域名）：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64164278-8044d180-ce75-11e9-8b1a-9e81d905418c.png" alt="image"></p>
-<h2 id="Composer-使用私有仓库"><a href="#Composer-使用私有仓库" class="headerlink" title="Composer 使用私有仓库"></a>Composer 使用私有仓库</h2><p>我们现在完成了 Satis + Gitlab 的全部安装，接下来我们的项目就可以使用自己搭建的私有 Composer 源了。</p>
-<p>新建一个 test 文件夹，在 test 目录下创建 <code>compsoer.json</code>，编辑 <code>composer.json</code> 添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;huotu&#x2F;test&quot;: &quot;*&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;repositories&quot;: [&#123;</span><br><span class="line">        &quot;type&quot;: &quot;composer&quot;,</span><br><span class="line">        &quot;url&quot;: &quot;http:&#x2F;&#x2F;satis.com&quot;</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>保存，然后在当前目录下执行 <code>composer install</code>：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64166283-58576d00-ce79-11e9-9cf3-233193e4963e.png" alt="image"></p>
-<p>成功把自己私有仓库的包下载下来了。</p>
-<p>如果有多个包，则添加多个仓库地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;My Repository&quot;,</span><br><span class="line">  &quot;homepage&quot;: &quot;http:&#x2F;&#x2F;satis.com&quot;,</span><br><span class="line">  &quot;repositories&quot;: [</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http:&#x2F;&#x2F;gitlab.com&#x2F;huotu&#x2F;test&quot; &#125;,</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http:&#x2F;&#x2F;gitlab.com&#x2F;huotu&#x2F;test2&quot; &#125;,</span><br><span class="line">    &#123; &quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http:&#x2F;&#x2F;gitlab.com&#x2F;huotu&#x2F;test3&quot; &#125;,</span><br><span class="line">  ],</span><br><span class="line">  &quot;require-all&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="缓存包资源"><a href="#缓存包资源" class="headerlink" title="缓存包资源"></a>缓存包资源</h2><p>可以把所需要的包都缓存在本地 Satis 上，这样可以避免每次都需要从仓库中 clone，在 <code>satis.json</code> 添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;archive&quot;: &#123;</span><br><span class="line">        &quot;directory&quot;: &quot;dist&quot;,</span><br><span class="line">        &quot;format&quot;: &quot;tar&quot;,</span><br><span class="line">        &quot;prefix-url&quot;: &quot;http:&#x2F;&#x2F;satis.com&quot;,</span><br><span class="line">        &quot;skip-dev&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>archive</code> 参数：</p>
-<ul>
-<li>directory: 表示生成的压缩包存放的目录，会在我们 build 时的目录中</li>
-<li>format: 压缩包格式，zip（默认） tar</li>
-<li>prefix-url: 下载链接的前缀的 Url, 默认从 homepage 中取</li>
-<li>skip-dev: 默认为 false，是否跳过开发分支</li>
-<li>absolute-directory: 可选，包文件存储到绝对路径的目录</li>
-<li>whitelist: 可选，如果设置为包名称列表，则只会转储这些包的 dist 文件</li>
-<li>blacklist: 可选，如果设置为包名称列表，则不会转储这些包的 dist 文件</li>
-<li>checksum: 可选，默认情况下为 true，禁用时（false）不会为 dist 文件提供 sha1 校验 启用后，所有下载（包括来自 GitHub 和 BitBucket 的下载） 将替换为本地版本。</li>
-</ul>
-<p>添加 <code>archive</code> 后，配置的包信息就会下载到本地 Satis 目录下 dist 文件夹中，从 Satis 下载依赖时将从这个文件夹获取资源。</p>
-<h2 id="定期更新-Satis"><a href="#定期更新-Satis" class="headerlink" title="定期更新 Satis"></a>定期更新 Satis</h2><p>需要定期执行 <code>php bin/satis build satis.json public/</code> 命令来生成最新的 Composer 包信息，可以将此命令作为定期任务执行，或是增加一个钩子 push 来更新 Satis。</p>
-
+      搭建一套属于自己的composer私有仓库。
+      
+        
+          <div class="button readmore">
+            <a href="/install-gitlab-satis-composer/" class="flat-box">
+              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+              Read More
+            </a>
+          </div>
+        
       
     </div>
     <!-- 
@@ -768,19 +663,19 @@
   
   
   <br>
-  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+  <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
 </div>
   <div>
-    本站使用
+    Use
     <a href="https://blog.huotuyouxi.com/" target="_blank" class="codename">火兔の小窝</a>
-    作为主题
+    as theme
     
-      ，
-      总访问量为
+      , 
+      total visits
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      次
+      times
     
-    。
+    . 
   </div>
   
 </footer>
@@ -884,15 +779,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "复制成功";
-  let COPY_FAILURE = "复制失败";
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {

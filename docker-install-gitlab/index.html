@@ -21,6 +21,8 @@
     <meta name="keywords" content="docker">
   
   
+    <meta name="description" content="Docker环境搭建Gitlab。">
+  
 
   <!-- feed -->
   
@@ -289,7 +291,7 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一次翻车了，重新记录。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一次因为服务器配置太低翻车了，现在重新挑战一次。</p>
 <h2 id="Gitlab-硬件要求"><a href="#Gitlab-硬件要求" class="headerlink" title="Gitlab 硬件要求"></a>Gitlab 硬件要求</h2><p>Gitlab 十分吃机器的配置，Gitlab 官方推荐 2核 4G，最低建议 1 核 2G，再低的话可能会像我上次那样直接翻车或者运行起来十分卡顿。</p>
 <p>由于是个人学习，就不打算将其部署到线上的服务器上了，这一次我采用在本地安装的方式搭建 Gitlab。</p>
 <h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>拉取 Gitlab 官方最新版本镜像：</p>
@@ -436,7 +438,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/install-gitlab-satis-composer/" rel="prev" title="Gitlab + Satis 搭建私有 Composer 仓库">
                                     
@@ -695,19 +697,19 @@
   
   
   <br>
-  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+  <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
 </div>
   <div>
-    本站使用
+    Use
     <a href="https://blog.huotuyouxi.com/" target="_blank" class="codename">火兔の小窝</a>
-    作为主题
+    as theme
     
-      ，
-      总访问量为
+      , 
+      total visits
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      次
+      times
     
-    。
+    . 
   </div>
   
 </footer>
@@ -811,15 +813,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "复制成功";
-  let COPY_FAILURE = "复制失败";
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
