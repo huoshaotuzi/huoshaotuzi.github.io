@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>再战！Docker 安装 Gitlab - 火兔の小窝</title>
+    <title>SSH免密登录原理及方法 - 火兔の小窝</title>
   
-    <meta name="keywords" content="docker,gitlab">
+    <meta name="keywords" content="Linux">
   
   
-    <meta name="description" content="Docker环境搭建Gitlab。">
+    <meta name="description" content="超实用的SSH免密登录方法及原理介绍，附秘传特殊技能——自定义命令登录远程服务器。">
   
 
   <!-- feed -->
@@ -229,8 +229,8 @@
         
   
     <h1 class="title">
-      <a href="/docker-install-gitlab/">
-        再战！Docker 安装 Gitlab
+      <a href="/ssh-no-password-method/">
+        SSH免密登录原理及方法
       </a>
     </h1>
   
@@ -256,9 +256,9 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/docker/%E6%8A%80%E6%9C%AF/' rel="nofollow">
+    <a href='/categories/%E6%8A%80%E6%9C%AF/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>docker&nbsp;/&nbsp;技术</p>
+      <p>技术</p>
     </a>
   </div>
 
@@ -291,57 +291,96 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一次因为服务器配置太低翻车了，现在重新挑战一次。</p>
-<h2 id="Gitlab-硬件要求"><a href="#Gitlab-硬件要求" class="headerlink" title="Gitlab 硬件要求"></a>Gitlab 硬件要求</h2><p>Gitlab 十分吃机器的配置，Gitlab 官方推荐 2核 4G，最低建议 1 核 2G，再低的话可能会像我上次那样直接翻车或者运行起来十分卡顿。</p>
-<p>由于是个人学习，就不打算将其部署到线上的服务器上了，这一次我采用在本地安装的方式搭建 Gitlab。</p>
-<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>拉取 Gitlab 官方最新版本镜像：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+          <h2 id="SSH-命令"><a href="#SSH-命令" class="headerlink" title="SSH 命令"></a>SSH 命令</h2><p>使用 <code>ssh 用户名@服务器IP</code> 可以连接到服务器，这样做的缺点是每次都要输入密码，一方面是不安全，另一方面是麻烦。</p>
+<h2 id="SSH-免密登录服务器"><a href="#SSH-免密登录服务器" class="headerlink" title="SSH 免密登录服务器"></a>SSH 免密登录服务器</h2><p>在本地主机上使用 <code>ssh-keygen -t rsa</code> 生成密匙对，这里的 <code>-t rsa</code> 指的是用 <code>rsa</code> 加密方式生成密匙：</p>
+<p><img src="https://i.loli.net/2019/08/31/wpMU4vaBQfOoej8.png" alt="image.png"></p>
+<p>第一步，输入密匙存放目录，使用默认路径直接按回车即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Generating public&#x2F;private rsa key pair.</span><br><span class="line">Enter file in which to save the key (&#x2F;root&#x2F;.ssh&#x2F;id_rsa):</span><br></pre></td></tr></table></figure>
 
-<p>由于镜像较大，建议换成国内镜像提高下载速度。</p>
-<h3 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h3><p>下载完成后，再执行 <code>run</code> 启动容器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --detach \</span><br><span class="line">    --hostname localhost \</span><br><span class="line">    --publish 4443:443 --publish 999:80 --publish 22:22 \</span><br><span class="line">    --name gitlab \</span><br><span class="line">    --restart always \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;logs:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line">    --volume ~&#x2F;docker&#x2F;gitlab&#x2F;data:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line">    gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+<p>第二步，输入密码，建议直接回车使用空密码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br></pre></td></tr></table></figure>
 
-<p><code>run</code> 参数说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--detach：让容器在后台运行</span><br><span class="line">--hostname：主机地址，本地使用 localhost，可以换成域名</span><br><span class="line">--publish：宿主机的端口映射到容器的端口，由于我本地已经有其他容器使用了 443 和 80 端口，因此我改成了 4443 和 999 端口。</span><br><span class="line">--name：自定义容器的名称</span><br><span class="line">--restart：容器重启策略，在退出时容器应该如何重启或不应该重启，always 始终重启 </span><br><span class="line">--volume：宿主机映射到容器的卷，用来做容器数据的持久化，这里我将卷的目录设置为 ~&#x2F;docker&#x2F;gitlab</span><br></pre></td></tr></table></figure>
+<p>如果输入了密码则需要再输入一次确认密码。这里的密码不是指远程登录主机的密码，而是使用密匙时的密码，既然我们是希望免密登录了，自然不希望再输入任何密码，因此此处填空即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+---[RSA 2048]----+</span><br><span class="line">|    ..    .      |</span><br><span class="line">|    o. . . o     |</span><br><span class="line">|   o...+* +      |</span><br><span class="line">|    .o+*+O       |</span><br><span class="line">|    . &#x3D;+So+o     |</span><br><span class="line">| . . . @.*B.     |</span><br><span class="line">|  o . . Eoo.     |</span><br><span class="line">|   o   * ..      |</span><br><span class="line">|    ..o o.       |</span><br><span class="line">+----[SHA256]-----+</span><br></pre></td></tr></table></figure>
 
-<p><code>run</code> 命令执行后，可以执行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;docker&#x2F;gitlab</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<p>上面会生成 <code>randomart image</code> 图案，这个图案是根据密匙生成的，因此每个人看到的都不同。</p>
+<blockquote>
+<p>趣味小科普：为什么要生成这种图案呢？这是由于密匙对是一个很长的随机字符串，比起加密的字符串人们更容易接受图片，可以说是很贴心了</p>
+</blockquote>
+<p>生成的密匙包含一对，<strong>公钥和私匙</strong>（<strong>其实叫做私钥</strong>，但感觉这样比较有意思所以就这么写）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Your identification has been saved in &#x2F;root&#x2F;.ssh&#x2F;id_rsa.</span><br><span class="line">Your public key has been saved in &#x2F;root&#x2F;.ssh&#x2F;id_rsa.pub.</span><br></pre></td></tr></table></figure>
 
-<p>可以看到自动生成了以下几个文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config	data	logs</span><br></pre></td></tr></table></figure>
+<p>我们根据路径可以找到文件所在位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_8_centos ~]# cd &#x2F;root&#x2F;.ssh</span><br><span class="line">[root@VM_0_8_centos .ssh]# ls</span><br><span class="line">authorized_keys  id_rsa  id_rsa.pub</span><br></pre></td></tr></table></figure>
 
-<p>这些文件就是宿主机与容器之间通过卷映射的文件（容器数据持久化）。</p>
-<p>执行 <code>docker ps</code> 可以看到容器运行状态：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143262-d0a23c00-ce41-11e9-81d3-4b727313dacf.png" alt="image"></p>
-<h3 id="Gitlab-初始化"><a href="#Gitlab-初始化" class="headerlink" title="Gitlab 初始化"></a>Gitlab 初始化</h3><p>容器启动后，需要稍等几分钟，然后再访问 <code>127.0.0.1:999</code>，如果直接访问的话可能 Gitlab 还未完全启动，这个时候是访问不了的。</p>
-<p>第一次访问时，需要设置管理员（root 用户）密码：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143324-10692380-ce42-11e9-98a9-f7372dc57b02.png" alt="image"></p>
-<p>初始化密码设置完成后，返回到登录页面，使用账户 root 以及刚才设置的密码进行登录：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143342-31317900-ce42-11e9-98df-6ea83f67a14a.png" alt="image"></p>
-<p>登录成功后，就可以操作界面啦！</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64143494-dba99c00-ce42-11e9-864a-861c4a2adacc.png" alt="image"></p>
-<h3 id="添加-SSH-key"><a href="#添加-SSH-key" class="headerlink" title="添加 SSH key"></a>添加 SSH key</h3><p>在开始使用之前，需要添加 <code>ssh key</code> 才能拉取或者推送到仓库，执行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;.ssh</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<p>这两个密匙文件分别是：</p>
+<ul>
+<li>id_rsa 生成的私钥文件</li>
+<li>id_rsa.pub 生成的公钥文件</li>
+</ul>
+<p>另外一个 <code>authorized_keys</code> 是保存远程免密登录公钥的文件，主要通过这个文件记录多台机器的公钥，我们要做的就是把本机的公钥发送到服务器主机的这个文件里。</p>
+<p>接着，把公钥发到需要登录的服务器主机上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i &#x2F;root&#x2F;.ssh&#x2F;id_rsa.pub 服务器IP地址:&#x2F;root&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
 
-<p>查看是否生成过 <code>ssh key</code>，如果当前目录下没有文件，则需要创建新的 <code>ssh key</code>，执行以下命令生成 <code>ssh key</code>，<code>-C</code> 参数后面是你的邮箱地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your_email@example.com&quot;</span><br></pre></td></tr></table></figure>
+<p>接着会要求你输入一次密码，输入完成后就可以实现免密登录了。</p>
+<p>在本机上执行 <code>ssh 用户名@服务器IP</code>，不再需要输入密码验证。</p>
+<h2 id="SSH-添加别名"><a href="#SSH-添加别名" class="headerlink" title="SSH 添加别名"></a>SSH 添加别名</h2><p>网络上的教程一般到上一步就结束了，在这里传授一个小技巧可以事半功倍。</p>
+<p>虽然我们现在跳过了输入密码这个步骤，但是每次都要输入 IP 也是很蛋疼的一件事，<strong>我们甚至想要不输入 IP 就能登录到远程服务器</strong> ？</p>
+<p>这也能做到！</p>
+<p>在本地进入 <code>.ssh</code> 目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 进入 .ssh 目录</span><br><span class="line">FireRabbitdeMacBook-Pro:.ssh firerabbit$ cd ~&#x2F;.ssh</span><br></pre></td></tr></table></figure>
 
-<p>完成后在当前目录下会生成 <code>ssh key</code>，包含两个文件，这是一对密匙：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id_rsa		id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>使用 <code>vim config</code> 编辑文件并且输入以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host dev</span><br><span class="line">HostName 127.0.0.1</span><br><span class="line">User root</span><br><span class="line">Port 22</span><br></pre></td></tr></table></figure>
 
-<p>其中，<code>id_rsa.pub</code> 是公钥，我们需要的就是这个文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>dev</code> 是我们给远程主机起的别名，<code>127.0.0.1</code> 是远程主机的地址，请替换成你的服务器 IP，<code>User</code> 即登录的用户名，<code>Port</code> 为服务器访问端口，如果修改了端口在这里也要修改。</p>
+<p>现在我们的目录应该是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FireRabbitdeMacBook-Pro:.ssh firerabbit$ ls</span><br><span class="line">config		id_rsa		id_rsa.pub	known_hosts</span><br></pre></td></tr></table></figure>
 
+<p><code>known_hosts</code> 是连接过的主机记录，可以随意删除。</p>
+<p>接着在命令行输入：<code>ssh dev</code> 即可连接到服务器！</p>
+<blockquote>
+<p>阅读至此，恭喜你！Linux Exp + 1</p>
+</blockquote>
+<h2 id="报错问题"><a href="#报错问题" class="headerlink" title="报错问题"></a>报错问题</h2><p>如果出现如下报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;ssh-copy-id: ERROR: ssh: Could not resolve hostname xxx:&#x2F;root&#x2F;.ssh&#x2F;authorized_keys: nodename nor servname provided, or not known</span><br></pre></td></tr></table></figure>
 
-<p>将输出的密匙字符串复制下来（注意是把所有的内容都复制下来，包括邮箱）。</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64162429-dca5f200-ce71-11e9-8812-5d3a965ea569.png" alt="image"></p>
-<p>接着返回 Gitlab，点击左上角个人头像，选择 <code>Settings</code>：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64161700-a320b700-ce70-11e9-8444-2370d88bff56.png" alt="image"></p>
-<p>选择左侧菜单 <code>SSH Keys</code>，将你的 <code>ssh key</code> 黏贴到方框内，然后点击 <code>Add key</code> 即可：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64162574-27276e80-ce72-11e9-95e6-e2e23ca57098.png" alt="image"></p>
-<p>接下来就可以愉快的开始使用 Gitlab 啦！</p>
-<h2 id="为什么安装后的-Gitlab-可以直接访问？"><a href="#为什么安装后的-Gitlab-可以直接访问？" class="headerlink" title="为什么安装后的 Gitlab 可以直接访问？"></a>为什么安装后的 Gitlab 可以直接访问？</h2><p>这是由于 Gitlab 内置了 nginx 服务器，所以才能在安装完成后通过地址进行访问。</p>
-<p>完结撒花～ ҉٩(<em>´︶`</em>)۶҉ ??</p>
+<p>网上查了下，大都是说 hosts 文件的问题。</p>
+<p>可以尝试修改 <code>/etc/hosts</code> 看看是否有如下行，如果没有则添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 localhost</span><br></pre></td></tr></table></figure>
+
+<p>经过本人尝试结果无效，可用别的方法。</p>
+<p>那就是——手动上传！！！</p>
+<p>编辑本地主机的密匙文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p>把密匙内容全部拷贝下来。</p>
+<p>接着先用 <code>ssh root@远程主机IP</code> 用密码登录进去，然后在远程主机中 <code>vim /root/.ssh/authorized_keys</code>。</p>
+<p>把复制的密钥直接粘贴下来就可以啦！</p>
+<h2 id="免密登录原理"><a href="#免密登录原理" class="headerlink" title="免密登录原理"></a>免密登录原理</h2><p>网上的教程一般都是直接贴出代码和操作步骤，但这样我们根本不清楚它的原理是什么。</p>
+<p>我们希望能像侦探一样追根究底，查清楚它的原理是什么。</p>
+<blockquote>
+<p>真正理解后的知识才能永远刻入你的脑海里</p>
+</blockquote>
+<p>上面的步骤，我们在本机生成一个密匙对，一共包含两个文件，一个是公钥，一个是私匙，公钥是发送到服务器主机的，私匙是留在本地的。</p>
+<p>这样包含一对公钥私匙的加密叫做“<strong>非对称加密</strong>”。</p>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><p>在了解非对称加密之前需要先了解对称加密，所有新事物的出现必然伴随着某种需求。</p>
+<p>小红和小明私底下正在交往，但又不希望被别人发现，于是他们约定了一种加密算法，每个字母向后移动一位，如 a 往后移一位是 b，b 往后移一位是 c……z往后移是 a。</p>
+<p>那么，<code>ni hao</code> 就变成了 <code>oj ibp</code>。</p>
+<p>由于双方约定好了同样的加密算法，所以小红发给小明消息时，就可以按照约定好的算法进行解密。</p>
+<p>于是他们大胆的在班级群里用加密后的消息进行聊天，其他同学一脸茫然的看着不明觉厉的消息。</p>
+<p>但是此时，<strong>名侦探小刚</strong>破解了他们约定好的加密算法，并且截获了（截获很简单，毕竟他们公然秀恩爱）他们互通的消息，此时小红和小明的聊天记录就被小刚一清二楚的知道了！</p>
+<h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><p>聊天记录被小刚公开后，小明和小红十分尴尬，于是机智的小明想出了一种方法，把前面约定的加密算法做了一些小的改进，小明告诉小红，我发给你一个密匙串，你用这个给消息进行加密（某种加密算法），你发给我消息后，<strong>我再用我这边的密匙进行解密，我发给你的密匙和我本地的密匙是不同的，只有我本地的密匙才能解密你加密过的内容。</strong></p>
+<blockquote>
+<p>问题又来了……现在只有小明破解小红的消息，小明用公钥加密消息发给小红，小红是解密不了的；如果需要双向沟通的话，自然是用同样的方法，小红也给小明一个密匙，小红本地存有另外一个用来解密的密匙。但是 Linux 免密登录是本机免密登录到服务器，属于单向的沟通，如果你希望服务器也能免密登录本机（一般不会有这种需求），就在服务器用同样的方法生成密匙，把密匙发生到本机就可以了。</p>
+</blockquote>
+<p>接下来的日子，小刚也无法破解他们的聊天记录，恼羞成怒的小刚带着三名小弟放学后去堵小红，逼迫小红把小明给她的加密密匙交出来，小红无奈之下将密匙交出，然而，即使拿到密匙，小刚依然无法破解小红的密码，因为，<strong>还需要小明手里的密匙才能解密小红的消息</strong>。</p>
+<p>非对称加密的存在就是为了避免加密算法被第三者知道，导致密码泄露。上面的故事中小明交给小红的加密串叫做<strong>公钥</strong>，公钥可以让任何第三者知道，公钥加密过的密码只有小明手里的加密串——<strong>私匙</strong>才能解密，对于加密和解密使用不同的加密策略，叫做<strong>非对称加密</strong>。</p>
+<h3 id="使用公钥实现免密登录"><a href="#使用公钥实现免密登录" class="headerlink" title="使用公钥实现免密登录"></a>使用公钥实现免密登录</h3><p>我们通过 <code>ssh-keygen -t rsa</code> 生成了公钥和私匙对，接着我们把公钥发送到服务器上，当连接的时候，服务端会发送一个用公钥加密的字符串过来，本地再使用私匙进行解密，实现了登录验证，从而不需要输入密码就能进行登录。</p>
+<p>用盗来的一张图解释：</p>
+<p><img src="https://i.loli.net/2019/08/31/pk2cFyIrHoVAJYE.png" alt="image.png"></p>
+<h2 id="RSA-非对称加密算法"><a href="#RSA-非对称加密算法" class="headerlink" title="RSA 非对称加密算法"></a>RSA 非对称加密算法</h2><p>参考：<a href="https://baike.baidu.com/item/RSA%E7%AE%97%E6%B3%95/263310?fromtitle=RSA&fromid=210678&fr=aladdin" target="_blank" rel="noopener">百度百科 - RSA</a></p>
+<p>只做兴趣了解，不需要掌握原理，因为我们的研究方向不是这个。</p>
 
           
             <br>
@@ -375,7 +414,7 @@
           
         
           
-            <p>本文链接：<a href=https://blog.huotuyouxi.com/docker-install-gitlab/>https://blog.huotuyouxi.com/docker-install-gitlab/</a></p>
+            <p>本文链接：<a href=https://blog.huotuyouxi.com/ssh-no-password-method/>https://blog.huotuyouxi.com/ssh-no-password-method/</a></p>
           
         
       </blockquote>
@@ -422,7 +461,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/docker/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>docker</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>gitlab</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Linux/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Linux</p></a></div>
 
 
         
@@ -435,40 +474,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/ssh-no-password-method/" rel="prev" title="SSH免密登录原理及方法">
-                                  
-                                      SSH免密登录原理及方法
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/Linux/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Linux</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
                             <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/install-gitlab-satis-composer/" rel="prev" title="Gitlab + Satis 搭建私有 Composer 仓库">
+                                <a href="/docker-install-gitlab/" rel="prev" title="再战！Docker 安装 Gitlab">
                                     
-                                        Gitlab + Satis 搭建私有 Composer 仓库
+                                        再战！Docker 安装 Gitlab
                                     
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/docker/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> docker</a> <a class="tag" href="/tags/gitlab/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> gitlab</a> <a class="tag" href="/tags/composer/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> composer</a>
+                                    <a class="tag" href="/tags/docker/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> docker</a> <a class="tag" href="/tags/gitlab/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> gitlab</a>
                                 </h6>
                             
                         </span>
@@ -504,7 +524,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/install-gitlab-satis-composer/" title="Gitlab + Satis 搭建私有 Composer 仓库" rel="bookmark">Gitlab + Satis 搭建私有 Composer 仓库</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/easy-to-start-hexo/" title="猴子都能学会的hexo博客安装教程" rel="bookmark">猴子都能学会的hexo博客安装教程</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/ssh-no-password-method/" title="SSH免密登录原理及方法" rel="bookmark">SSH免密登录原理及方法</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/docker-install-gitlab/" title="再战！Docker 安装 Gitlab" rel="bookmark">再战！Docker 安装 Gitlab</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/install-gitlab-satis-composer/" title="Gitlab + Satis 搭建私有 Composer 仓库" rel="bookmark">Gitlab + Satis 搭建私有 Composer 仓库</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -536,7 +556,7 @@
 
   <script>
     window.subData = {
-      title: '再战！Docker 安装 Gitlab',
+      title: 'SSH免密登录原理及方法',
       tools: true
     }
   </script>
@@ -691,7 +711,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gitlab-硬件要求"><span class="toc-text">Gitlab 硬件要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载镜像"><span class="toc-text">下载镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行镜像"><span class="toc-text">运行镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gitlab-初始化"><span class="toc-text">Gitlab 初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加-SSH-key"><span class="toc-text">添加 SSH key</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么安装后的-Gitlab-可以直接访问？"><span class="toc-text">为什么安装后的 Gitlab 可以直接访问？</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-命令"><span class="toc-text">SSH 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-免密登录服务器"><span class="toc-text">SSH 免密登录服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-添加别名"><span class="toc-text">SSH 添加别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#报错问题"><span class="toc-text">报错问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#免密登录原理"><span class="toc-text">免密登录原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对称加密"><span class="toc-text">对称加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非对称加密"><span class="toc-text">非对称加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用公钥实现免密登录"><span class="toc-text">使用公钥实现免密登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA-非对称加密算法"><span class="toc-text">RSA 非对称加密算法</span></a></li></ol>
     </div>
   </section>
 
