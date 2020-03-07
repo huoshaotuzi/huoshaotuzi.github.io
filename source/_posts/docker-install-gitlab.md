@@ -3,6 +3,7 @@ title: 再战！Docker 安装 Gitlab
 date: 2020-03-07 22:21:32
 tags:
  - docker
+ - gitlab
  
 categories: 
  - docker
