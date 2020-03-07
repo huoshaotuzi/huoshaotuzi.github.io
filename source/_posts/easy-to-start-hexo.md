@@ -6,6 +6,8 @@ tags:
  - 技术
 categories: Hexo
 
+description: 小白都能学会的从零开始照猫画虎hexo博客搭建教程。
+
 ---
 ## hexo 简介
 

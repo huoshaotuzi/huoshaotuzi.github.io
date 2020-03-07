@@ -8,9 +8,11 @@ categories:
  - docker
  - 技术
 
+description: Docker环境搭建Gitlab。
+
 ---
 ## 前言
-上一次翻车了，重新记录。
+上一次因为服务器配置太低翻车了，现在重新挑战一次。
 
 ## Gitlab 硬件要求
 Gitlab 十分吃机器的配置，Gitlab 官方推荐 2核 4G，最低建议 1 核 2G，再低的话可能会像我上次那样直接翻车或者运行起来十分卡顿。
