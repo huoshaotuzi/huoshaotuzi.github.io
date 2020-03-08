@@ -5,9 +5,7 @@ tags:
  - docker
  - gitlab
  
-categories: 
- - docker
- - 技术
+categories: docker
 
 description: Docker环境搭建Gitlab。
 

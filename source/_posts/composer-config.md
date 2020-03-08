@@ -4,9 +4,7 @@ date: 2020-03-08 14:48:10
 tags:
  - composer
  
-categories: 
- - composer
- - 技术
+categories: composer
  
 description: composer.json 文件参数详解。
  

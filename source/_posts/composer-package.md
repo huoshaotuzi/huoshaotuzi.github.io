@@ -4,9 +4,7 @@ date: 2020-03-08 14:42:18
 tags:
  - composer
  
-categories: 
- - composer
- - 技术
+categories: composer
  
 description: 在使用 composer 的时候，我们几乎都是在用其他人分享出来的包，久而久之，难免会产生开发自己包的想法，不仅可以加深对 composer 的理解程度，同时还可以把自己常用的功能封装起来，作为自己的“小金库”储备起来。
  

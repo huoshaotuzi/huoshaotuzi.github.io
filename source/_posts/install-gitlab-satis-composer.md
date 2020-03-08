@@ -6,9 +6,7 @@ tags:
  - composer
  - gitlab
 
-categories: 
- - docker
- - 技术
+categories: composer
  
 description: 搭建一套属于自己的composer私有仓库。
 

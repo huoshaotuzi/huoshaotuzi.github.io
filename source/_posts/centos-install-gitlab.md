@@ -6,9 +6,7 @@ tags:
  - centos
  - gitlab
  
-categories: 
- - docker
- - 技术
+categories: docker
  
 description: 搭建自己的 Git 仓库。 
  

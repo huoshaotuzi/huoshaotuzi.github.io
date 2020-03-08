@@ -4,8 +4,7 @@ date: 2020-03-07 22:50:10
 tags:
  - Linux
  
-categories: 
- - 技术
+categories: Linux
  
 description: 超实用的SSH免密登录方法及原理介绍，附秘传特殊技能——自定义命令登录远程服务器。
 
