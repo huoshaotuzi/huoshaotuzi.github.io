@@ -25,7 +25,7 @@ description: 在使用 composer 的时候，我们几乎都是在用其他人分
 
 ## 创建配置文件
 
-`composer.json` 配置项的字段较多，后续步骤如果对配置文件的字段抱有疑问，可以返回此处查看：[composer.json 详解](https://idce.com/document/0ANQ)。
+`composer.json` 配置项的字段较多，后续步骤如果对配置文件的字段抱有疑问，可以返回此处查看：[composer.json 详解](/composer-config)。
 
 现在，不需要了解这些。
 
