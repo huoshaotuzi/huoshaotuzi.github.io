@@ -15,8 +15,6 @@
           
           <category> composer </category>
           
-          <category> 技术 </category>
-          
       </categories>
       
       
@@ -42,8 +40,6 @@
           
           <category> composer </category>
           
-          <category> 技术 </category>
-          
       </categories>
       
       
@@ -67,7 +63,7 @@
       
       <categories>
           
-          <category> 技术 </category>
+          <category> Linux </category>
           
       </categories>
       
@@ -94,16 +90,14 @@
           
           <category> docker </category>
           
-          <category> 技术 </category>
-          
       </categories>
       
       
         <tags>
             
-            <tag> gitlab </tag>
-            
             <tag> centos </tag>
+            
+            <tag> gitlab </tag>
             
         </tags>
       
@@ -123,16 +117,14 @@
           
           <category> docker </category>
           
-          <category> 技术 </category>
-          
       </categories>
       
       
         <tags>
             
-            <tag> docker </tag>
-            
             <tag> gitlab </tag>
+            
+            <tag> docker </tag>
             
         </tags>
       
@@ -150,20 +142,18 @@
       
       <categories>
           
-          <category> docker </category>
-          
-          <category> 技术 </category>
+          <category> composer </category>
           
       </categories>
       
       
         <tags>
             
+            <tag> gitlab </tag>
+            
             <tag> docker </tag>
             
             <tag> composer </tag>
-            
-            <tag> gitlab </tag>
             
         </tags>
       
