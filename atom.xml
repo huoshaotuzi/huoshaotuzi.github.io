@@ -254,9 +254,9 @@
     
       <category term="gitlab" scheme="https://blog.huotuyouxi.com/tags/gitlab/"/>
     
-      <category term="composer" scheme="https://blog.huotuyouxi.com/tags/composer/"/>
-    
       <category term="docker" scheme="https://blog.huotuyouxi.com/tags/docker/"/>
+    
+      <category term="composer" scheme="https://blog.huotuyouxi.com/tags/composer/"/>
     
   </entry>
   
