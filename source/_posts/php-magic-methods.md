@@ -62,7 +62,6 @@ $obj->__construct();
 ## 应用场景
 
 魔术方法大都用于框架且与设计模式关联紧密，日常业务除了构造方法之外几乎很少接触到其他魔术方法。
-
 Laravel 框架将魔术方法用到了极致，被称为“优雅”的框架。
 
 ## PHP 中的魔术方法
@@ -378,7 +377,7 @@ $dog::whatsYourProblem();
 
 ```
 $users = User::all();
-$items = Item::where('price', '>', 100)->first();
+$items = Item::where('price', '>', 100)->paginate(20);
 ```
 
 Laravel 中的 Model 并不是把方法真的当做静态方法，而是利用 `__callStatic` 让你产生“静态调用”的错觉。
