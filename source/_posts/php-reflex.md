@@ -80,8 +80,6 @@ string(39) "/**
      */"
 ```
 
-由于反射提供的功能在我们平时的业务基本用不到，经常用到框架的设计上。
-
 ## 反射 API
 PHP 官方手册：[https://www.php.net/reflection](https://www.php.net/reflection)
 
@@ -263,3 +261,35 @@ index 方法的第一个`Illuminate\Http\Request` 类型的参数，我们在路
 其实同样是用了依赖注入的方法实现的，在学习了反射之后，它们的原理就大概知道了。
 
 首先通过反射得到一个方法的参数，如果这个参数定义了某些类型，就将其实例化后再传递给该方法，在 Laravel 中有专门的解析类在处理这些参数。
+
+### 通过注释生成路由
+
+Swoft 框架把注释当做定义路由的方法，称为“注解”。
+
+```
+use Swoft\Http\Message\Request;
+use Swoft\Http\Server\Annotation\Mapping\Controller;
+use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+
+/**
+ * Class Home
+ *
+ * @Controller(prefix="home")
+ */
+class Home
+{
+    /**
+     * 该方法路由地址为 /home/index
+     *
+     * @RequestMapping(route="/index", method="post")
+     *
+     * @param Request $request
+     */
+    public function index(Request $request)
+    {
+        // TODO:
+    }
+}
+```
+
+用 PHP 的反射机制可以做一些奇奇怪怪的事，这也算是 Swoft 独特的风格吧。
