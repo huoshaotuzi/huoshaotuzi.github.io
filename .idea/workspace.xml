@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4959a420-3501-4a63-b6c4-31be13e8270a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/php-reflex.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/php-reflex.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/_config.yml" afterDir="false" />
     </list>
@@ -19,30 +20,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/ssh-no-password-method.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="90">
-                <caret line="6" selection-start-line="6" selection-end-line="7" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/docker-install-gitlab.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="105">
-                <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/centos-install-gitlab.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -91,16 +68,21 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/php-reflex.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="258">
-                <caret line="85" selection-start-line="85" selection-end-line="85" />
+              <first_editor relative-caret-position="280">
+                <caret line="285" column="30" selection-start-line="285" selection-start-column="30" selection-end-line="285" selection-end-column="30" />
               </first_editor>
               <second_editor />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -124,8 +106,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/themes/material-x/_config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
-              <caret line="65" selection-start-line="65" selection-end-line="65" />
+            <state relative-caret-position="348">
+              <caret line="518" column="6" selection-start-line="518" selection-start-column="6" selection-end-line="518" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -158,7 +149,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/themes/material-x" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -169,7 +160,6 @@
         <option value="$PROJECT_DIR$/source/categories/index.md" />
         <option value="$PROJECT_DIR$/_config.yml" />
         <option value="$PROJECT_DIR$/update.sh" />
-        <option value="$PROJECT_DIR$/themes/material-x/_config.yml" />
         <option value="$PROJECT_DIR$/source/_posts/game-draw-card-mechanism.md" />
         <option value="$PROJECT_DIR$/source/_posts/Centos安装Gitlab.md" />
         <option value="$PROJECT_DIR$/source/_posts/composer配置参数详解.md" />
@@ -186,6 +176,8 @@
         <option value="$PROJECT_DIR$/source/_posts/php-magic-methods.md" />
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/source/_posts/php-reflex.md" />
+        <option value="$PROJECT_DIR$/themes/material-x/_config.yml" />
+        <option value="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" />
       </list>
     </option>
   </component>
@@ -232,6 +224,21 @@
               <item name="themes" type="462c0819:PsiDirectoryNode" />
               <item name="material-x" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="blog2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="blog2" type="462c0819:PsiDirectoryNode" />
+              <item name="themes" type="462c0819:PsiDirectoryNode" />
+              <item name="material-x" type="462c0819:PsiDirectoryNode" />
+              <item name="layout" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="blog2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="blog2" type="462c0819:PsiDirectoryNode" />
+              <item name="themes" type="462c0819:PsiDirectoryNode" />
+              <item name="material-x" type="462c0819:PsiDirectoryNode" />
+              <item name="layout" type="462c0819:PsiDirectoryNode" />
+              <item name="_partial" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -270,18 +277,18 @@
       <updated>1583048454299</updated>
       <workItem from="1583048455521" duration="13466000" />
       <workItem from="1583590322931" duration="4388000" />
-      <workItem from="1583750649677" duration="24692000" />
+      <workItem from="1583750649677" duration="25563000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42546000" />
+    <option name="totallyTimeSpent" value="43417000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="819" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21101573" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21101573" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -296,7 +303,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3287483" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3287483" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -434,20 +441,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1425">
-          <caret line="95" column="7" selection-start-line="95" selection-start-column="7" selection-end-line="95" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/themes/material-x/_config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/ssh-no-password-method.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -518,10 +511,34 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/php-reflex.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="258">
-            <caret line="85" selection-start-line="85" selection-end-line="85" />
+          <first_editor relative-caret-position="280">
+            <caret line="285" column="30" selection-start-line="285" selection-start-column="30" selection-end-line="285" selection-end-column="30" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="95" column="7" selection-start-line="95" selection-start-column="7" selection-end-line="95" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/material-x/_config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="518" column="6" selection-start-line="518" selection-start-column="6" selection-end-line="518" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
