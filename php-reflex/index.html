@@ -18,7 +18,7 @@
   
     <title>PHP中的反射 - 火兔の小窝</title>
   
-    <meta name="keywords" content="PHP,技术">
+    <meta name="keywords" content="技术,PHP">
   
   
     <meta name="description" content="反射原本指的是一种光学现象，光在传播时照射在物体上会产生返回原物体的现象。在 PHP 中，反射的作用类似光的传播，PHP 可以通过反射机制拿到代码本身，也就是通过代码得到代码。">
@@ -307,7 +307,6 @@
 <p>上面的代码会输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string(39) &quot;&#x2F;**</span><br><span class="line">     * 我是方法注释</span><br><span class="line">     *&#x2F;&quot;</span><br></pre></td></tr></table></figure>
 
-<p>由于反射提供的功能在我们平时的业务基本用不到，经常用到框架的设计上。</p>
 <h2 id="反射-API"><a href="#反射-API" class="headerlink" title="反射 API"></a>反射 API</h2><p>PHP 官方手册：<a href="https://www.php.net/reflection" target="_blank" rel="noopener">https://www.php.net/reflection</a></p>
 <h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>反射机制会打破类的封装性，日常业务也不需要获取代码的注释。</p>
 <p>因此在日常开发中几乎不会直接用到，但是在框架或者插件的设计上却能发挥很大的作用。</p>
@@ -356,6 +355,10 @@
 <p>更不可思议的是第二个路由的 show 方法，我们在声明路由的时候只指明了一个参数 <code>/users/{id}</code>，但我们现在却在方法中写了两个参数，又是怎么精确地匹配到 ID 值的？</p>
 <p>其实同样是用了依赖注入的方法实现的，在学习了反射之后，它们的原理就大概知道了。</p>
 <p>首先通过反射得到一个方法的参数，如果这个参数定义了某些类型，就将其实例化后再传递给该方法，在 Laravel 中有专门的解析类在处理这些参数。</p>
+<h3 id="通过注释生成路由"><a href="#通过注释生成路由" class="headerlink" title="通过注释生成路由"></a>通过注释生成路由</h3><p>Swoft 框架把注释当做定义路由的方法，称为“注解”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">use Swoft\Http\Message\Request;</span><br><span class="line">use Swoft\Http\Server\Annotation\Mapping\Controller;</span><br><span class="line">use Swoft\Http\Server\Annotation\Mapping\RequestMapping;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * Class Home</span><br><span class="line"> *</span><br><span class="line"> * @Controller(prefix&#x3D;&quot;home&quot;)</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Home</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 该方法路由地址为 &#x2F;home&#x2F;index</span><br><span class="line">     *</span><br><span class="line">     * @RequestMapping(route&#x3D;&quot;&#x2F;index&quot;, method&#x3D;&quot;post&quot;)</span><br><span class="line">     *</span><br><span class="line">     * @param Request $request</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function index(Request $request)</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F; TODO:</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用 PHP 的反射机制可以做一些奇奇怪怪的事，这也算是 Swoft 独特的风格吧。</p>
 
           
             <br>
@@ -436,7 +439,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/PHP/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>PHP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>技术</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>技术</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/PHP/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>PHP</p></a></div>
 
 
         
@@ -463,7 +466,7 @@
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 技术</a>
+                                    <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 技术</a> <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
                                 </h6>
                             
                         </span>
@@ -686,7 +689,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#反射是什么？"><span class="toc-text">反射是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反射-API"><span class="toc-text">反射 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用场景"><span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成-API-文档"><span class="toc-text">生成 API 文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量复刻文件"><span class="toc-text">批量复刻文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖注入"><span class="toc-text">依赖注入</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#反射是什么？"><span class="toc-text">反射是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反射-API"><span class="toc-text">反射 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用场景"><span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成-API-文档"><span class="toc-text">生成 API 文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量复刻文件"><span class="toc-text">批量复刻文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖注入"><span class="toc-text">依赖注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过注释生成路由"><span class="toc-text">通过注释生成路由</span></a></li></ol></li></ol>
     </div>
   </section>
 
