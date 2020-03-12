@@ -351,10 +351,12 @@ Nginx 包括主配置文件与子配置文件，默认路径为：
 - /etc/nginx/nginx.conf（主配置）
 - /etc/nginx/conf.d/（子配置目录）
 
-配置文件可以单独写一篇文章，现在只进行简单的介绍。
+Nginx 配置文件详解：（待写）
 
 ### 主配置文件
 主配置文件可以让所有子配置文件共享通用的配置，可以定义 Nginx 基本参数等。
+
+![Nginx配置文件](https://images2018.cnblogs.com/blog/1294702/201805/1294702-20180509145321751-675816930.png)
 
 编辑主配置文件 `/etc/nginx/nginx.conf`，可以看到如下内容：
 
@@ -519,3 +521,82 @@ server {
 当用户访问：blog.huotuyouxi.com
 
 Nginx 会把请求转发给某台服务器处理，因此每次访问网站看到的返回 IP 可能都会不同。
+
+## 模块
+Nginx 发展迅速的原因除了开源之外，还可以使用官方提供的模块或用户自定义开发的模块，由于模块化使得 Nginx 的定制能力很强，可以使用第三方扩展模块让 Nginx 适应各种场景，有能力的大神也可以分享自己写好的模块让其他人直接使用，像这样可以自由 DIY 的软件，有谁会不喜欢呢？
+
+例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的 nginx_lua_module 可以将 Lua 语言嵌入到 Nginx 配置中，从而利用 Lua 极大增强了 Nginx 本身的编程能力，甚至可以不用配合其它脚本语言（如 PHP 或 Python 等），只靠 Nginx 本身就可以实现复杂业务的处理。
+
+Nginx 本身支持多种模块，如 HTTP 模块、EVENT 模块和 MAIL 模块等。
+
+前文提到，在 HTTP 请求中，Nginx 的工作仅仅只是分析请求然后转发给匹配规则的 `location` 去处理，`location` 模块中的内容才是真正干活的人。
+
+```
+server {
+    # 匹配规则
+    location / {
+        # 实际的工作者
+        return 403;
+    }
+}
+```
+
+Nginx 已安装模块可以用命令：`nginx -V` 查看，输出结果类似如下：
+
+```
+built by gcc 6.3.0 20170516 (Debian 6.3.0-18+deb9u1) 
+built with OpenSSL 1.1.0j  20 Nov 2018
+TLS SNI support enabled
+configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt='-g -O2 -fdebug-prefix-map=/data/builder/debuild/nginx-1.15.12/debian/debuild-base/nginx-1.15.12=. -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC' --with-ld-opt='-Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie'
+```
+
+### 安装模块
+Nginx 有许多可以自定义安装的模块，下面以 echo 为例。
+
+安装 echo 模块 `echo-nginx-module` 可以使 Nginx 具有输出字符串的能力，这个功能可以用来简单的调试，如输出参数等。
+
+安装 Nginx 模块的方法：（待写）
+
+然后就可以使用 `echo` 命令输出字符串了：
+
+```
+location /hello { 
+    return 200 'hello!';
+}
+
+location /hello_echo { 
+    echo "hello, echo!";
+}
+```
+
+可以发现，安装模块相当于多了一个可以使用的语句 `echo`，也就是跟 PHP 的 composer、npm 的包一样，安装模块相当于多了一个可以使用的方法。
+
+### 官方模块
+官方模块是 Nginx 官方提供的可扩展模块。
+
+例如 Nginx 预制的模块 stub_status 可以用来查看 Nginx 的运行状态：
+
+```
+location /test {
+    stub_status;
+}
+```
+
+访问后的输出页面：
+
+```
+Active connections: 2 
+server accepts handled requests
+ 3 3 2 
+Reading: 0 Writing: 1 Waiting: 1 
+```
+
+更多 Nginx 官方模块以使用方法：[http://nginx.org/en/docs/](http://nginx.org/en/docs/)
+
+如上面的 `stub_status`，可以通过查询手册：[ngx_http_stub_status_module](http://nginx.org/en/docs/http/ngx_http_stub_status_module.html) 来获取如何使用。
+
+### 第三方模块
+可以通过搜索 Github 寻找来自全世界开发者分享的模块：[Github - Nginx 扩展模块](https://github.com/search?q=nginx+module)
+
+具体的使用方法可以参照作者写的 README 文档。
+
