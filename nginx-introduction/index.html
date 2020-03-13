@@ -681,8 +681,8 @@
 <h3 id="黑-白名单"><a href="#黑-白名单" class="headerlink" title="黑/白名单"></a>黑/白名单</h3><p>可以禁止某些 IP 访问，或允许指定 IP 访问。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location &#x2F; &#123;</span><br><span class="line">    deny 8.8.8.8;</span><br><span class="line">    allow 9.9.9.9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="解决跨域问题"><a href="#解决跨域问题" class="headerlink" title="解决跨域问题"></a>解决跨域问题</h3><p>浏览器以 Ajax 方式访问非本站点的链接时，出于安全考虑会禁止访问，也就是跨域问题（HTTP 访问限制，CORS）。</p>
-<p>在 Nginx 中配置只需要配置允许访问的来源类型即可解决跨域问题：</p>
+<h3 id="解决跨域问题"><a href="#解决跨域问题" class="headerlink" title="解决跨域问题"></a>解决跨域问题</h3><p>以 Ajax 方式访问非本站点的链接时，浏览器出于安全考虑会禁止访问，也就是跨域问题（HTTP 访问限制，CORS）。</p>
+<p>在 Nginx 中只需要配置允许访问的来源类型即可解决跨域问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 允许访问的来源，* 指的是全部，可以是 IP 地址或者域名</span><br><span class="line">add_header Access-Control-Allow-Origin *;</span><br><span class="line"># 允许请求的类型</span><br><span class="line">add_header Access-Control-Allow-Headers X-Requested-With;</span><br><span class="line"># 允许请求的方法</span><br><span class="line">add_header Access-Control-Allow-Methods GET,POST,OPTIONS;</span><br></pre></td></tr></table></figure>
 
 <h3 id="邮件服务"><a href="#邮件服务" class="headerlink" title="邮件服务"></a>邮件服务</h3><p>Nginx 提供了邮件代理服务，具体参照官方文档：<a href="https://www.nginx.cn/doc/mail/mailcore.html" target="_blank" rel="noopener">Nginx - MailCore</a></p>
