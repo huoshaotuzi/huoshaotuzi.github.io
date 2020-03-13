@@ -351,56 +351,103 @@ Nginx 包括主配置文件与子配置文件，默认路径为：
 - /etc/nginx/nginx.conf（主配置）
 - /etc/nginx/conf.d/（子配置目录）
 
-Nginx 配置文件详解：（待写）
+Nginx 提供了官方的中文文档可供查阅：[Nginx - 官方中文文档](https://www.nginx.cn/doc/index.html)
 
 ### 主配置文件
 主配置文件可以让所有子配置文件共享通用的配置，可以定义 Nginx 基本参数等。
 
-![Nginx配置文件](https://images2018.cnblogs.com/blog/1294702/201805/1294702-20180509145321751-675816930.png)
-
-编辑主配置文件 `/etc/nginx/nginx.conf`，可以看到如下内容：
+编辑主配置文件 `/etc/nginx/nginx.conf`，对应参数及作用如下：
 
 ```
+# Nginx 运行时的用户和用户组
 user  nginx;
+
+# Nginx 工作进程数，推荐设置为 CPU 核心数
 worker_processes  1;
 
+# 全局错误日志存储路径及类型，[ debug | info | notice | warn | error | crit ]
 error_log  /var/log/nginx/nginx_error.log warn;
+
+# 进程 PID 文件路径
 pid        /var/run/nginx.pid;
- 
+
+# 事件模块
 events {
+    # 每个工作进程的最大连接数
     worker_connections  1024;
 }
- 
+
+# HTTP 服务
 http {
+    # 文件扩展名与文件类型映射表
     include       /etc/nginx/mime.types;
+    
+    # 默认文件类型
     default_type  application/octet-stream;
  
+    # 日志格式
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
- 
+    # 全局访问日志目录
     access_log  /var/log/nginx/nginx_access.log  main;
     
+    # 是否调用 sendfile 函数输出文件
     sendfile        on;
+    
+    # 此选项仅在使用 sendfile 的时候使用
     #tcp_nopush     on;
  
+    # http 层面的连接超时时长（单位：秒），如一个网页打开 65 秒后服务器还没给出响应，则显示超时
     keepalive_timeout  65;
  
+    # 是否开启 gzip 压缩，开启时可以压缩文件体积减少网络传输，使得网页打开更快，但是会消耗 CPU 资源
     #gzip  on;
  
+    # 读取子配置文件
     include /etc/nginx/conf.d/*.conf;
 }
 ```
 
-包含子配置文件：
+`events` 模块包含了 Nginx 处理连接的设置，常见的配置如下：
 
 ```
-include /etc/nginx/conf.d/*.conf;
+events{
+    # 设置网路连接序列化，防止惊群现象发生，默认为 on
+    accept_mutex on;
+    # 设置一个进程是否同时接受多个网络连接，默认为 off
+    multi_accept on;
+    # 事件驱动模型，select|poll|kqueue|epoll|resig|/dev/poll|eventport
+    use epoll;
+    # 最大连接数
+    worker_connections  1024;
+}
 ```
 
-其中，`server` 服务配置存在于 `http` 模块里。
+Events 模块的更多配置项：[Nginx - 指令](https://www.nginx.cn/doc/core/events.html)
 
-在主配置文件里同样可以配置 `server`，不推荐这么做的理由是后期不方便维护，建议在子配置目录里单独为每个服务配置一个文件。
+`log_format` 字段可以定义日志的输出格式，具体可设置的参数格式及说明如下：
+
+
+| 参数 | 说明 | 示例 |
+| --- |---|---|
+| $remote_addr |	客户端地址 |	219.227.111.255 |
+|$remote_user	|客户端用户名称|	—|
+|$time_local	|访问时间和时区|	18/Jul/2014:17:00:01 +0800|
+|$request	|请求的URI和HTTP协议|	“GET /article-10000.html HTTP/1.1”
+|$http_host	|请求地址，即浏览器中你输入的地址（IP或域名）|	www.blog.huotuyouxi.com 198.98.120.87|
+|$status	|HTTP请求状态	|200
+|$upstream_status	|upstream状态	|200
+|$body_bytes_sent	|发送给客户端文件内容大小	|1547
+|$http_referer	|url跳转来源	|https://www.google.com/|
+|$http_user_agent	|用户终端浏览器等信息	|“Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; SV1; GTB7.0; .NET4.0C;
+|$ssl_protocol	|SSL协议版本	|TLSv1|
+|$ssl_cipher	|交换数据中的算法	|RC4-SHA|
+|$upstream_addr	|后台upstream的地址，即真正提供服务的主机地址	|10.36.10.80:80
+|$request_time	|整个请求的总时间	|0.165|
+|$upstream_response_time	|请求过程中，upstream响应时间	|0.002|
+
+`server` 模块用于配置站点，可以在主配置文件添加，但是后期不方便维护，我们可以单独为每个站点编辑一份配置文件。
 
 ### 子配置文件
 子配置文件是一个包含 `server` 模块的配置文件，由自己来创建，推荐为每个站点单独创建一个配置文件。
@@ -422,11 +469,13 @@ server {
 }
 
 server {
-    listen 443;
+    # https
+    listen 443 ssl;
     server_name blog.huotuyouxi.com;
     root /www/blog;
     index index.html;
 
+    # 以下为 SSL 相关配置
     ssl_certificate   /etc/nginx/ssl/3527929_blog.huotuyouxi.com.pem;
     ssl_certificate_key /etc/nginx/ssl/3527929_blog.huotuyouxi.com.key;
     ssl_session_timeout 5m;
@@ -439,6 +488,18 @@ server {
 上述配置文件将默认的 http 80 端口重定向到了 https 的链接上。
 
 编辑完成后运行：`nginx -s reload` 平滑重启即可使配置生效。
+
+在子配置里可以单独设置访问日志和错误日志，让每个站点都有独立的日志记录文件：
+
+```
+# 访问日志存储位置
+access_log /var/log/nginx/blog_access.log;
+
+# 错误日志存储位置
+error_log /var/log/nginx/blog_error.log;
+```
+
+如果没有配置单独的日志文件，则会记录在全局日志里。
 
 ## 代理服务
 代理指的是中介服务。
@@ -522,7 +583,7 @@ server {
 
 Nginx 会把请求转发给某台服务器处理，因此每次访问网站看到的返回 IP 可能都会不同。
 
-## 模块
+## Nginx 模块
 Nginx 发展迅速的原因除了开源之外，还可以使用官方提供的模块或用户自定义开发的模块，由于模块化使得 Nginx 的定制能力很强，可以使用第三方扩展模块让 Nginx 适应各种场景，有能力的大神也可以分享自己写好的模块让其他人直接使用，像这样可以自由 DIY 的软件，有谁会不喜欢呢？
 
 例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的 nginx_lua_module 可以将 Lua 语言嵌入到 Nginx 配置中，从而利用 Lua 极大增强了 Nginx 本身的编程能力，甚至可以不用配合其它脚本语言（如 PHP 或 Python 等），只靠 Nginx 本身就可以实现复杂业务的处理。
@@ -541,7 +602,7 @@ server {
 }
 ```
 
-Nginx 已安装模块可以用命令：`nginx -V` 查看，输出结果类似如下：
+已安装模块可以用命令：`nginx -V` 查看，输出结果类似如下：
 
 ```
 built by gcc 6.3.0 20170516 (Debian 6.3.0-18+deb9u1) 
@@ -553,11 +614,9 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 ### 安装模块
 Nginx 有许多可以自定义安装的模块，下面以 echo 为例。
 
+echo 仓库地址：[Github - echo-nginx-module](https://github.com/openresty/echo-nginx-module)
+
 安装 echo 模块 `echo-nginx-module` 可以使 Nginx 具有输出字符串的能力，这个功能可以用来简单的调试，如输出参数等。
-
-安装 Nginx 模块的方法：（待写）
-
-然后就可以使用 `echo` 命令输出字符串了：
 
 ```
 location /hello { 
@@ -568,8 +627,6 @@ location /hello_echo {
     echo "hello, echo!";
 }
 ```
-
-可以发现，安装模块相当于多了一个可以使用的语句 `echo`，也就是跟 PHP 的 composer、npm 的包一样，安装模块相当于多了一个可以使用的方法。
 
 ### 官方模块
 官方模块是 Nginx 官方提供的可扩展模块。
@@ -600,3 +657,95 @@ Reading: 0 Writing: 1 Waiting: 1
 
 具体的使用方法可以参照作者写的 README 文档。
 
+## Nginx 应用场景
+最后再来总结一下，Nginx 具体的应用场景。
+
+### HTTP 服务
+Nginx 可以为站点提供 HTTP 服务。
+
+利用 `location` 模块匹配 URI 规则，再将其分发到对应的程序进行处理。
+
+### 负载均衡
+Nginx 的反向代理服务，可以实现分发请求的功能。
+
+具体方法是配置 `upstream` 字段：
+
+```
+http {
+    upstream myproject {
+        server 127.0.0.1:8000 weight=3;
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002;
+        server 127.0.0.1:8003;
+    }
+
+server {
+    listen 80;
+        server_name www.domain.com;
+        location / {
+            proxy_pass http://myproject;
+        }
+    }
+}
+```
+
+负载均衡有以下几种模式：
+
+| 模式 | 说明 |
+| --- | --- |
+|轮询模式|Nginx 默认配置，当客户端访问服务的时候，请求按时间顺序逐一分配到不同的后端服务器，如果有某台服务器挂了，Nginx 会自动剔除|
+|权重模式|可以为每个服务器配置不同的权重，权重值越高的越容易被分发到请求，当多台服务器性能存在差异时，可以让配置高的服务器分配更高的权重|
+|IP 哈希|如果客户已经访问了某个服务器，当用户再次访问时，会将该请求通过哈希算法，自动定位到该服务器。解决 Session 丢失的问题，保证每个用户访问到同一台服务器。|
+|第三方插件|可以通过安装第三方插件实现更多的模式|
+
+### 防盗链
+当自己网站的图片、视频等静态资源被其他人引用时，其他人访问了别人的网站，就会请求到我们服务器上的资源，给我们的服务器带来压力。
+
+Nginx 可以验证来源网站 referers 来判断请求是否是本站点，如果是其他的站点则不让它们获取到图片资源：
+
+```
+location ~* \.(gif|jpg|png|swf|flv)$ {
+    root html
+    valid_referers none blocked *.huotuyouxi.com;
+    if ($invalid_referer) {
+        return 404;
+    }
+}
+```
+
+### CDN 服务器
+可以用 Nginx 搭建 CDN 服务器。
+
+### 限流
+Nginx 的 `ngx_http_limit_req_module` 模块可以限制访问频率和并发连接数。
+
+HttpLimit zone：[HttpLimit zone](https://www.nginx.cn/doc/standard/httplimitzone.html)
+
+HttpLimitReqest：[HttpLimitReqest](https://www.nginx.cn/doc/standard/httplimitrequest.html)
+
+### 黑/白名单
+可以禁止某些 IP 访问，或允许指定 IP 访问。
+
+```
+location / {
+    deny 8.8.8.8;
+    allow 9.9.9.9;
+}
+```
+
+### 解决跨域问题
+浏览器以 Ajax 方式访问非本站点的链接时，出于安全考虑会禁止访问，也就是跨域问题（HTTP 访问限制，CORS）。
+
+在 Nginx 中配置只需要配置允许访问的来源类型即可解决跨域问题：
+
+```
+# 允许访问的来源，* 指的是全部，可以是 IP 地址或者域名
+add_header Access-Control-Allow-Origin *;
+# 允许请求的类型
+add_header Access-Control-Allow-Headers X-Requested-With;
+# 允许请求的方法
+add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+```
+
+### 邮件服务
+Nginx 提供了邮件代理服务，具体参照官方文档：[Nginx - MailCore](https://www.nginx.cn/doc/mail/mailcore.html)
