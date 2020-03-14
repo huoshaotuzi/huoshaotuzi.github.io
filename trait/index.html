@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>PHP-FPM - 火兔博客</title>
+    <title>Trait - 优雅的复用方法 - 火兔博客</title>
   
     <meta name="keywords" content="PHP">
   
   
-    <meta name="description" content="FastCGI 进程管理器。">
+    <meta name="description" content="从 PHP 的 5.4.0 版本开始,PHP 提供了一种全新的代码复用的概念，那就是 Trait。">
   
 
   <!-- feed -->
@@ -252,8 +252,8 @@
         
   
     <h1 class="title">
-      <a href="/php-fpm/">
-        PHP-FPM
+      <a href="/trait/">
+        Trait - 优雅的复用方法
       </a>
     </h1>
   
@@ -292,7 +292,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月14日</p>
+    <p>发布于：2020年3月15日</p>
   </a>
 </div>
 
@@ -314,61 +314,50 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在学 PHP 的时候，搜索网上教程一顿操作配置了 LNMP（Linux + Nginx + MySQL + PHP）环境，在配置 Nginx 的时候听说了 PHP-FPM，然而却没有进行深究，只知道让 Nginx 转发就完事了。</p>
-<p>为了进一步的学习 PHP，需要了解 PHP-FPM 是什么。</p>
-<h2 id="CGI-通用网关接口"><a href="#CGI-通用网关接口" class="headerlink" title="CGI 通用网关接口"></a>CGI 通用网关接口</h2><p>通用网关接口（Common Gateway Interface，CGI）是一个为用户和 WEB 服务（如 Nginx）与其他应用（如 PHP）提供交互的程序。</p>
-<p>早期的 WEB 应用只处理静态的页面，用户访问站点只要请求指定的 <code>.htm</code> 或 <code>.html</code> 文件，静态文件可以直接输出给浏览器，所以 Nginx 不需要做额外的处理。</p>
-<p>随着互联网的发展，只有静态的页面已经不能满足人们的需求了。</p>
-<p>Nginx 本身不处理文件，只是分发请求，比如用户请求 <code>/index.html</code>，它会去服务器寻找这个文件，找到了就输出给浏览器，没找到就返回 404。这里分发的是静态数据，但如果用户请求的是 <code>/index.php</code>，这是一个 PHP 文件，不能像 <code>.html</code> 文件一样直接返回给浏览器。</p>
-<p>这个时候就犯难了，Nginx 应该如何处理非静态的文件呢？</p>
-<p>为了解决如何处理非静态文件的问题，CGI 诞生了。</p>
-<p>CGI 做的事情就是解析用户的请求，然后将请求的结果解析成 HTML 返回给浏览器，开发者可以使用任何语言处理 Web Server 发来的请求，生成动态的内容。</p>
-<p>上面的例子，用户访问 <code>/index.php</code> 文件，由于 Nginx 无法处理这种格式的文件，于是将请求（包括参数等等）转发给 CGI 程序（可理解为语言解释器）进行处理，这里的 CGI 就是 PHP-CGI，PHP-CGI 可以解析 PHP 文件，<code>index.php</code> 文件在 PHP-CGI 程序进行解析和处理后才会输出给浏览器。</p>
-<p><code>index.php</code> 文件就交给 PHP 程序去处理，<code>.jsp</code> 文件就让 Java 去处理，每种动态语言都有对应的 CGI，Nginx 只需要将请求转发给 CGI 就可以了，再通过 CGI 输出数据给浏览器。</p>
-<h2 id="FastCGI-快速网关接口"><a href="#FastCGI-快速网关接口" class="headerlink" title="FastCGI 快速网关接口"></a>FastCGI 快速网关接口</h2><p>CGI 在高并发时存在性能问题，作为改进版的 FastCGI 便出现了。</p>
-<p>快速网关接口（Fast Common Gateway Interface，FastCGI）是 CGI 的增强版。</p>
-<h3 id="CGI-原理"><a href="#CGI-原理" class="headerlink" title="CGI 原理"></a>CGI 原理</h3><p>在接收到请求时，先 fork 出 CGI 进程，然后处理请求，处理完后结束这个进程，这就是 fork-and-execute 模式。</p>
-<p>所以用 CGI 方式的服务器有多少连接请求就会有多少 CGI 进程，每个进程都会加载解析配置文件，初始化执行环境，那么当高并发请求时，会大量挤占系统的资源如内存，CPU 等，造成效能低下。</p>
-<h3 id="FastCGI-原理"><a href="#FastCGI-原理" class="headerlink" title="FastCGI 原理"></a>FastCGI 原理</h3><p>FastCGI 进程管理器启动时会创建一个主（Master）进程和多个 CGI 解释器进程（Worker 进程），然后等待 Web 服务器的连接。</p>
-<p>Web 服务器接收 HTTP 请求后，将 CGI 报文通过 UNIX 或 TCP Socket 进行通信，将环境变量和请求数据写入标准输入，转发到 CGI 解释器进程。</p>
-<p>CGI 解释器进程完成处理后将标准输出和错误信息从同一连接返回给 Web 服务器。</p>
-<p>CGI 解释器进程变为空闲状态，等待下一个 HTTP 请求的到来。</p>
-<p>由于 FastCGI 模式在启动时便创建了很多个子进程，这些子进程常驻内存中，一旦接收到请求就可以立即进入工作状态，而传统的 CGI 模式，只有在接收到请求的时候才会去创建进程，重新读取配置文件等一系列初始化操作，毫无疑问性能会相差很多。</p>
-<h2 id="PHP-FPM-FastCGI-进程管理器"><a href="#PHP-FPM-FastCGI-进程管理器" class="headerlink" title="PHP-FPM FastCGI 进程管理器"></a>PHP-FPM FastCGI 进程管理器</h2><p>PHP 的 FastCGI进程管理器（FastCGI Process Manager，PHP-FPM），PHP-FPM 即 FastCGI 的具体实现。</p>
-<p>PHP 的解释器是 PHP-CGI，它本身只会解析请求返回结果，不能进行进程的调度，而 PHP-FPM（进程管理器）所做的事情便是管理进程。</p>
-<p>PHP-FPM 包含了一个 <code>master</code> 进程和许多个 <code>worker</code> 进程，<code>worker</code> 进程的数量是可以动态调节的，创建和销毁全部由 <code>master</code> 进程来控制。</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64397840-35090980-d095-11e9-959e-eda11f5cb000.png" alt="image"></p>
-<p>其中，<code>master</code> 进程负责分发请求，首先 <code>master</code> 进程检测是否有可用的 <code>worker</code> 进程，如果没有则返回错误（502），然后将请求分发给空闲的 <code>worker</code> 进程处理，然后接取下一个请求，再将请求分发给空闲的 <code>worker</code>，如果 <code>worker</code> 进程处理请求超时则返回错误（504）。</p>
-<p>这样的协作方式大大的提高了程序处理并发请求的性能，<code>worker</code> 进程的数量可以通过 <code>php.ini</code> 文件进行配置。</p>
-<p>理论上进程越多，可以处理的请求也越多，但空闲的进程太多反而会造成内存的浪费。</p>
-<h2 id="Nginx-与-PHP-FPM-通信"><a href="#Nginx-与-PHP-FPM-通信" class="headerlink" title="Nginx 与 PHP-FPM 通信"></a>Nginx 与 PHP-FPM 通信</h2><p>Nginx 与 PHP-FPM 的通信方式有两种：TCP SOCKET 和 Unix SOCKET。</p>
-<p>TCP socket 的优点是可以跨服务器，Nginx 服务器不需要与 PHP-FPM 在同一台服务器上，由于跨服务器的特性，还可以实现分布式部署。</p>
-<p>Unix socket 用于实现同一主机上的进程间通信，相较于 TCP socket，Unix socket 跳过了许多验证的步骤，因此 Unix socket 的效率比 TCP socket 要高，但是不稳定。</p>
-<h3 id="TCP-socket"><a href="#TCP-socket" class="headerlink" title="TCP socket"></a>TCP socket</h3><p>一个基于 TCP socket 的 PHP 站点 Nginx 配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line">    root &#x2F;www&#x2F;web;</span><br><span class="line">    index index.html index.php;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        try_files $uri &#x3D;404;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h2 id="Trait"><a href="#Trait" class="headerlink" title="Trait"></a>Trait</h2><p>为了解决单继承问题，从 PHP 5.4 开始新增了 <code>trait</code> 关键字来实现代码的复用。<code>trait</code> 定义的代码块在类的内部引入，类就能获得由 <code>trait</code> 定义的属性及方法。</p>
+<p>通过定义一个 <code>SingletonTrait</code>，来实现单例模式的类共用代码块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">trait SingletonTrait</span><br><span class="line">&#123;</span><br><span class="line">    protected static $instance &#x3D; null;</span><br><span class="line"></span><br><span class="line">    public static function getInstance() &#123;</span><br><span class="line">        if (null &#x3D;&#x3D;&#x3D; self::$instance) &#123;</span><br><span class="line">            self::$instance &#x3D; new static();</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>为了能够使 Nginx 理解 fastcgi 协议，Nginx 提供了 fastcgi 模块来将 http 请求映射为对应的 fastcgi 请求。</p>
-<p>Nginx 的 FastCGI 模块提供了 fastcgi_param 来主要处理这些映射关系，其主要完成的工作是将 Nginx 中的变量翻译成 PHP 中能够理解的变量，fastcgi_param 是一个文件，包含了 Nginx 中的变量映射关系：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">fastcgi_param  QUERY_STRING       $query_string;</span><br><span class="line">fastcgi_param  REQUEST_METHOD     $request_method;</span><br><span class="line">fastcgi_param  CONTENT_TYPE       $content_type;</span><br><span class="line">fastcgi_param  CONTENT_LENGTH     $content_length;</span><br><span class="line"></span><br><span class="line">fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;</span><br><span class="line">fastcgi_param  REQUEST_URI        $request_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_URI       $document_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_ROOT      $document_root;</span><br><span class="line">fastcgi_param  SERVER_PROTOCOL    $server_protocol;</span><br><span class="line">fastcgi_param  REQUEST_SCHEME     $scheme;</span><br><span class="line">fastcgi_param  HTTPS              $https if_not_empty;</span><br><span class="line"></span><br><span class="line">fastcgi_param  GATEWAY_INTERFACE  CGI&#x2F;1.1;</span><br><span class="line">fastcgi_param  SERVER_SOFTWARE    nginx&#x2F;$nginx_version;</span><br><span class="line"></span><br><span class="line">fastcgi_param  REMOTE_ADDR        $remote_addr;</span><br><span class="line">fastcgi_param  REMOTE_PORT        $remote_port;</span><br><span class="line">fastcgi_param  SERVER_ADDR        $server_addr;</span><br><span class="line">fastcgi_param  SERVER_PORT        $server_port;</span><br><span class="line">fastcgi_param  SERVER_NAME        $server_name;</span><br></pre></td></tr></table></figure>
+<p>要引用 <code>Trait</code> 十分简单，只要在类的内部使用 <code>use</code> 关键字即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class SomeService</span><br><span class="line">&#123;</span><br><span class="line">    use SingletonTrait;</span><br><span class="line"></span><br><span class="line">    public function test()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;ok!&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$service &#x3D; SomeService::getInstance();</span><br><span class="line">$service-&gt;test();</span><br></pre></td></tr></table></figure>
 
-<p>除此之外，还有一个重要的指令 <code>fastcgi_pass</code>，这个指令用于指定 FPM 进程监听的地址，Nginx 会把所有的 PHP 请求翻译成 FastCGI 请求之后再发送到这个地址。</p>
-<p>上面的 Nginx 配置文件中，我们配置了 <code>fastcgi_pass 127.0.0.1:9000;</code>，其含义是将请求转发到本机 9000 端口（PHP-FPM 进程）处理，这样的方式叫做 TCP socket。</p>
-<p>TCP socket 的好处是可以将 Nginx 服务器与 FPM 服务器进行分离，因此可以实现分布式 PHP-FPM 架构：</p>
-<p><img src="https://user-images.githubusercontent.com/28209810/64407389-c5a41180-d0b6-11e9-8d5f-5b5ef39a52ce.png" alt="image"></p>
-<p>配置 <code>upstream</code> 来指定 PHP-FPM 服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">upstream php-fpm &#123;</span><br><span class="line">    server 127.0.0.1:9000;</span><br><span class="line">    server 127.0.0.2:9000;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line">    root &#x2F;www&#x2F;web;</span><br><span class="line">    index index.html index.php;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        try_files $uri &#x3D;404;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_pass php-fpm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Unix-socket"><a href="#Unix-socket" class="headerlink" title="Unix socket"></a>Unix socket</h3><p>基于 Unix socket 的 Nginx 配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fasrcgi_pass &#x2F;usr&#x2F;run&#x2F;php-fpm.sock</span><br></pre></td></tr></table></figure>
-
-<p>PHP-FPM 配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listen &#x3D; 127.0.0.1:9000</span><br><span class="line"># 或者</span><br><span class="line">listen &#x3D; &#x2F;var&#x2F;run&#x2F;php-fpm.sock</span><br></pre></td></tr></table></figure>
-
+<p>通过引用 <code>SingletonTrait</code> 代码块 <code>SomeService</code> 直接获得了 <code>trait</code> 定义的方法及属性，通过 <code>trait</code> 引用实现复用单例模式方法，而不是直接复制粘贴同样的代码到每个单例的类中，让代码变得更加优雅！</p>
 <blockquote>
-<p>socket 的本质是一个文件，因此还存在权限问题，所以需要注意 Nginx 所在的用户组是否有该文件的操作权限。</p>
+<p>Trait 的实现原理是简单的把代码块拷贝到类</p>
 </blockquote>
-<p>Unix socket 通信方式需要在本机生成 sock 文件，因此 Nginx 服务器与 PHP-FPM 必须在同一台机子。</p>
-<p>关于两者的取舍，当并发量较小时（比如几百），可以选择 Unix socket 以提高处理效率，在并发量较大时，可以选择 TCP socket 以保持连接的稳定性。</p>
+<h2 id="访问修饰符"><a href="#访问修饰符" class="headerlink" title="访问修饰符"></a>访问修饰符</h2><p>在类的继承关系中，如果父类的属性或方法使用了 <code>private</code> 声明，子类是无法调用的，但是在 Trait 中不同，因为 Trait 相当于把代码引入到类里面，也就是变成了类的一部分，因此当 Trait 声明了私有属性或方法，在类的内部是可以直接使用的。</p>
+<p>Trait 定义的代码块同样可以使用 <code>static</code>、<code>abstract</code> 等修饰符。</p>
+<h2 id="多个-Trait"><a href="#多个-Trait" class="headerlink" title="多个 Trait"></a>多个 Trait</h2><p>一个类可以引用多个 Trait，中间使用逗号隔开。</p>
+<p>当引入的多个 Trait 里面存在同名方法时，需要通过两种方式来解决冲突，否则会报出致命异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Fatal error:  Trait method xxx has not been applied, because there are collisions with other trait methods on Test in xxx</span><br></pre></td></tr></table></figure>
+
+<h3 id="insteadof"><a href="#insteadof" class="headerlink" title="insteadof"></a>insteadof</h3><p>使用 <code>insteadof</code> 关键字来让其中一个 Trait 的方法覆盖另一个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">trait A</span><br><span class="line">&#123;</span><br><span class="line">    public function hello()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;A:hello&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function world()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;A:world&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">trait B</span><br><span class="line">&#123;</span><br><span class="line">    public function hello()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;B:hello&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function world()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;B:world&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    use A,B &#123;</span><br><span class="line">        &#x2F;&#x2F; 使用 A trait 中的 hello 覆盖 B 的 hello</span><br><span class="line">        A:: hello insteadof B;</span><br><span class="line">        &#x2F;&#x2F; 使用 B trait 中的 world 覆盖 A 的 world</span><br><span class="line">        B:: world insteadof A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$test &#x3D; new Test();</span><br><span class="line">$test-&gt;hello();</span><br><span class="line">$test-&gt;world();</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A:hello</span><br><span class="line">B:world</span><br></pre></td></tr></table></figure>
+
+<h3 id="as-方法重命名"><a href="#as-方法重命名" class="headerlink" title="as 方法重命名"></a>as 方法重命名</h3><p>如果需要保留两者的方法，可以使用 <code>as</code> 重命名，然后再用另一个的方法进行覆盖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">trait A</span><br><span class="line">&#123;</span><br><span class="line">    public function hello()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;A:hello&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function world()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;A:world&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">trait B</span><br><span class="line">&#123;</span><br><span class="line">    public function hello()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;B:hello&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function world()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &#39;B:world&#39; . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    use A, B &#123;</span><br><span class="line">        &#x2F;&#x2F; 将 A trait 中的方法重命名</span><br><span class="line">        A::hello as ahello;</span><br><span class="line">        A::world as aworld;</span><br><span class="line">        &#x2F;&#x2F; 再使用 insteadof 关键字覆盖冲突的方法</span><br><span class="line">        B:: hello insteadof A;</span><br><span class="line">        B:: world insteadof A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$test &#x3D; new Test();</span><br><span class="line">$test-&gt;hello();</span><br><span class="line">$test-&gt;world();</span><br><span class="line">$test-&gt;ahello();</span><br><span class="line">$test-&gt;aworld();</span><br></pre></td></tr></table></figure>
+
+<p>注意，即使重命名了也需要使用 <code>insteadof</code> 覆盖原来的代码，不然同样会产生致命报错。</p>
+<h2 id="Trait-嵌套"><a href="#Trait-嵌套" class="headerlink" title="Trait 嵌套"></a>Trait 嵌套</h2><p>Trait 里面也可以引用其他 Trait。</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>当 Trait 中定义的方法或属性与类或其父类相同时，其优先级如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">子类 &gt; trait &gt; 父类</span><br></pre></td></tr></table></figure>
+
+<h2 id="Trait-的意义"><a href="#Trait-的意义" class="headerlink" title="Trait 的意义"></a>Trait 的意义</h2><p>Trait 能实现代码块的复用，但是继承（extends）、实现（implements）同样可以复用父类的方法或实现接口的方法，它们之间有什么区别呢？</p>
+<p>我们知道面向对象编程里代码的关联性十分重要，例如继承关系即把子类的属性和方法进行了抽象，接口同样是把相同的东西抽象出来，然后在子类进行实现，这样有时候我们遇到像“水陆两栖动物”这种特殊的类型，既要让它继承水生动物的特性，又要让它继承陆生动物的特性，而 PHP 不支持多继承，要实现这种效果会变得十分麻烦。</p>
+<p>而 Trait 定义的代码块，并没有严格意义上的关联性，仅仅只是为了复用代码块而被设计。Trait 的作用更像是一个功能块，不论是谁，只要让其他的类“嵌入”这个功能块就能让它具有对应的效果。</p>
+<p>就好比 LOL 里的提莫，你可以出帽子、法穿棒等纯粹的 AP 装让它变成 AP 提莫，也可以出纳什之牙、飓风让提莫变成一个普攻型的 APC（远程输出单位），Trait 的作用类似于装备效果，任何人都可以出这件装备，只要装备了就能得到对应的能力。</p>
+<p>在 Laravel 框架里，要实现“软删除”功能十分简单，只需要在数据库迁移中添加字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Schema::create(&#39;orders&#39;, function (Blueprint $table) &#123;</span><br><span class="line">            $table-&gt;bigIncrements(&#39;id&#39;);</span><br><span class="line">            &#x2F;&#x2F; .. 省略其他字段</span><br><span class="line">            $table-&gt;softDeletes();</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>然后在 Model 里直接引入 Trait：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">namespace App\Model;</span><br><span class="line"></span><br><span class="line">use Illuminate\Database\Eloquent\Model;</span><br><span class="line">use Illuminate\Database\Eloquent\SoftDeletes;</span><br><span class="line"></span><br><span class="line">class Order extends Model</span><br><span class="line">&#123;</span><br><span class="line">    use SoftDeletes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即可让一个模型具有软删除的功能。</p>
+<p>Laravel 还有许多地方存在此类的应用，通过这样的设计让代码更加优雅！</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>凡是在开发过程中，只要意识到自己通过 Ctrl+C、Ctrl+V 复制了同一份的代码，就表明这个地方写的不够好，一定存在优化的空间。</p>
 
           
             <br>
@@ -402,7 +391,7 @@
           
         
           
-            <p>本文链接：<a href=https://blog.huotuyouxi.com/php-fpm/>https://blog.huotuyouxi.com/php-fpm/</a></p>
+            <p>本文链接：<a href=https://blog.huotuyouxi.com/trait/>https://blog.huotuyouxi.com/trait/</a></p>
           
         
       </blockquote>
@@ -462,40 +451,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/mini-server/" rel="prev" title="微服务">
-                                  
-                                      微服务
-                                  
+                                    
+                                        微服务
+                                    
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
                                     <a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 架构</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
-                
-                    <section class="next">
-                        <span class="art-item-right" aria-hidden="true">
-                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                            <h4>
-                                <a href="/nginx-introduction/" rel="prev" title="一文读懂Nginx">
-                                    
-                                        一文读懂Nginx
-                                    
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/Linux/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Linux</a> <a class="tag" href="/tags/Nginx/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Nginx</a>
                                 </h6>
                             
                         </span>
@@ -531,7 +501,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -563,7 +533,7 @@
 
   <script>
     window.subData = {
-      title: 'PHP-FPM',
+      title: 'Trait - 优雅的复用方法',
       tools: true
     }
   </script>
@@ -718,7 +688,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CGI-通用网关接口"><span class="toc-text">CGI 通用网关接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FastCGI-快速网关接口"><span class="toc-text">FastCGI 快速网关接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CGI-原理"><span class="toc-text">CGI 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FastCGI-原理"><span class="toc-text">FastCGI 原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP-FPM-FastCGI-进程管理器"><span class="toc-text">PHP-FPM FastCGI 进程管理器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-与-PHP-FPM-通信"><span class="toc-text">Nginx 与 PHP-FPM 通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-socket"><span class="toc-text">TCP socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unix-socket"><span class="toc-text">Unix socket</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Trait"><span class="toc-text">Trait</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问修饰符"><span class="toc-text">访问修饰符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个-Trait"><span class="toc-text">多个 Trait</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#insteadof"><span class="toc-text">insteadof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#as-方法重命名"><span class="toc-text">as 方法重命名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Trait-嵌套"><span class="toc-text">Trait 嵌套</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优先级"><span class="toc-text">优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Trait-的意义"><span class="toc-text">Trait 的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结尾"><span class="toc-text">结尾</span></a></li></ol>
     </div>
   </section>
 
