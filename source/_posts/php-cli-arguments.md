@@ -185,7 +185,7 @@ Exception: Function array_columns() does not exist
 root@0139eebfa774:/var/www/html# php --rf array_column
 Function [ <internal:standard> function array_column ] {
 
-  - Parameters [3] {
+ - Parameters [3] {
     Parameter #0 [ <required> $arg ]
     Parameter #1 [ <required> $column_key ]
     Parameter #2 [ <optional> $index_key ]
