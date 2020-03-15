@@ -132,13 +132,6 @@ root@0139eebfa774:/var/www/html# php -r "echo 'ok';"
 ok
 ```
 
-## 查看扩展提供的方法
-使用命令 `php --re <扩展名称>` 获取扩展的所有方法：
-
-```
-php --re swoole
-```
-
 ## 查看扩展详情
 使用命令 `php --ri <扩展名称>` 获取扩展配置详情：
 
@@ -174,7 +167,15 @@ swoole.enable_preemptive_scheduler => Off => Off
 swoole.display_errors => On => On
 swoole.use_shortname => On => On
 swoole.unixsock_buffer_size => 8388608 => 8388608
-``` 
+```
+
+## 查看扩展提供的方法
+使用命令 `php --re <扩展名称>` 获取扩展的所有方法：
+
+```
+php --re swoole
+```
+
 
 ## 获取函数详情
 使用命令 `php --rf <函数名称>` 获取函数详情，可以用来检测函数是否存在：
