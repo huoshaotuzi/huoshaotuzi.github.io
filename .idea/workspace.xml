@@ -91,8 +91,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/php-cli-arguments.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="349">
-                <caret line="115" column="5" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
+              <first_editor relative-caret-position="15">
+                <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
               </first_editor>
               <second_editor />
             </state>
@@ -290,16 +290,15 @@
       <workItem from="1583750649677" duration="53759000" />
       <workItem from="1584086998235" duration="4683000" />
       <workItem from="1584188651236" duration="9440000" />
-      <workItem from="1584245725536" duration="1945000" />
+      <workItem from="1584245725536" duration="2208000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87681000" />
+    <option name="totallyTimeSpent" value="87944000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="817" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21959943" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -599,8 +598,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/php-cli-arguments.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="349">
-            <caret line="115" column="5" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
+          <first_editor relative-caret-position="15">
+            <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
           </first_editor>
           <second_editor />
         </state>
