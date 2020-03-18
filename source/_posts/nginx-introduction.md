@@ -428,7 +428,6 @@ Events 模块的更多配置项：[Nginx - 指令](https://www.nginx.cn/doc/core
 
 `log_format` 字段可以定义日志的输出格式，具体可设置的参数格式及说明如下：
 
-
 | 参数 | 说明 | 示例 |
 | --- |---|---|
 | $remote_addr |	客户端地址 |	219.227.111.255 |
@@ -474,6 +473,12 @@ server {
     server_name blog.huotuyouxi.com;
     root /www/blog;
     index index.html;
+    
+    # 访问日志存储位置
+    access_log /var/log/nginx/blog_access.log;
+    
+    # 错误日志存储位置
+    error_log /var/log/nginx/blog_error.log;
 
     # 以下为 SSL 相关配置
     ssl_certificate   /etc/nginx/ssl/3527929_blog.huotuyouxi.com.pem;
@@ -498,6 +503,30 @@ access_log /var/log/nginx/blog_access.log;
 # 错误日志存储位置
 error_log /var/log/nginx/blog_error.log;
 ```
+
+access_log：访问日志主要记录客户端的请求。客户端向 Nginx 服务器发起的每一次请求都记录在这里。客户端 IP，浏览器信息，referer，请求处理时间，请求 URL 等都可以在访问日志中得到。当然具体要记录哪些信息，你可以通过 log_format 指令定义。
+
+```
+access_log path [format [buffer=size] [gzip[=level]] [flush=time] [if=condition]]; # 设置访问日志
+access_log off; # 关闭访问日志
+```
+
+- path 指定日志的存放位置。
+- format 指定日志的格式。默认使用预定义的 combined。
+- buffer 用来指定日志写入时的缓存大小。默认是 64k。
+- gzip 日志写入前先进行压缩。压缩率可以指定，从 1 到 9 数值越大压缩比越高，同时压缩的速度也越慢。默认是 1。
+- flush 设置缓存的有效时间。如果超过 flush 指定的时间，缓存中的内容将被清空。
+- if 条件判断。如果指定的条件计算为 0 或空字符串，那么该请求不会写入日志。
+
+error_log：记录服务器和请求处理过程中的错误信息。
+
+```
+error_log path [level];
+```
+
+- path：指定错误日志的存储位置
+- level：指定要记录的错误级别，只有发生错误的级别大于等于 level 的时候才会记录错误，可取值为：debug, info, notice, warn, error, crit, alert,emerg，默认值为 error。
+
 
 如果没有配置单独的日志文件，则会记录在全局日志里。
 
