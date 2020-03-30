@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>SSH免密登录原理及方法 - 我的文档</title>
+    <title>游戏的抽奖是否应该保底必出？ - 我的文档</title>
   
-    <meta name="keywords" content="Linux">
+    <meta name="keywords" content="游戏">
   
   
-    <meta name="description" content="超实用的SSH免密登录方法及原理介绍，附秘传特殊技能——自定义命令登录远程服务器。">
+    <meta name="description" content="游戏中的抽奖机制是几乎所有游戏都要面临的问题，在某种程度上来说，抽奖机制可以决定游戏的命运。">
   
 
   <!-- feed -->
@@ -252,8 +252,8 @@
         
   
     <h1 class="title">
-      <a href="/ssh-no-password-method/">
-        SSH免密登录原理及方法
+      <a href="/game-draw-card-issue/">
+        游戏的抽奖是否应该保底必出？
       </a>
     </h1>
   
@@ -279,9 +279,9 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/Linux/' rel="nofollow">
+    <a href='/categories/%E6%B8%B8%E6%88%8F%E6%97%A5%E8%AE%B0/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>Linux</p>
+      <p>游戏日记</p>
     </a>
   </div>
 
@@ -292,7 +292,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月7日</p>
+    <p>发布于：2020年3月31日</p>
   </a>
 </div>
 
@@ -314,96 +314,74 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="SSH-命令"><a href="#SSH-命令" class="headerlink" title="SSH 命令"></a>SSH 命令</h2><p>使用 <code>ssh 用户名@服务器IP</code> 可以连接到服务器，这样做的缺点是每次都要输入密码，一方面是不安全，另一方面是麻烦。</p>
-<h2 id="SSH-免密登录服务器"><a href="#SSH-免密登录服务器" class="headerlink" title="SSH 免密登录服务器"></a>SSH 免密登录服务器</h2><p>在本地主机上使用 <code>ssh-keygen -t rsa</code> 生成密匙对，这里的 <code>-t rsa</code> 指的是用 <code>rsa</code> 加密方式生成密匙：</p>
-<p><img src="https://i.loli.net/2019/08/31/wpMU4vaBQfOoej8.png" alt="image.png"></p>
-<p>第一步，输入密匙存放目录，使用默认路径直接按回车即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Generating public&#x2F;private rsa key pair.</span><br><span class="line">Enter file in which to save the key (&#x2F;root&#x2F;.ssh&#x2F;id_rsa):</span><br></pre></td></tr></table></figure>
-
-<p>第二步，输入密码，建议直接回车使用空密码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br></pre></td></tr></table></figure>
-
-<p>如果输入了密码则需要再输入一次确认密码。这里的密码不是指远程登录主机的密码，而是使用密匙时的密码，既然我们是希望免密登录了，自然不希望再输入任何密码，因此此处填空即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+---[RSA 2048]----+</span><br><span class="line">|    ..    .      |</span><br><span class="line">|    o. . . o     |</span><br><span class="line">|   o...+* +      |</span><br><span class="line">|    .o+*+O       |</span><br><span class="line">|    . &#x3D;+So+o     |</span><br><span class="line">| . . . @.*B.     |</span><br><span class="line">|  o . . Eoo.     |</span><br><span class="line">|   o   * ..      |</span><br><span class="line">|    ..o o.       |</span><br><span class="line">+----[SHA256]-----+</span><br></pre></td></tr></table></figure>
-
-<p>上面会生成 <code>randomart image</code> 图案，这个图案是根据密匙生成的，因此每个人看到的都不同。</p>
-<blockquote>
-<p>趣味小科普：为什么要生成这种图案呢？这是由于密匙对是一个很长的随机字符串，比起加密的字符串人们更容易接受图片，可以说是很贴心了</p>
-</blockquote>
-<p>生成的密匙包含一对，<strong>公钥和私匙</strong>（<strong>其实叫做私钥</strong>，但感觉这样比较有意思所以就这么写）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Your identification has been saved in &#x2F;root&#x2F;.ssh&#x2F;id_rsa.</span><br><span class="line">Your public key has been saved in &#x2F;root&#x2F;.ssh&#x2F;id_rsa.pub.</span><br></pre></td></tr></table></figure>
-
-<p>我们根据路径可以找到文件所在位置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_8_centos ~]# cd &#x2F;root&#x2F;.ssh</span><br><span class="line">[root@VM_0_8_centos .ssh]# ls</span><br><span class="line">authorized_keys  id_rsa  id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p>这两个密匙文件分别是：</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏中的抽奖机制是几乎所有游戏都要面临的问题，在某种程度上来说，抽奖机制可以决定游戏的命运。</p>
+<p>当一个打算弃坑的玩家，想在最后抽个爽，结果却出了许多氪金大佬都没有的神宠！在游戏广播下，世界频道异口同声的喊起“狗托”，豹子头“零充”玩家心情自然不言而喻，十有八九会享受万众羡慕的眼神继续愉快的玩耍。</p>
+<p>反之，一个氪金大佬怒抽 100 连，砸了 N 个 648 结果还不出货，正气急败坏，却看楼上那位零氪玩家的广播 <strong>XXX 玩家抽到 XXX</strong>，试问氪金大佬此时作何感想？</p>
+<p>当然，上面的情景仅为 YY，实际上可能并没有那么夸张，举例只是为了说明在某些特定情况下可以决定玩家是否继续玩下去。</p>
+<h2 id="游戏中的抽奖机制"><a href="#游戏中的抽奖机制" class="headerlink" title="游戏中的抽奖机制"></a>游戏中的抽奖机制</h2><p>游戏中的抽奖机制经过不断演变，发展为两种比较常见的形式：<strong>无保底机制</strong> 与 <strong>保底机制</strong>。</p>
+<h3 id="无保底机制"><a href="#无保底机制" class="headerlink" title="无保底机制"></a>无保底机制</h3><p>如字面意思，无论抽几次，概率都是一样。</p>
+<p>这种模型会造成某些玩家运气好，尤其是零元党在抽到好东西的时候很喜欢在 <strong>贴吧秀</strong>，对包括零氪、土豪玩家造成暴击伤害，“脸帝”是玩家公敌。</p>
+<p>无保底机制的弊端会造成游戏过于依赖运气成分。</p>
+<p>脸黑玩家可能永远抽不到，土豪玩家可能连砸 N 个 648 依然得不到。</p>
+<p>站在游戏开发者的角度，希望绝大多数玩家可以体验到游戏绝大多数内容，而不是单纯的靠运气决定，这个时候就可以依靠俗话说的“努力就会有回报”。</p>
+<h3 id="保底机制"><a href="#保底机制" class="headerlink" title="保底机制"></a>保底机制</h3><p>玩家通过抽奖，达到一定次数就能得到最好的奖励，这就是保底奖励。</p>
+<p>保底奖励又有两种形式。</p>
+<h4 id="积分兑换"><a href="#积分兑换" class="headerlink" title="积分兑换"></a>积分兑换</h4><p>第一种是以累计 <strong>“积分”</strong> 的形式，玩家可以用积分在商店兑换到最好的奖励。</p>
+<p>这种方式的好处是，玩家可以 <strong>明确的知道</strong> 抽几次一定可以拿到大奖，虽然可能会损失几分惊喜的感觉，但是会让玩家心里感到踏实。即使失败也不会有太大的负面影响，因为失败也会累计积分作为补偿。</p>
+<h4 id="幸运值"><a href="#幸运值" class="headerlink" title="幸运值"></a>幸运值</h4><p>第二种是通过抽奖累计 <strong>“幸运值”</strong>，每次抽奖都可以使下次抽到大奖的几率提高，幸运值达到满时必定抽到。比如王者荣耀的水晶/积分抽奖，玩家可以通过日常获得的钻石去抽奖，即使没抽到也可以积累幸运值，慢慢积累直到抽到水晶然后兑换韩信这个英雄。有些游戏的强化系统也采用这种形式，每次强化失败，下一次强化的成功几率就会提高。</p>
+<p>这种方式的好处是可以让玩家 <strong>保持对于抽奖的期待</strong>，因为概率不断提高，玩家的内心就会觉得可能下一次就中了，而且有保底满幸运值必中的结果，玩家对于失败的感觉就很淡然了，现在的抽奖已经变为 <strong>“可以让我省多少钱”</strong>，越早抽到，玩家反而会觉得赚到了。</p>
+<h2 id="游戏的抽奖该不该保底？"><a href="#游戏的抽奖该不该保底？" class="headerlink" title="游戏的抽奖该不该保底？"></a>游戏的抽奖该不该保底？</h2><p>回到标题，让我们思考下面几个问题：</p>
 <ul>
-<li>id_rsa 生成的私钥文件</li>
-<li>id_rsa.pub 生成的公钥文件</li>
+<li><p>游戏的抽奖该不该保底？</p>
+</li>
+<li><p>开发商会因为保底而亏损吗？</p>
+</li>
+<li><p>保底抽奖机制到底对哪种类型的玩家更有好处？</p>
+</li>
 </ul>
-<p>另外一个 <code>authorized_keys</code> 是保存远程免密登录公钥的文件，主要通过这个文件记录多台机器的公钥，我们要做的就是把本机的公钥发送到服务器主机的这个文件里。</p>
-<p>接着，把公钥发到需要登录的服务器主机上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i &#x2F;root&#x2F;.ssh&#x2F;id_rsa.pub 服务器IP地址:&#x2F;root&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
-
-<p>接着会要求你输入一次密码，输入完成后就可以实现免密登录了。</p>
-<p>在本机上执行 <code>ssh 用户名@服务器IP</code>，不再需要输入密码验证。</p>
-<h2 id="SSH-添加别名"><a href="#SSH-添加别名" class="headerlink" title="SSH 添加别名"></a>SSH 添加别名</h2><p>网络上的教程一般到上一步就结束了，在这里传授一个小技巧可以事半功倍。</p>
-<p>虽然我们现在跳过了输入密码这个步骤，但是每次都要输入 IP 也是很蛋疼的一件事，<strong>我们甚至想要不输入 IP 就能登录到远程服务器</strong> ？</p>
-<p>这也能做到！</p>
-<p>在本地进入 <code>.ssh</code> 目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 进入 .ssh 目录</span><br><span class="line">FireRabbitdeMacBook-Pro:.ssh firerabbit$ cd ~&#x2F;.ssh</span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>vim config</code> 编辑文件并且输入以下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host dev</span><br><span class="line">HostName 127.0.0.1</span><br><span class="line">User root</span><br><span class="line">Port 22</span><br></pre></td></tr></table></figure>
-
-<p>这里的 <code>dev</code> 是我们给远程主机起的别名，<code>127.0.0.1</code> 是远程主机的地址，请替换成你的服务器 IP，<code>User</code> 即登录的用户名，<code>Port</code> 为服务器访问端口，如果修改了端口在这里也要修改。</p>
-<p>现在我们的目录应该是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FireRabbitdeMacBook-Pro:.ssh firerabbit$ ls</span><br><span class="line">config		id_rsa		id_rsa.pub	known_hosts</span><br></pre></td></tr></table></figure>
-
-<p><code>known_hosts</code> 是连接过的主机记录，可以随意删除。</p>
-<p>接着在命令行输入：<code>ssh dev</code> 即可连接到服务器！</p>
-<blockquote>
-<p>阅读至此，恭喜你！Linux Exp + 1</p>
-</blockquote>
-<h2 id="报错问题"><a href="#报错问题" class="headerlink" title="报错问题"></a>报错问题</h2><p>如果出现如下报错：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;ssh-copy-id: ERROR: ssh: Could not resolve hostname xxx:&#x2F;root&#x2F;.ssh&#x2F;authorized_keys: nodename nor servname provided, or not known</span><br></pre></td></tr></table></figure>
-
-<p>网上查了下，大都是说 hosts 文件的问题。</p>
-<p>可以尝试修改 <code>/etc/hosts</code> 看看是否有如下行，如果没有则添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 localhost</span><br></pre></td></tr></table></figure>
-
-<p>经过本人尝试结果无效，可用别的方法。</p>
-<p>那就是——手动上传！！！</p>
-<p>编辑本地主机的密匙文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p>把密匙内容全部拷贝下来。</p>
-<p>接着先用 <code>ssh root@远程主机IP</code> 用密码登录进去，然后在远程主机中 <code>vim /root/.ssh/authorized_keys</code>。</p>
-<p>把复制的密钥直接粘贴下来就可以啦！</p>
-<h2 id="免密登录原理"><a href="#免密登录原理" class="headerlink" title="免密登录原理"></a>免密登录原理</h2><p>网上的教程一般都是直接贴出代码和操作步骤，但这样我们根本不清楚它的原理是什么。</p>
-<p>我们希望能像侦探一样追根究底，查清楚它的原理是什么。</p>
-<blockquote>
-<p>真正理解后的知识才能永远刻入你的脑海里</p>
-</blockquote>
-<p>上面的步骤，我们在本机生成一个密匙对，一共包含两个文件，一个是公钥，一个是私匙，公钥是发送到服务器主机的，私匙是留在本地的。</p>
-<p>这样包含一对公钥私匙的加密叫做“<strong>非对称加密</strong>”。</p>
-<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><p>在了解非对称加密之前需要先了解对称加密，所有新事物的出现必然伴随着某种需求。</p>
-<p>小红和小明私底下正在交往，但又不希望被别人发现，于是他们约定了一种加密算法，每个字母向后移动一位，如 a 往后移一位是 b，b 往后移一位是 c……z往后移是 a。</p>
-<p>那么，<code>ni hao</code> 就变成了 <code>oj ibp</code>。</p>
-<p>由于双方约定好了同样的加密算法，所以小红发给小明消息时，就可以按照约定好的算法进行解密。</p>
-<p>于是他们大胆的在班级群里用加密后的消息进行聊天，其他同学一脸茫然的看着不明觉厉的消息。</p>
-<p>但是此时，<strong>名侦探小刚</strong>破解了他们约定好的加密算法，并且截获了（截获很简单，毕竟他们公然秀恩爱）他们互通的消息，此时小红和小明的聊天记录就被小刚一清二楚的知道了！</p>
-<h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><p>聊天记录被小刚公开后，小明和小红十分尴尬，于是机智的小明想出了一种方法，把前面约定的加密算法做了一些小的改进，小明告诉小红，我发给你一个密匙串，你用这个给消息进行加密（某种加密算法），你发给我消息后，<strong>我再用我这边的密匙进行解密，我发给你的密匙和我本地的密匙是不同的，只有我本地的密匙才能解密你加密过的内容。</strong></p>
-<blockquote>
-<p>问题又来了……现在只有小明破解小红的消息，小明用公钥加密消息发给小红，小红是解密不了的；如果需要双向沟通的话，自然是用同样的方法，小红也给小明一个密匙，小红本地存有另外一个用来解密的密匙。但是 Linux 免密登录是本机免密登录到服务器，属于单向的沟通，如果你希望服务器也能免密登录本机（一般不会有这种需求），就在服务器用同样的方法生成密匙，把密匙发生到本机就可以了。</p>
-</blockquote>
-<p>接下来的日子，小刚也无法破解他们的聊天记录，恼羞成怒的小刚带着三名小弟放学后去堵小红，逼迫小红把小明给她的加密密匙交出来，小红无奈之下将密匙交出，然而，即使拿到密匙，小刚依然无法破解小红的密码，因为，<strong>还需要小明手里的密匙才能解密小红的消息</strong>。</p>
-<p>非对称加密的存在就是为了避免加密算法被第三者知道，导致密码泄露。上面的故事中小明交给小红的加密串叫做<strong>公钥</strong>，公钥可以让任何第三者知道，公钥加密过的密码只有小明手里的加密串——<strong>私匙</strong>才能解密，对于加密和解密使用不同的加密策略，叫做<strong>非对称加密</strong>。</p>
-<h3 id="使用公钥实现免密登录"><a href="#使用公钥实现免密登录" class="headerlink" title="使用公钥实现免密登录"></a>使用公钥实现免密登录</h3><p>我们通过 <code>ssh-keygen -t rsa</code> 生成了公钥和私匙对，接着我们把公钥发送到服务器上，当连接的时候，服务端会发送一个用公钥加密的字符串过来，本地再使用私匙进行解密，实现了登录验证，从而不需要输入密码就能进行登录。</p>
-<p>用盗来的一张图解释：</p>
-<p><img src="https://i.loli.net/2019/08/31/pk2cFyIrHoVAJYE.png" alt="image.png"></p>
-<h2 id="RSA-非对称加密算法"><a href="#RSA-非对称加密算法" class="headerlink" title="RSA 非对称加密算法"></a>RSA 非对称加密算法</h2><p>参考：<a href="https://baike.baidu.com/item/RSA%E7%AE%97%E6%B3%95/263310?fromtitle=RSA&fromid=210678&fr=aladdin" target="_blank" rel="noopener">百度百科 - RSA</a></p>
-<p>只做兴趣了解，不需要掌握原理，因为我们的研究方向不是这个。</p>
+<p><strong>1、个人的看法是游戏抽奖以保底机制更好</strong></p>
+<p>我是一个游戏开发者，我希望玩家可以体验到游戏的更多内容（毕竟是我亲自设计的），故意吊玩家的胃口，让某些神宠只让个别人拥有，固然可以提高玩家对神宠的追求，但如果一个永远无法达成的目标，只会让玩家失望，累积越来越多的失望最终就会失去玩家。</p>
+<p><strong>2、不会因为保底抽奖而亏损</strong><br>首先保底机制可以减少玩家的流失，这是其一；其二，保底机制也让土豪玩家更有动力去充钱，以上面的积分模型为例，土豪玩家如果想要得到所有最好的奖励，“最坏”的结果已经可以通过计算明确知道了，当人知道最坏结果时，对失败的承担能力就会越强，而且土豪也可以通过计算推出自己 <strong>应该充多少钱</strong> 才能拿到所有的奖励，土豪并不差钱，但是土豪并不想被 <strong>概率</strong> 忽悠。</p>
+<p>策划也可以通过 <strong>临界值</strong> 来诱使玩家进行充值，这个方法十分见效，我自己就上过很多次当。</p>
+<p>下面是我被网易坑的血泪史（┭┮﹏┭┮）：</p>
+<p>网易新出的游戏百闻牌，里面故意设计红玉和蓝玉兑换机制，让玩家误以为充值的就是红玉，其实充值的是蓝玉，需要再兑换成红玉才能抽奖。</p>
+<p>（<strong>这种欺骗玩家或者诱导玩家错觉的行为极其不可取！</strong>）</p>
+<p>抽奖处显示抽 10 次就可以得到妖刀姬，我就充了 30（计算得出只要充 30 就可以抽 10 次奖），结果发现充值的是蓝玉，兑换之后只有 5 次抽奖机会（真是神坑！）</p>
+<p>好吧，现在已经抽了 5 次，再抽 5 次才能抽到，那我是抽还是不抽呢？这里还涉及到沉默成本，后文介绍。</p>
+<p>当然是选择继续抽，而且这次还充了 68，原因是首充有额外赠送。</p>
+<p>落入策划步步设计的深坑 ┭┮﹏┭┮</p>
+<p>然后又抽了 5 次才拿到妖刀姬。</p>
+<p>这里，由于我之前已经累积了 5 次，只要再抽 5 次就可以拿到大奖，因此我会有驱动力去继续抽下去，如果是在临界值，这个动力就会更强，例如：299/300 的时候，只需要再一次就可以抽到！</p>
+<p>接下来谈一谈 <strong>沉默成本</strong>。</p>
+<p>沉默成本是经济学里面的概念（我大学也是学过经济学的2333）。</p>
+<p>比如你投一只股票，当天亏损了 5 万，你会卖掉还是等明天看看？</p>
+<p>很多人都会留着看看，因为这样白白亏损很不甘心。</p>
+<p>但实际上，你亏损的 5 万已经成为了事实，已经无法改变，不应该影响下一步的决策。</p>
+<p>就像上面我充了 30，结果发现只抽了 5 次，但此时我损失 30 块钱已经是板上钉钉子的事了，但是我的心里面就会想：“我已经充了 30，再充 30 就可以拿到想要的了，不能让之前充的白白浪费”。</p>
+<p>这里就是沉默成本在作怪。</p>
+<p>实际上，沉默成本也是决定游戏命运至关重要的要素，如果一个策划可以让玩家在游戏里投入更多的时间，那玩家就会越来越难以失去这个游戏，甚至以为是“情怀”什么的，比如魔兽玩家经常会说，“那不是游戏，而是我逝去的青春”，可以说是沉默成本非常形象的说明了。</p>
+<p><strong>3、保底机制更利于氪金玩家</strong><br>由于保底机制，只要无限氪金 <strong>必然可以得到一切</strong>，也就造成了有钱可以为所欲为的情况，难道开发商不希望土豪充更多的钱吗？所以，开发商是绝对不会亏的，这一点可以保证。</p>
+<p>由于氪金玩家可以不断充钱得到所有的奖励，如果不是保底机制呢？氪金玩家投入将是无底洞，无论投入多少钱，也许永远都得不到想要的一只英雄或者宠物。</p>
+<p>其次，对于零氪玩家来说也是极好的，只是提升的程度没有土豪玩家那么大而已。</p>
+<p>保底机制对“脸帝”来说是最大的威胁，由于保底，这样他们根本 <strong>秀不起来</strong>，他们由于脸好得到的神宠已经是人手可得的普通宠物了，晒这样的宠物已经无法满足他们日渐膨胀的虚荣心。</p>
+<p>作为贴吧 13 级的大水比，已经见惯了秀脸贴。</p>
+<p>“萌新求问 XXX 有用吗？”</p>
+<h2 id="抽奖中的暗箱操作"><a href="#抽奖中的暗箱操作" class="headerlink" title="抽奖中的暗箱操作"></a>抽奖中的暗箱操作</h2><p>之前看了一期游戏抽奖的视频，介绍了游戏抽奖中的各种暗箱操作。</p>
+<p>其中之一是最坑的，下面用一个故事来说明。</p>
+<p>隔壁老王有一颗价值 1 万的钻石，他想了一个办法，可以让这颗钻石赚到更多钱。</p>
+<p>他做了 300 个空盒子，接着把钻石放在其中一个盒子，其他 299 个盒子都放一颗与钻石等重的碎玻璃，然后他开始在大街上摆摊吆喝：300 个盒子里有一颗价值 1 万的钻石，其他都是玻璃，每个盒子卖 50 块，买盒子的人不能说出自己开到什么东西。</p>
+<p>众人听到，纷纷想以 50 博 1 万，结果所有的盒子都卖出去了，老王共得 1.5 万，比直接出售钻石还多赚了 5000。</p>
+<p>在这里有一个很坑的点，假设第一个买盒子的人开到钻石，那后面 299 个人必定无法开到钻石，也就是必定亏损的，但是由于 <strong>“不能说出自己开到什么”</strong> 导致后面来买盒子的人仍然抱有期待，因而继续购买盒子。</p>
+<p>在一些游戏中，由于玩家并不能知道游戏的抽奖机制是什么，因此就会有策划想出这种“歪点子”，有些游戏里的大奖每天只会发放一份（或者固定份数），而后续的玩家永远抽不到。</p>
+<p>除此之外，还有另一种暗箱操作——奖池机制。</p>
+<p>这种方式的特点是全服玩家共享一个奖池，上面的例子也可以归为此类，只不过奖池机制有些不同。</p>
+<p>奖池是彩票或者棋牌游戏中的概念，所有玩家一起打牌，每轮都要下赌资，赌资全部汇集到奖池中，直到某个玩家开牌，牌面最大的玩家得到所有奖池的钱。</p>
+<p>游戏抽奖机制也存在这种情况，所有玩家都在一个奖池里抽奖，玩家的每次抽奖相当于 <strong>“投入赌资”</strong>，只有抽奖次数达到一定水平时才会出现大奖，大奖被一个玩家得到以后，奖池清空，开启下一轮的奖池，以此类推。</p>
+<p>所以在某些游戏中，垫子之类的说法存在一定道理，一个服务器里面抽奖的玩家越多，抽到大奖的几率就越高，在鬼区没人抽奖的情况下，甚至有可能抽奖几率为负数。</p>
+<h2 id="后文"><a href="#后文" class="headerlink" title="后文"></a>后文</h2><p>在这里写一下个人的想法。</p>
+<p>假如作为开发商，自然希望玩家能多充钱，因为开发商开发游戏的目的很明确就是为了赚钱。</p>
+<p>作为游戏制作者，我希望玩家可以体验到更多的游戏内容，而不是靠运气和财富差距造成严重游戏体验偏差。至于钱，目前并没有太大的想法，现在只是单纯的因为喜欢游戏而做游戏，也许以后会为了钱设计坑玩家的套路，但是赚到钱（维持生计）的同时，一定会并行开发一款自己真正想做的游戏（单机游戏）。</p>
+<p>作为玩家，希望策划别坑！</p>
 
           
             <br>
@@ -437,7 +415,7 @@
           
         
           
-            <p>本文链接：<a href=https://www.idce.com/ssh-no-password-method/>https://www.idce.com/ssh-no-password-method/</a></p>
+            <p>本文链接：<a href=https://www.idce.com/game-draw-card-issue/>https://www.idce.com/game-draw-card-issue/</a></p>
           
         
       </blockquote>
@@ -484,7 +462,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Linux/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Linux</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%B8%B8%E6%88%8F/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>游戏</p></a></div>
 
 
         
@@ -497,40 +475,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/composer-package/" rel="prev" title="从零开始开发自己的Composer包">
-                                  
-                                      从零开始开发自己的Composer包
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/composer/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> composer</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
                             <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/centos-install-gitlab/" rel="prev" title="Centos安装Gitlab">
+                                <a href="/linux-alias/" rel="prev" title="Linux自定义别名——大幅提高工作效率！">
                                     
-                                        Centos安装Gitlab
+                                        Linux自定义别名——大幅提高工作效率！
                                     
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/centos/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> centos</a> <a class="tag" href="/tags/gitlab/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> gitlab</a>
+                                    <a class="tag" href="/tags/Linux/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Linux</a>
                                 </h6>
                             
                         </span>
@@ -566,7 +525,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/linux-alias/" title="Linux自定义别名——大幅提高工作效率！" rel="bookmark">Linux自定义别名——大幅提高工作效率！</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/nginx-introduction/" title="一文读懂Nginx" rel="bookmark">一文读懂Nginx</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/supervisord/" title="进程管理工具 Supervisord" rel="bookmark">进程管理工具 Supervisord</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/game-draw-card-mechanism/" title="游戏中的抽奖是否应该有保底机制？" rel="bookmark">游戏中的抽奖是否应该有保底机制？</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -598,7 +557,7 @@
 
   <script>
     window.subData = {
-      title: 'SSH免密登录原理及方法',
+      title: '游戏的抽奖是否应该保底必出？',
       tools: true
     }
   </script>
@@ -753,7 +712,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-命令"><span class="toc-text">SSH 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-免密登录服务器"><span class="toc-text">SSH 免密登录服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-添加别名"><span class="toc-text">SSH 添加别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#报错问题"><span class="toc-text">报错问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#免密登录原理"><span class="toc-text">免密登录原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对称加密"><span class="toc-text">对称加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非对称加密"><span class="toc-text">非对称加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用公钥实现免密登录"><span class="toc-text">使用公钥实现免密登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA-非对称加密算法"><span class="toc-text">RSA 非对称加密算法</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏中的抽奖机制"><span class="toc-text">游戏中的抽奖机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无保底机制"><span class="toc-text">无保底机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保底机制"><span class="toc-text">保底机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#积分兑换"><span class="toc-text">积分兑换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#幸运值"><span class="toc-text">幸运值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏的抽奖该不该保底？"><span class="toc-text">游戏的抽奖该不该保底？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抽奖中的暗箱操作"><span class="toc-text">抽奖中的暗箱操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后文"><span class="toc-text">后文</span></a></li></ol>
     </div>
   </section>
 
