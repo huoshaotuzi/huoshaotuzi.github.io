@@ -28,6 +28,10 @@ ID 本身也是 Identity Card、Identity Document 的缩写。
 
 如希望收购此域名且报价不低，可 QQ 联系并提供你的报价。
 
+万网米店：[https://mi.aliyun.com/shop/31210](https://mi.aliyun.com/shop/31210)
+
+议价请联系。
+
 ## 游戏作品
 
 火兔游戏官方网站：[https://huotuyouxi.com](https://huotuyouxi.com)
