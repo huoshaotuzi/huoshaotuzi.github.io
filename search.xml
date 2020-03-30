@@ -229,6 +229,31 @@
     
     
     <entry>
+      <title>Nginx SSL证书配置问题</title>
+      <link href="/nginx-ssl-issue/"/>
+      <url>/nginx-ssl-issue/</url>
+      
+        <content type="html"><![CDATA[<h2 id="SSL-问题"><a href="#SSL-问题" class="headerlink" title="SSL 问题"></a>SSL 问题</h2><p>Nginx 重启时，报错信息：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx: [warn] the &quot;ssl&quot; directive is deprecated, use the &quot;listen ... ssl&quot; directive instead in &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;xxx.conf:57</span><br></pre></td></tr></table></figure><p>通常我们会在 server 有如下 Nginx 配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssl on;</span><br><span class="line">ssl_certificate   &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;xxx.com.pem;</span><br><span class="line">ssl_certificate_key &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;xxx.com.key;</span><br><span class="line">ssl_session_timeout 5m;</span><br><span class="line">ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">ssl_prefer_server_ciphers on;</span><br></pre></td></tr></table></figure><p>访问网页提示错误代码 <code>ERR_SSL_PROTOCOL_ERROR</code>。</p><p><img src="https://i.loli.net/2019/12/05/R3GCLPZ8tsbpzS2.png" alt="image.png"></p><p>原因在于 Nginx 升级到 1.15 版之后，SSL 的配置不再使用 <code>ssl on</code>，把这一句去掉就可以。</p><p>这时再执行：<code>nginx -s reload</code> 平滑重启 Nginx 就不会报错了。</p><h2 id="CURL-无法正常访问"><a href="#CURL-无法正常访问" class="headerlink" title="CURL 无法正常访问"></a>CURL 无法正常访问</h2><p>按照上面的步骤重启 Nginx 后，使用 curl 尝试连接到网站，结果依然报错：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl: (35) SSL received a record that exceeded the maximum permissible length.</span><br></pre></td></tr></table></figure><p>这其实也是升级后配置发生了变化，第一个步骤的提示信息已经给与了提示：<code>use the &quot;listen ... ssl&quot;</code>，再次编辑 <code>xxx.conf</code>，将 <code>listen 443</code> 修改为：<code>listen 443 ssl</code>：</p><pre><code>server {    listen       443 ssl;    server_name  idce.com;    // ...此处省略}</code></pre><p>保存，然后再执行重启，OK！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Nginx </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Nginx </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>PHPStorm逼死强迫症患者解决方法</title>
       <link href="/phpstorm-no-ext-tip-issue/"/>
       <url>/phpstorm-no-ext-tip-issue/</url>

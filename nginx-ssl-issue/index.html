@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -18,8 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>Tag: Supervisord - 我的文档</title>
+    <title>Nginx SSL证书配置问题 - 我的文档</title>
   
+    <meta name="keywords" content="Nginx">
+  
+  
+    <meta name="description" content="Nginx 配置 SSl 证书时提示：the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/conf.d/xxx.conf:57">
   
 
   <!-- feed -->
@@ -69,7 +71,7 @@
 <body>
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <p class="title ">我的文档</p>
@@ -234,25 +236,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-        
-      
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
+
   
+    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -261,11 +250,13 @@
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/supervisord/">
-      进程管理工具 Supervisord
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/nginx-ssl-issue/">
+        Nginx SSL证书配置问题
+      </a>
+    </h1>
+  
 
 
       
@@ -285,20 +276,23 @@
           
         
           
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月10日</p>
-  </a>
-</div>
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Nginx/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>Nginx</p>
+    </a>
+  </div>
+
 
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-10T02:00:31+08:00">
+            <div class="new-meta-item date">
   <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年3月10日</p>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2020年3月31日</p>
   </a>
 </div>
 
@@ -317,48 +311,229 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      Supervisord 是一个进程管理工具，可以管理队列任务进程或者其他需要处理的进程任务。
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="SSL-问题"><a href="#SSL-问题" class="headerlink" title="SSL 问题"></a>SSL 问题</h2><p>Nginx 重启时，报错信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx: [warn] the &quot;ssl&quot; directive is deprecated, use the &quot;listen ... ssl&quot; directive instead in &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;xxx.conf:57</span><br></pre></td></tr></table></figure>
+
+
+<p>通常我们会在 server 有如下 Nginx 配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssl on;</span><br><span class="line">ssl_certificate   &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;xxx.com.pem;</span><br><span class="line">ssl_certificate_key &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;xxx.com.key;</span><br><span class="line">ssl_session_timeout 5m;</span><br><span class="line">ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">ssl_prefer_server_ciphers on;</span><br></pre></td></tr></table></figure>
+
+<p>访问网页提示错误代码 <code>ERR_SSL_PROTOCOL_ERROR</code>。</p>
+<p><img src="https://i.loli.net/2019/12/05/R3GCLPZ8tsbpzS2.png" alt="image.png"></p>
+<p>原因在于 Nginx 升级到 1.15 版之后，SSL 的配置不再使用 <code>ssl on</code>，把这一句去掉就可以。</p>
+<p>这时再执行：<code>nginx -s reload</code> 平滑重启 Nginx 就不会报错了。</p>
+<h2 id="CURL-无法正常访问"><a href="#CURL-无法正常访问" class="headerlink" title="CURL 无法正常访问"></a>CURL 无法正常访问</h2><p>按照上面的步骤重启 Nginx 后，使用 curl 尝试连接到网站，结果依然报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl: (35) SSL received a record that exceeded the maximum permissible length.</span><br></pre></td></tr></table></figure>
+
+<p>这其实也是升级后配置发生了变化，第一个步骤的提示信息已经给与了提示：<code>use the &quot;listen ... ssl&quot;</code>，再次编辑 <code>xxx.conf</code>，将 <code>listen 443</code> 修改为：<code>listen 443 ssl</code>：</p>
+<pre><code>server {
+    listen       443 ssl;
+    server_name  idce.com;
+    // ...此处省略
+}</code></pre><p>保存，然后再执行重启，OK！</p>
+
+          
+            <br>
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+
+<section class="widget copyright  widget-blur desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>转载请注明出处及链接。</p>
+
+          
+        
+          
+            
+          
+        
+          
+            <p>本文链接：<a href=https://www.idce.com/nginx-ssl-issue/>https://www.idce.com/nginx-ssl-issue/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+                
+              
+                
+              
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+        </div>
+        
+          <br>
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
       
         
-          <div class="button readmore">
-            <a href="/supervisord/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
+          
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Nginx/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Nginx</p></a></div>
+
+
         
       
     </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/Supervisord/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Supervisord</a>
-        
-          <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 技术</a>
-        
-      </div>
-     -->
   </section>
-</article>
 
-          </div>
+
         
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
+                            <h4>
+                                <a href="/mysql-primary-key/" rel="prev" title="MySQL主键详解">
+                                  
+                                      MySQL主键详解
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/MySQL/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> MySQL</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/phpstorm-no-ext-tip-issue/" rel="prev" title="PHPStorm逼死强迫症患者解决方法">
+                                    
+                                        PHPStorm逼死强迫症患者解决方法
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    
       
     
+      
+    
+      
+    
+      
+    
+      
+        
+  
+
+  <section class="widget related_posts  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
+    
+  </header>
+
+
+    <div class="content">
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/nginx-introduction/" title="一文读懂Nginx" rel="bookmark">一文读懂Nginx</a></h3></div></li></ul>
+    </div>
   </section>
+
+
+      
+    
+      
+    
+      
+    
   
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
 
   
 
 
-    
   
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Nginx SSL证书配置问题',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -495,84 +670,20 @@
       
     
       
-    
-      
         
-  
 
-  <section class="widget category  widget-blur desktop">
+
+  <section class="widget toc-wrapper  widget-blur desktop mobile">
     
   <header>
     
-      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Hexo/" href="/categories/Hexo/"
-            id="categoriesHexo"
-            ><div class='name'>Hexo</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Linux/" href="/categories/Linux/"
-            id="categoriesLinux"
-            ><div class='name'>Linux</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/MySQL/" href="/categories/MySQL/"
-            id="categoriesMySQL"
-            ><div class='name'>MySQL</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/PHP/" href="/categories/PHP/"
-            id="categoriesPHP"
-            ><div class='name'>PHP</div><div class='badge'>(7)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/composer/" href="/categories/composer/"
-            id="categoriescomposer"
-            ><div class='name'>composer</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/docker/" href="/categories/docker/"
-            id="categoriesdocker"
-            ><div class='name'>docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9E%B6%E6%9E%84/" href="/categories/%E6%9E%B6%E6%9E%84/"
-            id="categoriesE69EB6E69E84"
-            ><div class='name'>架构</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%B8%B8%E6%88%8F%E6%97%A5%E8%AE%B0/" href="/categories/%E6%B8%B8%E6%88%8F%E6%97%A5%E8%AE%B0/"
-            id="categoriesE6B8B8E6888FE697A5E8AEB0"
-            ><div class='name'>游戏日记</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%B5%84%E6%96%99/" href="/categories/%E8%B5%84%E6%96%99/"
-            id="categoriesE8B584E69699"
-            ><div class='name'>资料</div><div class='badge'>(1)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSL-问题"><span class="toc-text">SSL 问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CURL-无法正常访问"><span class="toc-text">CURL 无法正常访问</span></a></li></ol>
     </div>
   </section>
 
@@ -581,39 +692,6 @@
     
       
     
-      
-    
-      
-    
-      
-    
-  
-    
-      
-    
-      
-    
-      
-    
-      
-        
-  
-
-  <section class="widget tagcloud  widget-blur desktop">
-    
-  <header>
-    
-      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 16.5px; color: #888">Docker</a> <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/Linux/" style="font-size: 19px; color: #777">Linux</a> <a href="/tags/MySQL/" style="font-size: 14px; color: #999">MySQL</a> <a href="/tags/Nginx/" style="font-size: 16.5px; color: #888">Nginx</a> <a href="/tags/PHP/" style="font-size: 24px; color: #555">PHP</a> <a href="/tags/Redis/" style="font-size: 19px; color: #777">Redis</a> <a href="/tags/Supervisord/" style="font-size: 14px; color: #999">Supervisord</a> <a href="/tags/WebSite/" style="font-size: 14px; color: #999">WebSite</a> <a href="/tags/centos/" style="font-size: 14px; color: #999">centos</a> <a href="/tags/composer/" style="font-size: 19px; color: #777">composer</a> <a href="/tags/docker/" style="font-size: 16.5px; color: #888">docker</a> <a href="/tags/gitlab/" style="font-size: 21.5px; color: #666">gitlab</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 19px; color: #777">技术</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 14px; color: #999">架构</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 16.5px; color: #888">游戏</a>
-    </div>
-  </section>
-
-
       
     
       
