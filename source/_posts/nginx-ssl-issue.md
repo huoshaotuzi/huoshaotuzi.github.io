@@ -9,6 +9,7 @@ categories: Nginx
 description: Nginx 配置 SSl 证书时提示：nginx: [warn] the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/conf.d/xxx.conf:57
 
 ---
+
 ## SSL 问题
 
 Nginx 重启时，报错信息：
