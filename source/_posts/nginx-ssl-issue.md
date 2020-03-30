@@ -2,11 +2,11 @@
 title: Nginx SSL证书配置问题
 date: 2020-03-31 00:57:16
 tags:
-  - Nginx
+ - Nginx
 
 categories: Nginx
 
-description: Nginx 配置 SSl 证书时提示：nginx: [warn] the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/conf.d/xxx.conf:57
+description: Nginx 配置 SSl 证书时提示：the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/conf.d/xxx.conf:57
 
 ---
 
