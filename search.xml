@@ -4,6 +4,231 @@
   
     
     <entry>
+      <title>Linux自定义别名——大幅提高工作效率！</title>
+      <link href="/linux-alias/"/>
+      <url>/linux-alias/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Linux-系统命令"><a href="#Linux-系统命令" class="headerlink" title="Linux 系统命令"></a>Linux 系统命令</h2><p>在 <code>Linux</code> 系统中，诸如 <code>ls</code>、<code>top</code>、<code>ps</code> 此类为 <code>Linux</code> 系统内置的命令，我们希望通过自定义命令来作为某些复杂命令的组合，如自定义 <code>ll</code> 为 <code>ls -alF</code> 的简写，通过简写可以大幅缩短输入命令的时间，还可以避免输错命令，何乐而不为呢？</p><h2 id="自定义-Linux-命令-添加别名-Alias"><a href="#自定义-Linux-命令-添加别名-Alias" class="headerlink" title="自定义 Linux 命令 / 添加别名 Alias"></a>自定义 Linux 命令 / 添加别名 Alias</h2><p>自定义命令其实就是添加一个别名，执行如下命令创建别名：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">vim .bash_profile</span><br></pre></td></tr></table></figure><p>在这个文件里输入需要创建的别名，例如 <code>ll</code>：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll&#x3D;&#39;ls -alF&#39;</span><br></pre></td></tr></table></figure><p>然后保存，再执行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .bash_profile</span><br></pre></td></tr></table></figure><p>现在，使用 <code>ll</code> 等价于输入 <code>ls -alF</code>。</p><p>可以将常用的命令组合简写，例如我们常用来查看进程的命令：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias psp&#x3D;&#39;ps -ef|grep&#39;</span><br></pre></td></tr></table></figure><p>以后只需要输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 查看 PHP 进程</span><br><span class="line">psp php</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">FireRabbitdeMacBook-Pro:~ firerabbit$ psp php</span><br><span class="line">  501 89356     1   0 二07下午 ??        29:02.94 &#x2F;Applications&#x2F;PhpStorm.app&#x2F;Contents&#x2F;MacOS&#x2F;phpstorm</span><br><span class="line">  501 99412 99183   0  9:20下午 ttys005    0:00.00 grep php</span><br></pre></td></tr></table></figure><p>对于记不住命令的小金鱼们来说，利用好别名可以事半功倍哟！</p><h2 id="注意事项！"><a href="#注意事项！" class="headerlink" title="注意事项！"></a>注意事项！</h2><p>别名的使用只有定义者自己知道，因此不适合多人协作的工作。在日常的开发中（如在个人的 Mac），可以自定义一些常用的别名来提高自己工作的效率。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Redis添加密码验证</title>
+      <link href="/redis-add-permission/"/>
+      <url>/redis-add-permission/</url>
+      
+        <content type="html"><![CDATA[<h2 id="为什么要为-Redis-添加密码验证？"><a href="#为什么要为-Redis-添加密码验证？" class="headerlink" title="为什么要为 Redis 添加密码验证？"></a>为什么要为 Redis 添加密码验证？</h2><p>默认情况下，<code>redis</code> 不需要使用密码即可连接，而由于默认开放端口为 6379（用户一般不会去修改这个端口），导致基本信息完全暴露给试图攻击服务器者。</p><blockquote><p>IDCE.COM 建站之初未设置 redis 密码，结果被注入了挖矿病毒 %&gt;_&lt;%</p></blockquote><p>没有任何密码验证，意味着任何人都能访问到服务器的 Redis 服务，可能造成重要的信息泄露或者被访问者恶意删除造成严重后果！</p><p>总而言之，如果要使用 Redis 服务，那么最好为 <code>redis</code> 加上密码验证可以增加系统的安全性。</p><h2 id="开启-redis-密码验证"><a href="#开启-redis-密码验证" class="headerlink" title="开启 redis 密码验证"></a>开启 redis 密码验证</h2><p>以 <code>Linux</code> 系统为例，首先找到 <code>redis.conf</code> 配置文件，如果不知道文件在哪可以使用命令 <code>find / -name redis.conf</code> 找到。</p><p>添加 <code>requirepass</code> 字段，后面即你需要设置的密码，建议生成一个足够长的随机字符串来作为密码。</p><p><img src="https://i.loli.net/2019/08/29/l7msnYqtQeOiUNp.png" alt="image.png"></p><p>完成后保存，重启 <code>redis</code> 即可！</p><h2 id="Redis-cli-验证密码"><a href="#Redis-cli-验证密码" class="headerlink" title="Redis-cli 验证密码"></a>Redis-cli 验证密码</h2><p>在 <code>cli</code> 模式下，如果设置了密码需要验证之后才能执行 <code>redis</code> 操作，进入 <code>redis</code> 服务，然后执行 <code>auth 密码</code> 即可。</p><p><img src="https://i.loli.net/2019/08/29/VqJUpRx25HbELGA.png" alt="image.png"></p><h2 id="PHP-验证-Redis-密码"><a href="#PHP-验证-Redis-密码" class="headerlink" title="PHP 验证 Redis 密码"></a>PHP 验证 Redis 密码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$redis &#x3D; new Redis(); </span><br><span class="line">$redis-&gt;connect(&#39;127.0.0.1&#39;, 6379); &#x2F;&#x2F;连接Redis</span><br><span class="line">$redis-&gt;auth(&#39;123456&#39;); &#x2F;&#x2F;密码验证</span><br><span class="line">$redis-&gt;select(2);&#x2F;&#x2F;选择数据库2</span><br><span class="line">$redis-&gt;set( &quot;testKey&quot; , &quot;Hello Redis&quot;); &#x2F;&#x2F;设置测试key</span><br><span class="line">echo $redis-&gt;get(&quot;testKey&quot;);&#x2F;&#x2F;输出value</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Docker更换镜像源</title>
+      <link href="/docker-change-mirrors/"/>
+      <url>/docker-change-mirrors/</url>
+      
+        <content type="html"><![CDATA[<h2 id="国内镜像源"><a href="#国内镜像源" class="headerlink" title="国内镜像源"></a>国内镜像源</h2><h3 id="Docker-官方镜像中国区"><a href="#Docker-官方镜像中国区" class="headerlink" title="Docker 官方镜像中国区"></a>Docker 官方镜像中国区</h3><p><a href="https://registry.docker-cn.com" target="_blank" rel="noopener">https://registry.docker-cn.com</a></p><h3 id="网易"><a href="#网易" class="headerlink" title="网易"></a>网易</h3><p><a href="http://hub-mirror.c.163.com" target="_blank" rel="noopener">http://hub-mirror.c.163.com</a></p><h3 id="中科大"><a href="#中科大" class="headerlink" title="中科大"></a>中科大</h3><p><a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn</a></p><h3 id="阿里云"><a href="#阿里云" class="headerlink" title="阿里云"></a>阿里云</h3><p>阿里的镜像异常麻烦，本着求真的角度，还是把这一部分补充了 %&gt;_&lt;%。</p><p>首先需要注册成为阿里开发者，前往：<a href="https://dev.aliyun.com/search.html" target="_blank" rel="noopener">阿里云开发者中心</a>。</p><p>注册并登陆后，点击右上角的<strong>控制台</strong>：</p><p><img src="https://user-images.githubusercontent.com/28209810/64141265-f297c080-ce39-11e9-92ca-1c89280fe717.png" alt="image"></p><p>想吐槽阿里云的界面设计，阿里云是一个超级聚合体……里面的服务实在太多，如果不写这样一个图文教程很难找到自己想要的功能，操作步骤如下图所示：</p><p><img src="https://user-images.githubusercontent.com/28209810/64141431-91242180-ce3a-11e9-87d2-6edc56597f8c.png" alt="image"></p><p>进入容器镜像服务，点击左侧菜单的<strong>镜像中心-镜像加速器</strong>：</p><p><img src="https://user-images.githubusercontent.com/28209810/64141511-e5c79c80-ce3a-11e9-8fe4-037f95849052.png" alt="image"></p><p>根据阿里的提示操作即可：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;93m46zjd.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure><p>这里的 <code>https://93m46zjd.mirror.aliyuncs.com</code> 是我的个人镜像源加速地址，建议自己申请一个。</p><h2 id="更换-Docker-镜像源"><a href="#更换-Docker-镜像源" class="headerlink" title="更换 Docker 镜像源"></a>更换 Docker 镜像源</h2><h3 id="Linux-系统"><a href="#Linux-系统" class="headerlink" title="Linux 系统"></a>Linux 系统</h3><p>Docker 使用 <code>daemon.json</code> 作为配置文件，如果没有的话则创建，编辑 <code>daemon.json</code>：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure><p>添加仓库地址（以中科大镜像源为例）：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>完成并保存，重启 docker：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service docker restart</span><br></pre></td></tr></table></figure><p>作为一个学府，中科大还十分贴心的写了帮助文档：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker" target="_blank" rel="noopener">Docker 镜像使用帮助</a></p><h3 id="Windows-系统"><a href="#Windows-系统" class="headerlink" title="Windows 系统"></a>Windows 系统</h3><p>Docker for Window 可以直接通过右键右下角小鲸鱼，选择 Settings，选择 Daemon 选项卡，在右下角的 Registry mirrors 添加对应的镜像源地址即可。</p><h3 id="Mac-系统"><a href="#Mac-系统" class="headerlink" title="Mac 系统"></a>Mac 系统</h3><p>如果你是下载了 Docker 桌面版的 Mac 系统用户，启动 Docker，选择右上角的小鲸鱼图标，选择菜单中的 <code>Preferences</code>：</p><p><img src="https://i.loli.net/2019/09/03/PeijKIqDGrZVgct.png" alt="image.png"></p><p>在选项卡中选择 Daemon，点击 <code>Registry mirrors</code> 下方的加号，输入需要添加的国内镜像源地址，完成后点击底部的 <code>Apply &amp; Restart</code> 应用配置并重启 Docker：</p><p><img src="https://user-images.githubusercontent.com/28209810/64140700-f4f91b00-ce37-11e9-8e02-e5c4d2b1682c.png" alt="image"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Mac系统安装Pecl</title>
+      <link href="/mac-install-pecl/"/>
+      <url>/mac-install-pecl/</url>
+      
+        <content type="html"><![CDATA[<h2 id="PECL-简介"><a href="#PECL-简介" class="headerlink" title="PECL 简介"></a>PECL 简介</h2><p>PECL（The PHP Extension Community Library）是 PHP 扩展的存储库，为 PHP 所有的扩展提供提供托管和下载服务。</p><p>一些常用及优秀的 PHP 扩展均被收录在 PECL 中，如：yaf、swoole 等等，我们可以方便的使用 pecl 命令来安装这些扩展。</p><p>PECL 支持的扩展：<a href="http://pecl.php.net/" target="_blank" rel="noopener">PECL All Packages</a></p><p>在 Mac 系统或 Linux 系统中可能没有默认安装 pear，因此无法使用 pecl 命令，本文将介绍如何安装 pear。</p><h2 id="PEAR-安装方法"><a href="#PEAR-安装方法" class="headerlink" title="PEAR 安装方法"></a>PEAR 安装方法</h2><p>官方文档：<a href="https://pear.php.net/manual/en/installation.getting.php" target="_blank" rel="noopener">Getting and installing the PEAR package manager</a></p><h3 id="1、下载-PEAR"><a href="#1、下载-PEAR" class="headerlink" title="1、下载 PEAR"></a>1、下载 PEAR</h3><p>使用 curl 命令下载即可：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https:&#x2F;&#x2F;pear.php.net&#x2F;go-pear.phar</span><br></pre></td></tr></table></figure><h3 id="2、-安装-PEAR"><a href="#2、-安装-PEAR" class="headerlink" title="2、 安装 PEAR"></a>2、 安装 PEAR</h3><p>下载完成后，执行下面命令进行安装：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo php -d detect_unicode&#x3D;0 go-pear.phar</span><br></pre></td></tr></table></figure><h3 id="3、配置"><a href="#3、配置" class="headerlink" title="3、配置"></a>3、配置</h3><p>安装过程需要配置参数：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Below is a suggested file layout for your new PEAR installation.  To</span><br><span class="line">change individual locations, type the number in front of the</span><br><span class="line">directory.  Type &#39;all&#39; to change all of them or simply press Enter to</span><br><span class="line">accept these locations.</span><br><span class="line"></span><br><span class="line"> 1. Installation base ($prefix)                   : &#x2F;usr</span><br><span class="line"> 2. Temporary directory for processing            : &#x2F;tmp&#x2F;pear&#x2F;install</span><br><span class="line"> 3. Temporary directory for downloads             : &#x2F;tmp&#x2F;pear&#x2F;install</span><br><span class="line"> 4. Binaries directory                            : &#x2F;usr&#x2F;bin</span><br><span class="line"> 5. PHP code directory ($php_dir)                 : &#x2F;usr&#x2F;share&#x2F;pear</span><br><span class="line"> 6. Documentation directory                       : &#x2F;usr&#x2F;docs</span><br><span class="line"> 7. Data directory                                : &#x2F;usr&#x2F;data</span><br><span class="line"> 8. User-modifiable configuration files directory : &#x2F;usr&#x2F;cfg</span><br><span class="line"> 9. Public Web Files directory                    : &#x2F;usr&#x2F;www</span><br><span class="line">10. System manual pages directory                 : &#x2F;usr&#x2F;man</span><br><span class="line">11. Tests directory                               : &#x2F;usr&#x2F;tests</span><br><span class="line">12. Name of configuration file                    : &#x2F;private&#x2F;etc&#x2F;pear.conf</span><br><span class="line"></span><br><span class="line">1-12, &#39;all&#39; or Enter to continue:</span><br></pre></td></tr></table></figure><p>修改安装时的根目录，输入 1，再输入 <code>/usr/local/pear</code>，回车；</p><p>修改命令的安装目录，输入 4，再输入 <code>/usr/local/bin</code>，回车；</p><p>其它选项使用默认即可，一路回车。</p><h3 id="4、测试是否安装成功"><a href="#4、测试是否安装成功" class="headerlink" title="4、测试是否安装成功"></a>4、测试是否安装成功</h3><p>输入命令 <code>pear version</code>，如果成功安装将会看到类似如下信息：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PEAR Version: 1.10.9</span><br><span class="line">PHP Version: 7.1.23</span><br><span class="line">Zend Engine Version: 3.1.0</span><br><span class="line">Running on: Darwin hongjiahuangdeMac-mini.local 18.6.0 Darwin Kernel Version 18.6.0: Thu Apr 25 23:16:27 PDT 2019; root:xnu-4903.261.4~2&#x2F;RELEASE_X86_64 x86_64</span><br></pre></td></tr></table></figure><p>接下来就可以使用 <code>pecl install &lt;扩展名称:版本号&gt;</code> 安装各种被 PECL 收录的扩展了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> PHP </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> PHP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Redis淘汰机制</title>
+      <link href="/redis-delete-policy/"/>
+      <url>/redis-delete-policy/</url>
+      
+        <content type="html"><![CDATA[<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>redis 的配置文件为 <code>redis.conf</code>，当 redis 占用的内存达到配置的最大内存时，再使用 redis 增加新的值时会触发淘汰机制将占用的内存释放出来，以创建新的键值。</p><p>redis 允许占用的最大内存，约在 567 行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># maxmemory &lt;bytes&gt;</span><br></pre></td></tr></table></figure><p>找到 <code>maxmemory</code> 去掉前面的 <code>#</code> 井号， 将 <code>&lt;bytes&gt;</code>（单位：字节） 改为需要设置的最大内存值，一般而言，建议设置为服务器总内存的 50%~75%（需根据服务器情况确定），如果服务器其他进程占用较多内存的话，可以减少这个值。</p><p>当 redis 内存占用达到设置的最大值，触发的淘汰策略，约在 598 行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># maxmemory-policy noeviction</span><br></pre></td></tr></table></figure><p>去掉前面的 <code>#</code> 井号，后面即为淘汰的策略，淘汰策略有许多种，下面进行介绍。不过在此之前，我们可以理解一下 redis 如何淘汰掉键值。</p><p>我们通过给一个键值设置过期时间，来让它“自动过期”，但实际上，即使到了过期时间，这个键其实并没有立即被删除，而是当下次取这个键值的时候进行判断，如果这个键设置了过期时间，同时已经过了过期时间再进行删除，这是一种惰性的删除策略。</p><p>此外，除了这种被动删除的策略之外还有主动删除策略，例如定期扫描过期的键值，扫描也不可能将全部的键都扫秒一遍，而是通过某种随机算法获取某些键，判断键是否过期再决定是否删除。</p><p>为什么键设定了过期时间不能在到期后立即删除呢？因为从技术的角度上来考虑这是一件十分困难的事，如果要追踪一个键值的过期时间，可能需要启动一个进程来追踪并且在过期时“杀掉”这个键，这样使用 redis 的优势就全部没有了，反而要消耗更多的系统资源。</p><p>redis 过期的键太多而没有删除，会造成内存资源的浪费，反之，如果过于频繁的去检查过期的键，希望在第一时间释放出内存资源，频繁的检查也是十分耗费资源的事，因此两者之间必须存在一个平衡，这就需要依靠 redis 的淘汰策略。</p><h2 id="内存淘汰机制"><a href="#内存淘汰机制" class="headerlink" title="内存淘汰机制"></a>内存淘汰机制</h2><p>redis 有如下淘汰策略：</p><p>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错，这个一般没人用吧</p><p>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 key（这个是最常用的）</p><p>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个 key，这个一般没人用吧</p><p>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的 key（这个一般不太合适）</p><p>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个 key</p><p>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的 key 优先移除</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Redis基础</title>
+      <link href="/redis-base/"/>
+      <url>/redis-base/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Redis-简介"><a href="#Redis-简介" class="headerlink" title="Redis 简介"></a>Redis 简介</h2><p>Redis 是由 ANSI C（标准C语言）写的键值对存储系统，由于是存储在内存中的，所以性能极高，但我们知道存储在内存中一旦电脑关闭就会丢失数据，Redis 还提供了数据持久化的功能，也就是说，Redis 的数据也可以保存在本地硬盘中。</p><h2 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h2><p>所谓原子操作指的是不可再分割的操作，要么都成功，要么都失败。</p><p>Redis 的操作结果一定是确定的，例如将商品库存存储在 Redis 中，此时由于高并发场景有 1000 个请求进入，判断减少库存，总库存为 999 个，那么第 1000 个请求会因为高并发的场景而判断失误吗？答案是不会。</p><p>同理，一些抽奖活动将奖品数量存储在 Redis 进行操作，不会出现奖品被人领光还能领到奖品的情况，当有面试官问你就这么告诉他。</p><p>以抽奖场景示例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 读取数据库奖品余额</span><br><span class="line">$count &#x3D; PrizeModel::getCount();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 判断是否还有可以领取的奖品</span><br><span class="line">if($count &gt; 0) &#123;</span><br><span class="line">    &#x2F;&#x2F; 处理领奖逻辑，并且减少奖品数量</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在这个场景中，涉及到读后写的问题，在读取奖品余额后更新奖品数量，由于读写操作是分开的，可能因为请求的先后而产生不同结果；比如 A 进来领取奖品，奖品的库存是 1，此时 B 也进来领取奖品，这个时候他也判断了奖品库存是 1，这个时候奖品的数量只剩 1 个，却有两个人被判断为可以领取奖品，就出现奖品库存变为负数的情况。</p><p>导致问题的根本原因在于读操作与写操作是分离的，中间如果有其他的请求进来，那么读操作的结果就是不准确的，可以使用 Redis 的 <code>decr</code>（自减）来操作商品库存：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$redis &#x3D; new Redis();</span><br><span class="line">$count &#x3D; $redis-&gt;decr(&#39;prize&#39;);</span><br><span class="line">if($count &gt; 0) &#123;</span><br><span class="line">    &#x2F;&#x2F; 处理领奖逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Redis 的 <code>decr</code> 命令将值减 1，并且返回了计算后的结果，实现了读写同步的操作，因此不会产生因为高并发场景读取了错误数据的情况。</p><p>这些都是依赖 Redis 的原子操作，之所以能够实现原子操作，是因为 <strong>Redis 是单线程</strong>。</p><p>假如对方问你，为什么单线程就是原子操作？</p><blockquote><p>扩展阅读：<a href="https://baike.baidu.com/item/%E7%BA%BF%E7%A8%8B/103101" target="_blank" rel="noopener">什么是线程</a></p></blockquote><p>操作系统调度任务以线程为基本单位，Redis 所有的指令都在一个线程中进行，不会扩展出额外的线程；多线程，比如 MySQL 启动的时候是一个进程，而执行增删改查操作就是一个新的线程。多线程指的是可以同时干很多件事，而单线程只能一件事一件事的干，做完一件事才做下一件事，从效率上来说多线程远远超出单线程，但单线程的优势是每一步的执行结果都是确定的，要么都成功，要么都失败。</p><p>实际上，Redis 虽然是单线程但效率也是非常高的，因为它完全基于内存操作。</p><h2 id="键"><a href="#键" class="headerlink" title="键"></a>键</h2><p>Redis 使用键值对的形式存储数据，键类似于变量名字，键是一个字符串，最大长度 512MB，与开发语言不同的是　Redis 中的键可以使用一些开发语言中不能作为命名的符合，如：冒号、横杠。</p><p>键名称太长，会占用更多的内存空间，此外，太长的键名也会多查找造成影响；名称太短，又会造成语义不清，所以在取键名的时候需要有规范。</p><p><strong>键的名称区分大小写</strong>，不建议大小写混用，要么全部大写，要么全部小写，取名“见名知意”为佳。</p><p>可以参考如下规则：</p><p>第一段为项目名称或者缩写形式（非必需），如：project 或 pro<br>第二段为表的名字，如：user<br>第三段为区分键的字段，如：MySQL 主键的列名，属性名<br>第四段为键的特征字段，可以作为查询依据，如：MySQL 中主键 ID 的值</p><p>键的各个字段通常用冒号隔开。</p><p>示例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 根据 ID</span><br><span class="line">idce:users:id:1</span><br><span class="line"></span><br><span class="line"># 根据属性名 name</span><br><span class="line">idce:users:name</span><br></pre></td></tr></table></figure><p>前缀增加项目名称的用途是：当一个 Redis 服务器部署了多个项目可以进行区分，如果是单个项目，则可以去掉项目名称。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">users:id:1</span><br><span class="line"></span><br><span class="line"># 根据属性名 name</span><br><span class="line">users:name</span><br></pre></td></tr></table></figure><p>在项目中，最好有一个统一管理键名称的地方，否则后期无法进行维护。</p><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Redis 支持如下数据结构：</p><ul><li>String：字符串</li><li>Hash：哈希</li><li>List：列表</li><li>Set：集合</li><li>Sorted Set：有序集合</li></ul><h2 id="PHP-使用-Redis"><a href="#PHP-使用-Redis" class="headerlink" title="PHP 使用 Redis"></a>PHP 使用 Redis</h2><p>PHP 想要使用 Redis 需要安装 redis 相关的扩展：<a href="https://pecl.php.net/package/redis" target="_blank" rel="noopener">PECL - REDIS 扩展下载</a>。</p><p>也可以不使用扩展，直接下载 predis：<a href="https://github.com/nrk/predis" target="_blank" rel="noopener">Github - Predis 下载</a></p><p>将下载的包使用 <code>require</code> 命令引入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require &quot;.&#x2F;lib&#x2F;predis-1.1&#x2F;autoload.php&quot;;</span><br></pre></td></tr></table></figure><h2 id="Redis-应用场景"><a href="#Redis-应用场景" class="headerlink" title="Redis 应用场景"></a>Redis 应用场景</h2><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>由于其高性能的特性可以作为数据缓存，对于频繁查询但是不经常更新的数据可以将其缓存到 Redis 中，从而减少数据库查询压力，例如商品的库存、金额，需要注意的是当这些数据更新的时候也必须同步更新缓存数据。</p><p>此外，对于像微博的阅读量此类频繁更新的数据，也可以用缓存处理。方法是获取一条微博详情的时候，先判断是否有缓存，有的话先从缓存读取阅读量的数据，没有的话就从数据库读取，然后保存在 Redis 中；当用户访问时，直接在 Redis 操作访问量的增加，然后设置一个定时器程序，定期将缓存中的阅读量写入数据库，不过，这种类型的数据一般是比较不重要的，因为有可能会发生意外服务器重启导致数据丢失而没有正常写入数据库。</p><p>当某种数据需要频繁的查询或更新时可以使用 Redis 作为缓存。</p><h3 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h3><p>我们经常会收到亲朋好友要求帮忙给他们家的小盆友投票（一般是才艺表演之类的），根据点赞数进行排行，排在前几名的会有奖励之类的。排行榜的数据变化十分频繁，这个时候就可以使用 Redis 的有序集合结构来存储排行数据。</p><h3 id="分布式锁、本地锁"><a href="#分布式锁、本地锁" class="headerlink" title="分布式锁、本地锁"></a>分布式锁、本地锁</h3><p>Redis 中有一种命令 <code>setnx</code> 意为 <code>set if not exists</code>，即当不存在时设置数据，否则不进行操作，利用这种特性可以实现分布式锁。当成功设置的时候就执行后面的逻辑，如果未能成功设置代表之前已经执行过了，就不再走后面的逻辑。</p><p>锁的作用是防止重复动作，比如用户在点击领取奖励的时候，发现没有响应（网络延迟导致），结果用户以为自己没点下去就多点了几次，如果不做防止重复提交的处理，很有可能会造成领取到多次奖励的 BUG。</p><p>分布式就是多台机子间，而本地锁指的是本机，其原理类似，比如设置一个带有过期时间的 String 类型的缓存，如果这个键不为空则代表加过锁了。</p><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p>Redis 中的列表结构由于读取头尾的速度非常快，因此适合作为消息队列的容器，将任务队列存储在 Redis 中可以大大提高程序的执行效率（与传统的数据库存储相比）。</p><h2 id="Redis-安全隐患"><a href="#Redis-安全隐患" class="headerlink" title="Redis 安全隐患"></a>Redis 安全隐患</h2><p>其中一个是未设置密码问题：<a href="https://idce.com/archive/PLlWREOZ?id=VDej" target="_blank" rel="noopener">Redis 未设置密码导致服务器被安装挖矿病毒</a></p><p>此外，Redis 即使正常使用也可能存在安全隐患。</p><p>缓存分为过期缓存和不过期缓存，不过期缓存过多可能造成内存溢出，而过期缓存又可能带来新的问题。</p><h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><p>缓存穿透指的是查询一个缓存中不存在的数据，比如我们设置了一个根据用户 ID 来获取用户信息的缓存，此时如果我们输入 -1 或者其他不存在的 ID，那么系统将会判断缓存不存在，接着就去数据库查询。</p><p>这种“绕过”缓存查询数据库的行为类似于直接穿透了 Redis。</p><p>如果有人利用了这一点编写程序大量查询不存在的用户 ID 就很可能造成数据库崩溃。</p><p>解决方法是即使不存在的用户 ID 也设置一个空的缓存的键值，不过此类键值需要设置一个较短的过期时间，否则也可能会被恶意查询造成内存溢出。</p><h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><p>雪崩指的是一种短期内产生的爆发性冲击，在 Redis 中，如果有许多缓存在同一时刻过期，就会造成大量的数据需要从数据库查询，面对冲击性涌入的查询，数据库很可能造成崩溃。</p><p>解决方法是尽可能的让缓存的过期时间不一样，热门数据的缓存时间更长一些，对于同类型的数据可以设置一个额外的随机时间来让同类型的数据也会在不同时刻过期。</p><p>除此之外，还可以设计多级缓存结构来防止缓存雪崩。</p><p>当第一层的缓存过期了，不从数据库读取，而是判断第二层缓存是否存在，如果有就直接取数据，如果没有再判断下一层缓存……以此类推。这样的结构称为多级缓存，多级缓存结构比较复杂，其中第一层缓存叫做一级缓存，第二层叫做二级缓存……多级缓存结构可以防止突发性的冲击造成数据库崩溃，不过这样系统的复杂性会变高，多级缓存需要有一个程序来定期维护下级缓存，一般由架构师进行设计。</p><h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><p>缓存击穿与缓存雪崩有些类似，不过不同的是缓存击穿指的是某个单一的键值过期，但是此时却有大量的流量涌入，造成所有的请求都直接到数据库那边，相当于在某个点凿出了一个洞，因此叫做“击穿”。</p><p>防止缓存击穿的方法：</p><p>方法（一）：后台增加一个定期任务刷新缓存的过期时间。</p><p>方法（二）：将缓存的过期时间也保存在值里面，当获取这个缓存数据的时候判断过期时间，在超过设置的阀值时更新这个缓存的过期时间。</p><p>方法（三）：可以使用缓存雪崩所说的多级缓存方法。</p><p>方法（四）：增加锁机制，当缓存过期查询数据库时，判断锁，只允许一个请求进来，其他请求都进入等待状态，进入的请求在查好数据后更新缓存，此时等待中的请求就可以获取到数据了。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Redis 还有许多应用，持续保持学习中……</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Window环境下安装Docker的坑</title>
+      <link href="/window-install-docker-issue/"/>
+      <url>/window-install-docker-issue/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近下载了 Docker for Window 搭建 Win10 系统的 PHP 环境，结果遇到了一大堆问题，网络上搜索答案极少，而且也很难找到能解决问题的方法，通过不断尝试和推测，踩了很多坑，也找到了填坑的办法，在此记录下来。</p><p>Docker for Window 下载地址：<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker 官方网站下载</a></p><h2 id="Docker-Hub-登录问题"><a href="#Docker-Hub-登录问题" class="headerlink" title="Docker Hub 登录问题"></a>Docker Hub 登录问题</h2><p>需要注册一个 Docker Hub 来进行登录，登录的帐号只能是 Docker ID，也就是注册时的用户名，而不是邮箱，此处需要注意，在使用 <code>docker login</code> 命令时经常会犯错而无法成功登录。</p><h2 id="Hyper-V-缺失问题"><a href="#Hyper-V-缺失问题" class="headerlink" title="Hyper-V 缺失问题"></a>Hyper-V 缺失问题</h2><p>Docker for Window 依赖 Hyper-V（微软的虚拟机系统），只有 Window 专业版才有这个功能，家庭版如果需要开启此功能就需要升级到专业版。</p><blockquote><p>查看电脑系统的方法：右键我的电脑，选择属性即可看到 Window 版本信息。</p></blockquote><p>家庭版也可以不升级，安装另一个 Docker 的产品——Docker Tool。</p><p>Docker Tool 不依赖 Hyper-V，而是 VirtualBox（也是一种虚拟机软件），如果安装了 Docker Tool，则会自动安装 VirtualBox。Docker Tool 的操作方法与 Docker for Window 不太一样，更复杂一些，虽然本人也尝试下载过，但是感觉十分不便，因此最后卸载了。（由于安装了 Docker Tool，这里又挖了一个新坑，后面进行介绍）</p><p>本人用的是 Win10 专业版系统，却发现没有 Hyper-V 这个选项，原来是因为下载了精简版的 ISO 作为装机镜像，一些装机系统那边下载的软件都是经过二次封装的，削减了一部分的功能，因此推荐用那些精简过的系统。</p><p>找了许多装机的 ISO 镜像，最后决定下载微软官方原版的 ISO 镜像（十分干净，不带第三方软件），然后重新安装了 Win10 专业版。</p><p>Window MSDN 镜像下载：<a href="https://msdn.itellyou.cn/" target="_blank" rel="noopener">MSDN 我告诉你</a></p><p>选择左侧的系统，根据个人需求安装即可，不过据说对 Window 版本有一定的要求，太早的版本可能还是没有这个功能，建议至少 Win 8 以上(专业版)。</p><p>查看 Hyper-V 的方法是打开 <strong>控制面板</strong>，然后选择 <strong>程序</strong>，再选择 <strong>启用或关闭 Windows 功能</strong>。</p><p>重装后的系统已经可以看到 Hyper-V 这个选项了，如下图所示：</p><p><img src="https://i.loli.net/2019/10/20/uHBJOYP3Mtze6jc.png" alt="image.png"></p><p>勾选后选择确定，重新启动电脑。</p><h2 id="开启-Hyper-V-导致无法开机问题"><a href="#开启-Hyper-V-导致无法开机问题" class="headerlink" title="开启 Hyper-V 导致无法开机问题"></a>开启 Hyper-V 导致无法开机问题</h2><p>在开启 Hyper-V 的过程中，又遇到新的问题，如果将 Hyper-V 勾选起来点击确定，系统会安装软件然后提示重新启动，此时重新启动会导致电脑无法开机，一直在开始界面，并且提示“系统正在自动修复”。</p><p>只有进入到安全模式，将 Hyper-V 取消掉才能正常开机；又或者多次重启失败，系统自动恢复最后一次正确的配置。网上查了很多资料都没有找到解决方法，于是推测是因为相关的虚拟机服务没有启动导致的。</p><p>解决方法是进入服务管理，将 Hyper-V 的相关服务调整为“自动启动”，点击开始，选择运行（或者直接按 Win+R 快捷键），然后输入 <code>services.msc</code> 进入服务管理。</p><p><img src="https://i.loli.net/2019/10/20/75OeL1pd4x6QtzS.png" alt="image.png"></p><p><img src="https://i.loli.net/2019/10/20/hkmugev9KtBzlZ3.png" alt="image.png"></p><p>然后打开 Hyper-V，再重启就可以了。</p><h2 id="Docker-命令被占用"><a href="#Docker-命令被占用" class="headerlink" title="Docker 命令被占用"></a>Docker 命令被占用</h2><p>在安装好了 Docker for Window 后，打开命令行使用 docker 命令，却提示如下的错误信息：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unable to resolve docker endpoint: open C:\Users\Administrator\.docker\machi....</span><br></pre></td></tr></table></figure><p>大致意思是找不到某个文件，而 <code>docker-machine</code> 是 Docker Tool 用到的东西，在翻找了许多资料后才发现原来是卸载时残留的环境变量导致的问题，Docker Tool 虽然卸载了，但是环境变量还在，这就导致了使用 docker 命令用的环境变量路径还是 Docker Tool 设置的路径，由于软件被卸载了，路径自然就找不到了。</p><p>解决方法是删掉残留的环境变量。</p><p>右键我的电脑，高级系统设置，环境变量。</p><p><img src="https://i.loli.net/2019/10/20/VLGM5XjYpJhZEeW.png" alt="image.png"></p><p><img src="https://i.loli.net/2019/10/20/1HFzeVMgtSoLRb7.png" alt="image.png"></p><p><img src="https://i.loli.net/2019/10/20/QYVrGO3k2M8By1D.png" alt="image.png"></p><p>然后在用户变量与系统变量中，找到 Docker 相关的变量全部删除，然后卸载掉 Docker for Window，重装一遍，即可解决（建议重启一次电脑）。</p><h2 id="磁盘共享"><a href="#磁盘共享" class="headerlink" title="磁盘共享"></a>磁盘共享</h2><p>Docker 恢复正常以后，本人使用的是自己封装的一套 docker-compose 系统，由于里面用到了容器卷，在 Window 系统中还存在磁盘共享问题。</p><p>在使用 <code>docker-compose up -d</code> 的时候遇到如下错误：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot create container for service redis: b&#39;Drive sharing failed for an unk...</span><br></pre></td></tr></table></figure><p>大致意思是说磁盘共享失败。</p><p>解决方法是打开 Docker for Window 的 Settings，右键右下角的小鲸鱼图标进入设置界面，在设置界面中选择 Shared Drives 选项卡，将需要共享的磁盘勾选起来，然后点击 Apply（应用）保存设置，这个过程可能需要输入 Window 系统的用户名和密码，如果没有设置密码则需要设置一个。</p><p><img src="https://i.loli.net/2019/10/20/RCuri4gzwynGNeH.png" alt="image.png"></p><h2 id="Docker-Compose-路径问题"><a href="#Docker-Compose-路径问题" class="headerlink" title="Docker-Compose 路径问题"></a>Docker-Compose 路径问题</h2><p>接着又遇到新的问题，执行 <code>docker-compose up -d</code> 弹出如下错误：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR: for workspace_redis_1  Cannot start service redis: OCI runtime create failed: container_linux.go:345: starting container process caused &quot;process_linux.go:430: container init caused \&quot;rootfs_linux.go:58: mounting \\\&quot;&#x2F;etc&#x2F;localtime\\\&quot; to rootfs \\\&quot;&#x2F;var&#x2F;lib&#x2F;docker&#x2F;overlay2&#x2F;c6e01c3620bbec9f7dc46bc22dbda8a9cdbf050746f17af60e665fb2191f5d27&#x2F;merged\\\&quot; at \\\&quot;&#x2F;var&#x2F;lib&#x2F;docker&#x2F;overlay2&#x2F;c6e01c3620bbec9f7dc46bc22dbda8a9cdbf050746f17af60e665fb2191f5d27&#x2F;merged&#x2F;usr&#x2F;share&#x2F;zonStarting workspace_mysql_1 ... error</span><br></pre></td></tr></table></figure><p>这是由于我在 <code>docker-compose.yml</code> 文件中写了一个错误的路径，<code>/etc/localtime</code> 是 Linux 系统里面的路径，将它去掉就可以了。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">redis:</span><br><span class="line">        build: redis&#x2F;</span><br><span class="line">        restart: always</span><br><span class="line">        volumes:</span><br><span class="line">          - .&#x2F;redis&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf</span><br><span class="line">          - .&#x2F;var&#x2F;logs&#x2F;redis.log:&#x2F;var&#x2F;log&#x2F;redis.log</span><br><span class="line">          - &#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime</span><br><span class="line">        ports:</span><br><span class="line">          - &quot;6379:6379&quot;</span><br><span class="line">        networks:</span><br><span class="line">          - default</span><br></pre></td></tr></table></figure><p>去掉后就可以正常运行了。</p><h2 id="Vmware、Hyper-V-不兼容问题"><a href="#Vmware、Hyper-V-不兼容问题" class="headerlink" title="Vmware、Hyper-V 不兼容问题"></a>Vmware、Hyper-V 不兼容问题</h2><p>第一次因为 Hyper-V 缺失而无法安装时，曾经尝试过使用 Vmware 来安装虚拟机，想要在虚拟机里面装一个 MacOS 系统，结果也是一个大坑，默认情况下的 Vmware 不支持 MacOS，而需要安装一个补丁，结果折腾了半天也没搞定，MacOS 的镜像高达 7 个 G，还因为百度网盘暂停会导致重新开始……折腾得心累，于是放弃了。</p><p>Hyper-V 与 Vmware 是不兼容的，一山不容二虎，如果要使用其中的一种，需要卸载掉另外一种。否则可能会因为服务的问题导致软件不能正常启动。</p><h2 id="完结感言"><a href="#完结感言" class="headerlink" title="完结感言"></a>完结感言</h2><p>在中途曾经放弃过安装 Docker 的念头，而是手动安装了 PHP、MySQL、Redis、Nginx 等环境，但是后面又发现许多 PHP 扩展在 Window 系统的安装都十分麻烦，比如 swoole 扩展还需要安装 cygwin，折腾的心累于是放弃了。</p><p>真是艰辛的过程<del>~</del></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL主键详解</title>
+      <link href="/mysql-primary-key/"/>
+      <url>/mysql-primary-key/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从书本上学到的 MySQL 主键知识十分有限，我们只是知道基础的理论。</p><p>在一次面试中，面试官提问：主键索引与普通索引有什么区别？</p><p>当场懵逼。</p><p>为了深入学习 MySQL 记录下此文。</p><h2 id="MySQL-主键（Primary-Key）"><a href="#MySQL-主键（Primary-Key）" class="headerlink" title="MySQL 主键（Primary Key）"></a>MySQL 主键（Primary Key）</h2><p>MySQL 中的键即某种约束，键具有索引的作用，通过约束条件可以使得数据更快的被查到。</p><p><strong>主键</strong> 是基本每张表都会用到的，一般类型为整型（integer、bigInteger）或者无符号整型（unsigned integer)并按照自然数的顺序自增。</p><p>主键是唯一的。</p><p>主键是一种索引，可以加快查询效率。</p><p>这是我们通常理解的主键，那么主键作为索引，又与普通索引有什么不同？为什么表需要主键？</p><h2 id="主键的分类"><a href="#主键的分类" class="headerlink" title="主键的分类"></a>主键的分类</h2><p>主键的字段名称一般设置为 ID，当这个 ID 与业务无关时，称为逻辑主键（即 ID 没有实际的意义），如果将用户名（name） 字段设置为主键，该字段是业务中会用到的字段，称为业务主键。</p><p>由于主键是业务中经常会用到的键，而业务又经常变更，因此不适合将业务字段作为主键，而是设置一个与业务毫无关系的（ID）字段作为主键。</p><p>如果将业务字段用来做主键，例如上面的例子中的 name，系统后台需要修改某个用户的 name 字段，意味着主键也跟着变更了。</p><p>如果存在以下场景：</p><p>用户个人空间的地址为：<code>http://domain.com/:name</code>，<code>:name</code> 是用户名（即数据库中的 name 字段）。</p><p>主键一旦变更，某些页面如个人空间也会跟着变更，假如我收藏了某个用户的空间到浏览器：<code>http://domain.com/user/xiaoming</code>，结果因为用户改名为：xiaohong，这个用户的空间地址就变成了：<code>http://domain.com/user/xiaohong</code>，那我收藏的地址就 404 了，除了这方面的原因，由于可以随意修改主键，也就导致你改了主键的值，其他人又改成之前用过的主键，会产生许多问题，如果某个人又将 xiaogang 的名字改成 xiaoming，那我收藏的地址就会变成原名为 xiaogang 的个人空间，业务变得十分混乱。</p><p>主键通常是不能变更的值，因此建议设置一个与业务毫无关系的字段作为主键的值，之所以要用整型是因为查询效率比字符串更高、所需空间更小，可以使用自增自动生成唯一的值。</p><p>其他类型如字符串作为主键，由于在插入数据时需要生成唯一字符串，同时还需要判断是否已存在该值，故在插入数据的时候效率也会降低。</p><p>除了将单个字段设置为主键，也可以将多个字段绑定在一起作为联合主键（也称复合主键）。</p><p>主键设计原则：</p><ul><li>主键的值 <strong>应该</strong> 无法被修改</li><li>主键的值 <strong>不应该</strong> 与业务有关</li><li>主键的值 <strong>建议</strong> 使用系统自动生成（如自增整型）</li><li><strong>建议</strong> 使用单个字段作为主键</li><li>每张表都 <strong>建议</strong> 设置主键</li></ul><h2 id="为什么表需要主键"><a href="#为什么表需要主键" class="headerlink" title="为什么表需要主键"></a>为什么表需要主键</h2><p>想一下如果没有主键，需要删改查除某条数据的时候会有多麻烦：“帮我删掉 name 为 xiaohong 的那条数据”，而 name 属性又没有设置唯一键，存在很多条同名数据，到底是删除哪条？</p><p>而当我们设置了 ID 作为主键，那我们就可以说：“删除 ID 为 6 的数据”、“帮我把 ID 为 6 的 name 字段改成 xiaohong”。</p><p>主键的其中一个作用即指向该行的数据，<strong>键具有约束作用</strong>，主键约束可以令数据具有唯一性，设置身份证为主键，那么这个主键就决定了一个人的个人资料，从千千万万个人当中，可以用身份证来指代唯一的一个人。</p><p>此外，主键索引可以提升查询效率，将一个字段设置为主键时，便会创建主键索引。</p><p>（下文介绍主键索引与普通索引区别）</p><h2 id="MySQL-主键与唯一键（Unique-Key）的区别"><a href="#MySQL-主键与唯一键（Unique-Key）的区别" class="headerlink" title="MySQL 主键与唯一键（Unique Key）的区别"></a>MySQL 主键与唯一键（Unique Key）的区别</h2><p>主键字段的值是唯一的，唯一键也要求字段值唯一，这两者的区别在于唯一键的值可以为 NULL，并且可以存在重复的 NULL 数据。</p><p>梳理如下：</p><p>唯一键的值 <strong>可以为空</strong>，且不能存在除空值以外重复的值。</p><p>主键的值必须 <strong>不为空</strong> 且不存在重复。</p><p>每张表中 <strong>只能</strong> 存在一个主键，可以存在 <strong>多个</strong> 唯一键。</p><p>从存在意义上来说，主键的作用是指代这一行的数据（如身份证代表一个人），而唯一键只是一种约束作用，用来约束这个字段在这张表不能存在相同值（如限制用户手机号码只能注册一个账号）。</p><h2 id="主键索引与普通索引（Normal-Index）的区别"><a href="#主键索引与普通索引（Normal-Index）的区别" class="headerlink" title="主键索引与普通索引（Normal Index）的区别"></a>主键索引与普通索引（Normal Index）的区别</h2><blockquote><p>扩展阅读：<a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></p></blockquote><p>普通索引的作用只是加快查询效率，并且可以存在重复的值，而主键索引的值是唯一的，它也可以提高查询效率，普通索引的值可以为 NULL，查询一个存在 NULL 的普通索引会导致查询效率提升的作用失效，当一个列设置了索引，同时也应当将其设置为 NOT NULL。</p><p>主键索引与普通索引的结构也不同。</p><h3 id="聚簇索引和非聚簇索引（二级索引）"><a href="#聚簇索引和非聚簇索引（二级索引）" class="headerlink" title="聚簇索引和非聚簇索引（二级索引）"></a>聚簇索引和非聚簇索引（二级索引）</h3><ul><li>聚簇索引：将数据存储与索引放到了一块，找到索引也就找到了数据</li><li>非聚簇索引：将数据存储于索引分开结构，索引结构的叶子节点指向了数据的对应行</li></ul><p>Innodb 存储引擎中，数据表 table 由 table.frm、table.idb 组成。table.frm 保存表结构的定义，table.idb 保存的是数据和索引，这样的结构称为聚簇索引。</p><p>Myisam 存储引擎中，数据表 table 由 table.frm、table.myi、table.myd 组成。table.frm 保存表结构的定义，table.myi 保存索引，table.myd 保存数据。在用到索引时，先到 table.myi(索引树)中进行查找，取到数据所在 table.myd 的行位置，拿到数据。所以 Myisam 引擎的索引文件和数据文件是独立分开的，称之为非聚簇索引。</p><p>聚簇索引是按照数据存放的物理位置为顺序的，聚簇索引能提高多行检索的速度，而非聚簇索引对于单行的检索更快。</p><p>在 Innodb 中，主键索引是聚簇索引，如果没有主键，则挑选一个唯一键建立聚簇索引，如果没有唯一键，则隐式的生成一个键来建立聚簇索引。</p><p>在表结构中只存在一个聚簇索引（主键索引），除此之外都是非聚簇索引（普通索引）。</p><h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>一种特殊情况可以不通过聚簇索引查询数据，那就是通过创建联合索引（多个字段作为索引），如果查询的数据在索引中可以直接获取到，那就不需要再到数据行进行查询了。</p><p>例如创建索引：idx_name_email</p><p>name 字段 和 email 字段是联合索引，当我们使用如下语句查询时：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name where email &#x3D; &quot;xxx@idce.com&quot;</span><br></pre></td></tr></table></figure><p>通过 email 来查询 name，由于它们是一组联合索引，因此可以直接从索引中拿到对应的数据。</p><p>覆盖索引查询数据只需要从索引中获得，而不需要到数据表中获取，因此可以极大的提高查询效率。</p><p>之所以能够从索引中得到数据，是因为索引的结构中保存了对应字段的值。</p><p>容易混淆的一个地方：上面介绍的聚簇索引才能保存数据，那为什么普通索引也能保存数据？</p><p>其实这里指的是表的数据，通过聚簇索引找到的数据是直接找到表对应行的一整行数据，而索引保存的数据是这个字段的值，因此可以通过索引得到对应字段的值。</p><p>面试官曾经问我的问题：索引会保存字段的值吗？</p><p>当时觉得不会，应该是保存对应行的所在地址才对。但其实是会保存的，因为只有保存了这个数据，查询索引字段才能快速进行数据对比从而筛选数据，如果能不回到表查询，则不回到表查询，回到表查询的效率比直接从索引拿数据低得多。</p><p>索引的结构，一侧是字段的值，另一侧是下一个数据的地址：</p><p><img src="https://i.loli.net/2019/11/26/hArR2ISmwPLzNCy.png" alt="image.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>PHPStorm逼死强迫症患者解决方法</title>
+      <link href="/phpstorm-no-ext-tip-issue/"/>
+      <url>/phpstorm-no-ext-tip-issue/</url>
+      
+        <content type="html"><![CDATA[<h2 id="PHPStorm"><a href="#PHPStorm" class="headerlink" title="PHPStorm"></a>PHPStorm</h2><p>在使用 JSON 函数的时候，会报如下提示：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ext-json missing in composer.json</span><br></pre></td></tr></table></figure><p><img src="https://i.loli.net/2019/11/26/sYow5WKkvbRdXOV.png" alt="image.png"></p><p>花花绿绿看得猛男落泪，简直要逼死强迫症啊！</p><p>原因可能是因为使用了 Docker 或者其他的环境，由于扩展是安装在虚拟机上就导致本机无法正确识别 PHP 的扩展，并不是本机上没有安装这个扩展，代码没有问题也不会报错，就是看得难受。</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>所幸，这里提供了两种方法可以根治此问题。</p><h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h3><p>针对缺失的扩展，在 <code>composer.json</code> 文件的 <code>require</code> 字段进行添加。</p><p>例如：<code>&quot;ext-json&quot;: &quot;*&quot;</code>：</p><p><img src="https://i.loli.net/2019/11/26/IH3GgJQB4XWpz8y.png" alt="image.png"></p><p>如果没有 <code>composer.json</code> 文件，在项目根目录下自行创建一个即可。</p><p>这种方法针对特定的扩展，除了 JSON 扩展，常见的还有 CURL 扩展也无法正常识别，用相同的方法即可解决，扩展不多的时候可以用这种方法，要是使用了诸多第三方扩展而 PHPStorm 无法识别，可以参考下面的方案二一次性解决问题。</p><h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><p>关闭 PHPStorm 缺失扩展提示。</p><p>打开左上角 <code>File-&gt;Settings</code> 搜 PHP，然后找到下方一行的 <code>Inspections</code>，在右侧搜索 <code>extension</code>，找到 <code>Extension is mission in composer.json</code> 取消勾选保存即可，见下图：</p><p><img src="https://i.loli.net/2019/11/26/bB9RVYwCf6DtmGL.png" alt="image.png"></p><p>以上方法任选一种即可。</p><p><img src="https://i.loli.net/2019/11/26/UZdEPz9Hg5MkXyt.png" alt="image.png"></p><p>猛的一顿操作之后——舒服多了！！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> PHP </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> PHP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>PHP-CLI 常用命令参数</title>
       <link href="/php-cli-arguments/"/>
       <url>/php-cli-arguments/</url>
