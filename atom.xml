@@ -432,9 +432,9 @@
       <category term="Linux" scheme="https://www.idce.com/categories/Linux/"/>
     
     
-      <category term="Supervisord" scheme="https://www.idce.com/tags/Supervisord/"/>
-    
       <category term="技术" scheme="https://www.idce.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Supervisord" scheme="https://www.idce.com/tags/Supervisord/"/>
     
   </entry>
   
