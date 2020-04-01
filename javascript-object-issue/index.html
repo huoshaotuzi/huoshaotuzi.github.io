@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -18,8 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>Tag: Hexo - 我的文档</title>
+    <title>Javascript使用对象必须知道的一件事 - 我的文档</title>
   
+    <meta name="keywords" content="JavaScript">
+  
+  
+    <meta name="description" content="JavaScript中，对象即引用。">
   
 
   <!-- feed -->
@@ -69,7 +71,7 @@
 <body>
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <p class="title ">我的文档</p>
@@ -234,25 +236,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-        
-      
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
+
   
+    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -261,11 +250,13 @@
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/easy-to-start-hexo/">
-      猴子都能学会的hexo博客安装教程
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/javascript-object-issue/">
+        Javascript使用对象必须知道的一件事
+      </a>
+    </h1>
+  
 
 
       
@@ -285,20 +276,23 @@
           
         
           
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月1日</p>
-  </a>
-</div>
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/JavaScript/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>JavaScript</p>
+    </a>
+  </div>
+
 
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-08T14:54:07+08:00">
+            <div class="new-meta-item date">
   <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年3月8日</p>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2020年4月1日</p>
   </a>
 </div>
 
@@ -317,48 +311,214 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      小白都能学会的从零开始照猫画虎hexo博客搭建教程。
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="JavaScript-的对象"><a href="#JavaScript-的对象" class="headerlink" title="JavaScript 的对象"></a>JavaScript 的对象</h2><p>JavaScript 中，对象即引用。</p>
+<p>我们知道引用的特性：</p>
+<p>将对象赋值给另一个变量，另一个变量的值如果改变，原对象的值也会改变。</p>
+<p>引用即是内存地址的指向，将对象赋值给另一个变量，相当于另一个变量也指向了同一块内存地址，因此改变值时，原对象的值也会跟着变。通过下面的例子来了解一下引用的特性。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 声明一个json对象</span><br><span class="line">let json &#x3D; &#123;</span><br><span class="line">    &quot;aa&quot;: &quot;Im aa&quot;,</span><br><span class="line">    &quot;bb&quot;: &quot;Im bb&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 将json对象赋值给另一个变量</span><br><span class="line">let data &#x3D; json;</span><br><span class="line">data.aa &#x3D; &quot;no ok!&quot;;</span><br><span class="line">&#x2F;&#x2F; 输出两个对象</span><br><span class="line">console.log(json, data);</span><br></pre></td></tr></table></figure>
+
+<p>在控制面板上的输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; Object &#123; aa: &quot;no ok!&quot;, bb: &quot;Im bb&quot; &#125; Object &#123; aa: &quot;no ok!&quot;, bb: &quot;Im bb&quot; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们原本是希望把 json 变量的值赋值给另一个变量 data，本意是不希望修改 json 的值，但由于 JavaScript 中对象即引用的特性会导致原来的值发生改变。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>可以使用 <code>Object.assign(target, source)</code> 方法将 source 对象复制一份给 target 变量，类似 PHP 中的 clone，复制出来的变量会独立占据一片内存空间，而不是原对象的引用。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 声明一个json对象</span><br><span class="line">let json &#x3D; &#123;</span><br><span class="line">    &quot;aa&quot;: &quot;Im aa&quot;,</span><br><span class="line">    &quot;bb&quot;: &quot;Im bb&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 复制对象到data</span><br><span class="line">let data &#x3D; &#123;&#125;;</span><br><span class="line">Obejct.assign(data, json);</span><br><span class="line">&#x2F;&#x2F; 修改aa的值</span><br><span class="line">data.aa &#x3D; &quot;no ok!&quot;;</span><br><span class="line">&#x2F;&#x2F; 输出两个对象</span><br><span class="line">console.log(json, data);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; Object &#123; aa: &quot;Im aa&quot;, bb: &quot;Im bb&quot; &#125; Object &#123; aa: &quot;no ok!&quot;, bb: &quot;Im bb&quot; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，原来的 json 对象的值没有改变。</p>
+<p>在 TypeScript 中，不能直接使用 <code>Object.assign</code> 方法，而是要使用 <code>(&lt;any&gt;Object).assign</code>。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 声明一个json对象</span><br><span class="line">let json &#x3D; &#123;</span><br><span class="line">    &quot;aa&quot;: &quot;Im aa&quot;,</span><br><span class="line">    &quot;bb&quot;: &quot;Im bb&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 复制对象到data</span><br><span class="line">let data &#x3D; &#123;&#125;;</span><br><span class="line">(&lt;any&gt;Object).assign(data, json);</span><br></pre></td></tr></table></figure>
+
+<h2 id="完结感言"><a href="#完结感言" class="headerlink" title="完结感言"></a>完结感言</h2><p>由于 cocos creator 使用的是 JavaScript 和 TypeScript 开发，今天在制作游戏的事件系统，遇到一个神秘的 BUG，排查了好久一直没找到原因，突然想起来以前也遇到过同样的问题，为了涨点记性，特此记录。</p>
+
+          
+            <br>
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+
+<section class="widget copyright  widget-blur desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>转载请注明出处及链接。</p>
+
+          
+        
+          
+            
+          
+        
+          
+            <p>本文链接：<a href=https://www.idce.com/javascript-object-issue/>https://www.idce.com/javascript-object-issue/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+                
+              
+                
+              
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+        </div>
+        
+          <br>
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
       
         
-          <div class="button readmore">
-            <a href="/easy-to-start-hexo/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
+          
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/JavaScript/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>JavaScript</p></a></div>
+
+
         
       
     </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
-        
-          <a href="/tags/Hexo/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Hexo</a>
-        
-      </div>
-     -->
   </section>
-</article>
 
-          </div>
+
         
+        
+            <div class="prev-next">
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/game-draw-card-issue/" rel="prev" title="游戏的抽奖是否应该保底必出？">
+                                    
+                                        游戏的抽奖是否应该保底必出？
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/%E6%B8%B8%E6%88%8F/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 游戏</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    
       
     
+      
+    
+      
+    
+      
+    
+      
+        
+  
+
+  <section class="widget related_posts  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
+    
+  </header>
+
+
+    <div class="content">
+      
+    </div>
   </section>
+
+
+      
+    
+      
+    
+      
+    
   
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
 
   
 
 
-    
   
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Javascript使用对象必须知道的一件事',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -495,89 +655,20 @@
       
     
       
-    
-      
         
-  
 
-  <section class="widget category  widget-blur desktop">
+
+  <section class="widget toc-wrapper  widget-blur desktop mobile">
     
   <header>
     
-      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Hexo/" href="/categories/Hexo/"
-            id="categoriesHexo"
-            ><div class='name'>Hexo</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/JavaScript/" href="/categories/JavaScript/"
-            id="categoriesJavaScript"
-            ><div class='name'>JavaScript</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Linux/" href="/categories/Linux/"
-            id="categoriesLinux"
-            ><div class='name'>Linux</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/MySQL/" href="/categories/MySQL/"
-            id="categoriesMySQL"
-            ><div class='name'>MySQL</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/PHP/" href="/categories/PHP/"
-            id="categoriesPHP"
-            ><div class='name'>PHP</div><div class='badge'>(7)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/composer/" href="/categories/composer/"
-            id="categoriescomposer"
-            ><div class='name'>composer</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/docker/" href="/categories/docker/"
-            id="categoriesdocker"
-            ><div class='name'>docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9E%B6%E6%9E%84/" href="/categories/%E6%9E%B6%E6%9E%84/"
-            id="categoriesE69EB6E69E84"
-            ><div class='name'>架构</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%B8%B8%E6%88%8F%E6%97%A5%E8%AE%B0/" href="/categories/%E6%B8%B8%E6%88%8F%E6%97%A5%E8%AE%B0/"
-            id="categoriesE6B8B8E6888FE697A5E8AEB0"
-            ><div class='name'>游戏日记</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%B5%84%E6%96%99/" href="/categories/%E8%B5%84%E6%96%99/"
-            id="categoriesE8B584E69699"
-            ><div class='name'>资料</div><div class='badge'>(1)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript-的对象"><span class="toc-text">JavaScript 的对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结感言"><span class="toc-text">完结感言</span></a></li></ol>
     </div>
   </section>
 
@@ -586,39 +677,6 @@
     
       
     
-      
-    
-      
-    
-      
-    
-  
-    
-      
-    
-      
-    
-      
-    
-      
-        
-  
-
-  <section class="widget tagcloud  widget-blur desktop">
-    
-  <header>
-    
-      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 16.5px; color: #888">Docker</a> <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/Linux/" style="font-size: 19px; color: #777">Linux</a> <a href="/tags/MySQL/" style="font-size: 14px; color: #999">MySQL</a> <a href="/tags/Nginx/" style="font-size: 16.5px; color: #888">Nginx</a> <a href="/tags/PHP/" style="font-size: 24px; color: #555">PHP</a> <a href="/tags/Redis/" style="font-size: 19px; color: #777">Redis</a> <a href="/tags/Supervisord/" style="font-size: 14px; color: #999">Supervisord</a> <a href="/tags/WebSite/" style="font-size: 14px; color: #999">WebSite</a> <a href="/tags/centos/" style="font-size: 14px; color: #999">centos</a> <a href="/tags/composer/" style="font-size: 19px; color: #777">composer</a> <a href="/tags/docker/" style="font-size: 16.5px; color: #888">docker</a> <a href="/tags/gitlab/" style="font-size: 21.5px; color: #666">gitlab</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 19px; color: #777">技术</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 14px; color: #999">架构</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 16.5px; color: #888">游戏</a>
-    </div>
-  </section>
-
-
       
     
       
