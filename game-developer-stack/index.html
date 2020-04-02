@@ -18,7 +18,7 @@
   
     <title>游戏菜单系统开发之栈的妙用 - 我的文档</title>
   
-    <meta name="keywords" content="游戏开发,技术">
+    <meta name="keywords" content="技术,游戏开发">
   
   
     <meta name="description" content="栈是一种先进后出的数据结构，本示例讲述在开发《名为怪物的游戏》中巧妙的使用栈解决菜单系统按键冲突问题。">
@@ -323,7 +323,9 @@
 <p>游戏的例子可能让从未接触过游戏的开发者难以理解，那么再看下一个例子。</p>
 <p><img src="https://s1.ax1x.com/2020/04/02/GGLnsI.png" alt="电商菜单"></p>
 <p>上图为某电商首页的 UI，假如产品经理提出一个需求，在这个网页上按 X 键可以展开商品分类的菜单，然后通过键盘的按键可以选择二级菜单，选中一个分类再按 Z 键展开三级菜单，在展开菜单的情况下按 X 键会返回上一级菜单，你应该如何实现此功能？</p>
-<p>如果使用正常的方法，用变量来判断打开了哪些菜单，然后再绑定对应的事件，你会发现很难实现无限级的菜单系统，而且业务代码会变得乱糟糟的。比如情报页面有线索二级菜单，线索菜单又可以进入到线索列表三级菜单，而角色状态可能只有一个现实角色信息的 UI，只有切换角色的按钮，没有三级菜单。每个主菜单的选项都可能是不同的，它们没有共同点，因此你无法使用继承的关系把相同的操作提取出来，每一个菜单都要单独判断，简直是 <code>if-else</code> 地狱，不难想象代码会乱成什么样子。</p>
+<p>如果使用正常的方法，用变量来判断打开了哪些菜单，然后再绑定对应的事件，你会发现很难实现无限级的菜单系统，而且业务代码会变得乱糟糟的。</p>
+<p>比如情报页面有线索二级菜单，线索菜单又可以进入到线索列表三级菜单，而角色状态可能只有一个显示角色信息的 UI，只有切换角色的按钮，没有三级菜单。</p>
+<p>每个主菜单的选项都可能是不同的，它们没有共同点，因此你无法使用继承的关系把相同的操作提取出来，每一个菜单都要单独判断，简直是 <code>if-else</code> 地狱，不难想象代码会乱成什么样子。</p>
 <p>在这里我们可以用“栈”的特性来优雅的实现菜单系统。</p>
 <blockquote>
 <p>栈：一种先进后出的数据结构</p>
@@ -442,7 +444,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>游戏开发</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>技术</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>技术</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>游戏开发</p></a></div>
 
 
         
@@ -505,7 +507,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/supervisord/" title="进程管理工具 Supervisord" rel="bookmark">进程管理工具 Supervisord</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/supervisord/" title="进程管理工具 Supervisord" rel="bookmark">进程管理工具 Supervisord</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li></ul>
     </div>
   </section>
 
