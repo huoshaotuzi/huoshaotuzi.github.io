@@ -4,7 +4,7 @@ date: 2020-03-07 22:12:52
 tags:
  - 游戏
  
-categories: 游戏日记
+categories: 游戏
 
 description: 被网易游戏的抽卡系统坑了之后有感而发。
 
