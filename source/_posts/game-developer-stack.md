@@ -153,7 +153,7 @@ export default class NewClass extends cc.Component {
 
 栈中所有的元素都继承 `System_StackComponent` 栈组件，因此它们都具有 `addListener` 方法和 `removeListener` 方法。
 
-接下来为了方便，我们把对象保存在 JavaScript 的系统类 Window 中：
+接下来为了方便，我们把对象保存在 JavaScript 的系统对象 window 中：
 
 ```
 window["__game"]["stack"] = new System_Stack;
@@ -257,10 +257,10 @@ export default class System_Menu extends Scene_StackComponent {
 }
 ```
 
-再将这个类添加到 Window 系统对象：
+再将这个类添加到 window 系统对象：
 
 ```
-// 添加到 Window 对象
+// 添加到 window 对象
 window["__game"]["menu"] = new System_Menu;
 // 执行初始化操作（入栈）
 __game.menu.init();
