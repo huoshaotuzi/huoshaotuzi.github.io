@@ -198,6 +198,7 @@ export default class Scene_Menu extends Scene_StackComponent {
     // 具体的监听事件
     onKeyDown(event: cc.Event.EventKeyboard) {
         // 判断当前选项在“情报”菜单，如果此时按 Z 键则调用 showInformationPanel 方法显示情报页
+        // 判断按 X 键调用 closeMenu 方法关闭菜单
     }
     
     onKeyUp(event: cc.Event.EventKeyboard) {
@@ -205,6 +206,10 @@ export default class Scene_Menu extends Scene_StackComponent {
     }
 }
 ```
+
+`closeMenu` 方法关闭当前菜单，并且弹出栈，在所有菜单关闭的时候都调用这个方法。
+
+`onKeyUp` 是键盘弹起事件，暂时不用理会。
 
 在游戏场景加载中，为了能随时随地呼出菜单，我们再定义一个新的类：
 
@@ -257,11 +262,17 @@ export default class System_Menu extends Scene_StackComponent {
 ```
 // 添加到 Window 对象
 window["__game"]["menu"] = new System_Menu;
-// 执行初始化操作
+// 执行初始化操作（入栈）
 __game.menu.init();
 ```
 
 如此一来，我们就可以随时随地通过全局的方法 `__game.menu.show()` 调出菜单了！
 
-## 总结
+注意！`System_Menu` 脚本并没有出栈的操作，因为如果这个脚本出栈了，那就不能监听 X 呼出菜单的事件，最底层的监听还是要保留滴！
+
+其实这个底层的节点也可以出栈（比如角色对话的时候不能呼出菜单，而是转移到监听对话按键），等对话结束后再重新入栈。
+
+总之，所有需要监听按键的组件都可以用栈组件来实现！
+
+## 知识总结
 由于菜单是一级一级往上打开，而关闭的时候是一级一级向下关闭，因此它符合栈的结构，当一个菜单节点入栈时，我们为它绑定监听事件，同时解除上一级菜单的监听事件；当一个菜单出栈时，我们就解除这个菜单的监听事件，然后再给栈新的顶层节点绑定监听事件，无论有多少级的菜单都能够用这种结构来实现，只要让它们继承 `StackComponent` 类即可实现栈的调用控制事件的监听与解除，比起用变量来判断打开了哪些菜单，是不是优雅得多呢？
