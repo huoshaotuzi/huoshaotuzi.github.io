@@ -36,8 +36,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/game-developer-stack.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="396">
-                <caret line="253" selection-start-line="253" selection-end-line="253" />
+              <first_editor relative-caret-position="351">
+                <caret line="262" column="210" selection-start-line="262" selection-start-column="210" selection-end-line="262" selection-end-column="210" />
               </first_editor>
               <second_editor />
             </state>
@@ -316,18 +316,17 @@
       <workItem from="1584245725536" duration="3297000" />
       <workItem from="1584441565678" duration="2974000" />
       <workItem from="1585584970133" duration="8313000" />
-      <workItem from="1585798908214" duration="3896000" />
+      <workItem from="1585798908214" duration="4326000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104216000" />
+    <option name="totallyTimeSpent" value="104646000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="819" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22818312" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22818312" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -342,7 +341,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3204952" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3204952" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -756,8 +755,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/game-developer-stack.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="396">
-            <caret line="253" selection-start-line="253" selection-end-line="253" />
+          <first_editor relative-caret-position="351">
+            <caret line="262" column="210" selection-start-line="262" selection-start-column="210" selection-end-line="262" selection-end-column="210" />
           </first_editor>
           <second_editor />
         </state>
