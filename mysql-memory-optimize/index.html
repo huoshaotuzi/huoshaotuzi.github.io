@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>微服务 - 我的文档</title>
+    <title>MySQL占用内存过高优化记录 - 我的文档</title>
   
-    <meta name="keywords" content="架构">
+    <meta name="keywords" content="MySQL,架构">
   
   
-    <meta name="description" content="微服务是一种应用部署的架构模式。">
+    <meta name="description" content="MySQL 占用内存高达 34% 优化解决方案。">
   
 
   <!-- feed -->
@@ -252,8 +252,8 @@
         
   
     <h1 class="title">
-      <a href="/mini-server/">
-        微服务
+      <a href="/mysql-memory-optimize/">
+        MySQL占用内存过高优化记录
       </a>
     </h1>
   
@@ -279,9 +279,9 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/%E6%9E%B6%E6%9E%84/' rel="nofollow">
+    <a href='/categories/MySQL/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>架构</p>
+      <p>MySQL</p>
     </a>
   </div>
 
@@ -292,7 +292,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月14日</p>
+    <p>发布于：2020年4月9日</p>
   </a>
 </div>
 
@@ -314,34 +314,58 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>微服务是一种服务架构模式，目标是架构师的话，当然不能放过这个知识点。</p>
-<h2 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h2><p>一般的项目架构有两种形式：单体应用和微服务。</p>
-<h3 id="单体应用"><a href="#单体应用" class="headerlink" title="单体应用"></a>单体应用</h3><p>单体应用就是用一套代码实现全部功能。</p>
-<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p>微服务就是把单体应用的代码按照功能拆分出来，形成多套独立的代码，通过某种方式让它们连接在一起，实现完整功能。</p>
-<p>单体应用好比早期的网站开发，用 PHP 搭建的网站：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">...</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;?php echo &quot;hello world!&quot; ?&gt;</span><br><span class="line">    &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在腾讯云购买的 1 核 1G 主机，使用 Docker 搭建的 MySQL 内存占用竟然高达 34%！再加上 Docker 其他容器运行起来和系统本身程序占用的内存，总内存高达 80+%，由于其他程序使用了 Redis 作为缓存，1G 内存就剩下 10%+ 可用内存（100MB+），一不小心可能就会让服务器卡成渣甚至直接 GG。</p>
+<p>由于服务器一天的访问量并不多，并发访问也不高，并不需要把 MySQL 优化的多好，只要能正常运行就够了，加上有 Redis 缓存这一层，几乎很少会跑到 MySQL 查询。 </p>
+<p>所以综合起来，MySQL 压根不用担心它会挂掉，可以把默认的优化方案修改一下，以便把占用的内存释放出来。</p>
+<p>优化后的结果如下图：</p>
+<p><img src="https://ae01.alicdn.com/kf/H8de4ff5c012d438f96db914a35d0e207i.png" alt="MySQL优化内存"></p>
+<h2 id="查询内存占用"><a href="#查询内存占用" class="headerlink" title="查询内存占用"></a>查询内存占用</h2><p>使用 <code>top</code> 命令查询当前程序的内存占用情况。</p>
+<p>我们需要关注的部分如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                                                          </span><br><span class="line"> 1751 root      20   0  740212  11140   1476 S  1.2  1.1 106:46.57 barad_agent                                                                                                      </span><br><span class="line"> 1750 root      20   0  164512   8648   1312 S  0.6  0.9  20:52.41 barad_agent                                                                                                      </span><br><span class="line">29245 root      20   0  155148   2380    660 S  0.6  0.2   0:24.18 sshd                                                                                                             </span><br><span class="line">31044 root      20   0  135552   6028   1468 S  0.6  0.6   0:11.02 YDService                                                                                                        </span><br><span class="line">    1 root      20   0   43656   2764   1364 S  0.0  0.3   2:19.11 systemd</span><br></pre></td></tr></table></figure>
 
-<p>HTML 代码与 PHP 代码混合在一起。</p>
-<p>而随着技术的发展，又推出了 MVC 模式，实现模型、视图、控制器的分离。</p>
-<p>然而问题的本质依然没有改变，还不是要一个人去完成同样的工作？</p>
-<p>技术从未停下发展的脚本，职业的分工越来越明确，开始出现专门写 HTML 和 JavaScript 的前端人员和专门写 PHP 代码的后端人员，前端人员通过一项技术“Ajax”调用后端人员写的接口，使他们看似分离但却紧紧的联系到一起，共同实现一个完整的项目。</p>
-<p>这样的分工方式就叫做微服务。</p>
-<h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>比如有一套系统，包括如下业务：</p>
-<p><img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3518914240,1325113277&fm=26&gp=0.jpg" alt="微服务架构"></p>
-<p>把这些业务拆分出来，单独做成一套系统，然后以某种方式让独立的项目之前能够进行通信，这就完成了一套微服务架构。</p>
-<h2 id="微服务通信模式"><a href="#微服务通信模式" class="headerlink" title="微服务通信模式"></a>微服务通信模式</h2><h3 id="HTTP-通信"><a href="#HTTP-通信" class="headerlink" title="HTTP 通信"></a>HTTP 通信</h3><h3 id="RPC-通信"><a href="#RPC-通信" class="headerlink" title="RPC 通信"></a>RPC 通信</h3><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><h2 id="微服务的优缺点"><a href="#微服务的优缺点" class="headerlink" title="微服务的优缺点"></a>微服务的优缺点</h2><p>优点</p>
 <ul>
-<li>大型项目解耦，提高整体性能</li>
-<li>每个服务都很小，开发人员可以聚焦自己负责的功能模块。</li>
-<li>只需要极少的人来维护一套代码</li>
-<li>可以用不同的语言开发</li>
+<li><code>PID</code>：进程 ID</li>
+<li><code>%CPU</code>：CPU 占用百分比</li>
+<li><code>%MEM</code>：内存占用百分比</li>
+<li><code>COMMAND</code>：程序命令名称</li>
 </ul>
-<p>缺点</p>
-<ul>
-<li>架构需要花费一定的精力，如果架构得不好，后期反而会变成麻烦</li>
-<li>由于服务分散成很多个，因此难以快速定位错误</li>
-<li>管理成本提高</li>
-</ul>
+<p>如果发现某个不需要的进程占用了过高的内存或 CPU，可以直接使用 <code>kill &lt;PID&gt;</code> 杀掉进程。</p>
+<p>进程杀掉程序就停了，我们不能直接杀掉 MySQL，具体解决思路见下一个步骤。</p>
+<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><p>MySQL 在启动的时候，会占用一部分的内存来作为缓冲区，这样做的原因是可以优化查询速度，我们可以发现只要查询过一次 MySQL，然后用相同的语句再次查询，第二次查询会比第一次更快，这其中就用到了 MySQL 自身的缓存系统。</p>
+<p>MySQL 的缓存机制是当某一个连接访问某张表时，MySQL 会先检查访问的表是否在缓存区中，如果这张表已经在缓存区中打开，那就会直接访问缓存区从而加快查询速度，如果这张表不在缓存区，那就会从实际的数据库文件进行查询，然后再把这张表加入缓存区，以便后续查询加快速度。</p>
+<p>由于这个机制我们的 MySQL 在运行过程占用的内存会逐渐增加，1G 的内存不适合用来做 MySQL 的优化，我们要做的就是去掉 MySQL 用来加快查询的各种机制。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>修改 MySQL 配置文件 <code>my.cnf</code>，找到 <code>[mysqld]</code> 下添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">&#x2F;&#x2F; 此处省略其他配置，添加如下内容</span><br><span class="line">table_open_cache&#x3D;200</span><br><span class="line">table_definition_cache&#x3D;400</span><br><span class="line">performance_schema_max_table_instances&#x3D;400</span><br><span class="line">performance_schema&#x3D;off</span><br></pre></td></tr></table></figure>
+
+<p>保存然后重启 MySQL，OK！内存已经降到 10%+ 了。</p>
+<p>各个配置项的具体用途：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>table_open_cache</td>
+<td>高速缓存的大小，每当访问一个表时，如果在表缓冲区中还有空间，该表就被打开并放入其中，下次查询该表时首先从高速缓存区查询，如果表在缓存中则直接从缓存查询，从而大幅提高查询速度。</td>
+</tr>
+<tr>
+<td>table_definition_cache</td>
+<td>定义了内存中可打开的表结构数量。</td>
+</tr>
+<tr>
+<td>performance_schema_max_table_instances</td>
+<td>检测的表对象的最大数目。</td>
+</tr>
+<tr>
+<td>performance_schema</td>
+<td>主要用来收集 MySQL 性能参数，启用 performance_schema 之后，server 会持续不间断地监测。【罪魁祸首】</td>
+</tr>
+</tbody></table>
+<p>通过调整前面 3 个配置项的值，占用内存均有 1~3% 程度的降低，罪魁祸首便是 <code>performance_schema</code>，将其设置为 off 之后，内存直接降低了 20%！</p>
+<p>其详细介绍可参考 MySQL 官方文档：<a href="https://dev.mysql.com/doc/refman/5.6/en/performance-schema.html" target="_blank" rel="noopener">MySQL Performance Schema</a></p>
+<p>当然除了上面几个配置项之外，MySQL 仍有许多可以优化的配置项，但是现在既然已经实现了自己的目的，就暂时不进行扩展阅读了，以后如果需要更深入的优化，到时候再学也不迟（日均 IP 100+ 根本不用考虑什么优化嘛~）。</p>
 
           
             <br>
@@ -375,7 +399,7 @@
           
         
           
-            <p>本文链接：<a href=https://www.idce.com/mini-server/>https://www.idce.com/mini-server/</a></p>
+            <p>本文链接：<a href=https://www.idce.com/mysql-memory-optimize/>https://www.idce.com/mysql-memory-optimize/</a></p>
           
         
       </blockquote>
@@ -422,7 +446,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>架构</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/MySQL/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>MySQL</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>架构</p></a></div>
 
 
         
@@ -435,40 +459,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/trait/" rel="prev" title="Trait - 优雅的复用方法">
-                                  
-                                      Trait - 优雅的复用方法
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
                             <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/php-fpm/" rel="prev" title="PHP-FPM">
+                                <a href="/game-developer-stack/" rel="prev" title="游戏菜单系统开发之栈的妙用">
                                     
-                                        PHP-FPM
+                                        游戏菜单系统开发之栈的妙用
                                     
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
+                                    <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 技术</a> <a class="tag" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 游戏开发</a>
                                 </h6>
                             
                         </span>
@@ -504,7 +509,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-memory-optimize/" title="MySQL占用内存过高优化记录" rel="bookmark">MySQL占用内存过高优化记录</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-primary-key/" title="MySQL主键详解" rel="bookmark">MySQL主键详解</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -536,7 +541,7 @@
 
   <script>
     window.subData = {
-      title: '微服务',
+      title: 'MySQL占用内存过高优化记录',
       tools: true
     }
   </script>
@@ -691,7 +696,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#架构模式"><span class="toc-text">架构模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单体应用"><span class="toc-text">单体应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微服务"><span class="toc-text">微服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务架构"><span class="toc-text">微服务架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务通信模式"><span class="toc-text">微服务通信模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP-通信"><span class="toc-text">HTTP 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-通信"><span class="toc-text">RPC 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#消息队列"><span class="toc-text">消息队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务的优缺点"><span class="toc-text">微服务的优缺点</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询内存占用"><span class="toc-text">查询内存占用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决思路"><span class="toc-text">解决思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol>
     </div>
   </section>
 
