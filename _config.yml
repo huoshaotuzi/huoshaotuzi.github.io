@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 我的文档
+title: 火兔博客
 subtitle: 开发日记
 description: 开发日记。
 keywords:
@@ -13,7 +13,7 @@ timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://www.idce.com
+url: http://www.huotublog.com
 root: /
 permalink: :title/
 permalink_defaults:
