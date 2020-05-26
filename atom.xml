@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>我的文档</title>
+  <title>火兔博客</title>
   
   <subtitle>开发日记</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://www.idce.com/"/>
+  <link href="http://www.huotublog.com/"/>
   <updated>2020-04-09T13:41:08.440Z</updated>
-  <id>https://www.idce.com/</id>
+  <id>http://www.huotublog.com/</id>
   
   <author>
     <name>火烧兔子</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>MySQL占用内存过高优化记录</title>
-    <link href="https://www.idce.com/mysql-memory-optimize/"/>
-    <id>https://www.idce.com/mysql-memory-optimize/</id>
+    <link href="http://www.huotublog.com/mysql-memory-optimize/"/>
+    <id>http://www.huotublog.com/mysql-memory-optimize/</id>
     <published>2020-04-09T12:57:07.000Z</published>
     <updated>2020-04-09T13:41:08.440Z</updated>
     
@@ -32,19 +32,19 @@
     </summary>
     
     
-      <category term="MySQL" scheme="https://www.idce.com/categories/MySQL/"/>
+      <category term="MySQL" scheme="http://www.huotublog.com/categories/MySQL/"/>
     
     
-      <category term="MySQL" scheme="https://www.idce.com/tags/MySQL/"/>
+      <category term="MySQL" scheme="http://www.huotublog.com/tags/MySQL/"/>
     
-      <category term="架构" scheme="https://www.idce.com/tags/%E6%9E%B6%E6%9E%84/"/>
+      <category term="架构" scheme="http://www.huotublog.com/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>游戏菜单系统开发之栈的妙用</title>
-    <link href="https://www.idce.com/game-developer-stack/"/>
-    <id>https://www.idce.com/game-developer-stack/</id>
+    <link href="http://www.huotublog.com/game-developer-stack/"/>
+    <id>http://www.huotublog.com/game-developer-stack/</id>
     <published>2020-04-02T03:43:09.000Z</published>
     <updated>2020-04-04T05:35:20.459Z</updated>
     
@@ -57,19 +57,19 @@
     </summary>
     
     
-      <category term="通用技术" scheme="https://www.idce.com/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"/>
+      <category term="通用技术" scheme="http://www.huotublog.com/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://www.idce.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="游戏开发" scheme="http://www.huotublog.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/"/>
     
-      <category term="游戏开发" scheme="https://www.idce.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/"/>
+      <category term="技术" scheme="http://www.huotublog.com/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>Javascript使用对象必须知道的一件事</title>
-    <link href="https://www.idce.com/javascript-object-issue/"/>
-    <id>https://www.idce.com/javascript-object-issue/</id>
+    <link href="http://www.huotublog.com/javascript-object-issue/"/>
+    <id>http://www.huotublog.com/javascript-object-issue/</id>
     <published>2020-04-01T08:32:49.000Z</published>
     <updated>2020-04-01T08:51:34.579Z</updated>
     
@@ -82,17 +82,17 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="https://www.idce.com/categories/JavaScript/"/>
+      <category term="JavaScript" scheme="http://www.huotublog.com/categories/JavaScript/"/>
     
     
-      <category term="JavaScript" scheme="https://www.idce.com/tags/JavaScript/"/>
+      <category term="JavaScript" scheme="http://www.huotublog.com/tags/JavaScript/"/>
     
   </entry>
   
   <entry>
     <title>Linux自定义别名——大幅提高工作效率！</title>
-    <link href="https://www.idce.com/linux-alias/"/>
-    <id>https://www.idce.com/linux-alias/</id>
+    <link href="http://www.huotublog.com/linux-alias/"/>
+    <id>http://www.huotublog.com/linux-alias/</id>
     <published>2020-03-30T17:29:34.000Z</published>
     <updated>2020-03-30T17:34:01.973Z</updated>
     
@@ -105,17 +105,17 @@
     </summary>
     
     
-      <category term="Linux" scheme="https://www.idce.com/categories/Linux/"/>
+      <category term="Linux" scheme="http://www.huotublog.com/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="https://www.idce.com/tags/Linux/"/>
+      <category term="Linux" scheme="http://www.huotublog.com/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>Redis添加密码验证</title>
-    <link href="https://www.idce.com/redis-add-permission/"/>
-    <id>https://www.idce.com/redis-add-permission/</id>
+    <link href="http://www.huotublog.com/redis-add-permission/"/>
+    <id>http://www.huotublog.com/redis-add-permission/</id>
     <published>2020-03-30T17:24:22.000Z</published>
     <updated>2020-03-30T17:28:37.892Z</updated>
     
@@ -128,17 +128,17 @@
     </summary>
     
     
-      <category term="Redis" scheme="https://www.idce.com/categories/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/categories/Redis/"/>
     
     
-      <category term="Redis" scheme="https://www.idce.com/tags/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/tags/Redis/"/>
     
   </entry>
   
   <entry>
     <title>Docker更换镜像源</title>
-    <link href="https://www.idce.com/docker-change-mirrors/"/>
-    <id>https://www.idce.com/docker-change-mirrors/</id>
+    <link href="http://www.huotublog.com/docker-change-mirrors/"/>
+    <id>http://www.huotublog.com/docker-change-mirrors/</id>
     <published>2020-03-30T17:21:03.000Z</published>
     <updated>2020-03-30T17:23:13.950Z</updated>
     
@@ -151,17 +151,17 @@
     </summary>
     
     
-      <category term="Docker" scheme="https://www.idce.com/categories/Docker/"/>
+      <category term="Docker" scheme="http://www.huotublog.com/categories/Docker/"/>
     
     
-      <category term="Docker" scheme="https://www.idce.com/tags/Docker/"/>
+      <category term="Docker" scheme="http://www.huotublog.com/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>Mac系统安装Pecl</title>
-    <link href="https://www.idce.com/mac-install-pecl/"/>
-    <id>https://www.idce.com/mac-install-pecl/</id>
+    <link href="http://www.huotublog.com/mac-install-pecl/"/>
+    <id>http://www.huotublog.com/mac-install-pecl/</id>
     <published>2020-03-30T17:15:19.000Z</published>
     <updated>2020-03-30T17:20:28.583Z</updated>
     
@@ -174,17 +174,17 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>Redis淘汰机制</title>
-    <link href="https://www.idce.com/redis-delete-policy/"/>
-    <id>https://www.idce.com/redis-delete-policy/</id>
+    <link href="http://www.huotublog.com/redis-delete-policy/"/>
+    <id>http://www.huotublog.com/redis-delete-policy/</id>
     <published>2020-03-30T17:11:39.000Z</published>
     <updated>2020-03-30T17:13:21.419Z</updated>
     
@@ -197,17 +197,17 @@
     </summary>
     
     
-      <category term="Redis" scheme="https://www.idce.com/categories/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/categories/Redis/"/>
     
     
-      <category term="Redis" scheme="https://www.idce.com/tags/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/tags/Redis/"/>
     
   </entry>
   
   <entry>
     <title>Redis基础</title>
-    <link href="https://www.idce.com/redis-base/"/>
-    <id>https://www.idce.com/redis-base/</id>
+    <link href="http://www.huotublog.com/redis-base/"/>
+    <id>http://www.huotublog.com/redis-base/</id>
     <published>2020-03-30T17:06:41.000Z</published>
     <updated>2020-03-30T17:09:16.493Z</updated>
     
@@ -220,17 +220,17 @@
     </summary>
     
     
-      <category term="Redis" scheme="https://www.idce.com/categories/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/categories/Redis/"/>
     
     
-      <category term="Redis" scheme="https://www.idce.com/tags/Redis/"/>
+      <category term="Redis" scheme="http://www.huotublog.com/tags/Redis/"/>
     
   </entry>
   
   <entry>
     <title>Window环境下安装Docker的坑</title>
-    <link href="https://www.idce.com/window-install-docker-issue/"/>
-    <id>https://www.idce.com/window-install-docker-issue/</id>
+    <link href="http://www.huotublog.com/window-install-docker-issue/"/>
+    <id>http://www.huotublog.com/window-install-docker-issue/</id>
     <published>2020-03-30T17:03:50.000Z</published>
     <updated>2020-03-30T17:05:21.328Z</updated>
     
@@ -243,17 +243,17 @@
     </summary>
     
     
-      <category term="Docker" scheme="https://www.idce.com/categories/Docker/"/>
+      <category term="Docker" scheme="http://www.huotublog.com/categories/Docker/"/>
     
     
-      <category term="Docker" scheme="https://www.idce.com/tags/Docker/"/>
+      <category term="Docker" scheme="http://www.huotublog.com/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>MySQL主键详解</title>
-    <link href="https://www.idce.com/mysql-primary-key/"/>
-    <id>https://www.idce.com/mysql-primary-key/</id>
+    <link href="http://www.huotublog.com/mysql-primary-key/"/>
+    <id>http://www.huotublog.com/mysql-primary-key/</id>
     <published>2020-03-30T17:01:50.000Z</published>
     <updated>2020-03-30T17:03:12.246Z</updated>
     
@@ -266,17 +266,17 @@
     </summary>
     
     
-      <category term="MySQL" scheme="https://www.idce.com/categories/MySQL/"/>
+      <category term="MySQL" scheme="http://www.huotublog.com/categories/MySQL/"/>
     
     
-      <category term="MySQL" scheme="https://www.idce.com/tags/MySQL/"/>
+      <category term="MySQL" scheme="http://www.huotublog.com/tags/MySQL/"/>
     
   </entry>
   
   <entry>
     <title>Nginx SSL证书配置问题</title>
-    <link href="https://www.idce.com/nginx-ssl-issue/"/>
-    <id>https://www.idce.com/nginx-ssl-issue/</id>
+    <link href="http://www.huotublog.com/nginx-ssl-issue/"/>
+    <id>http://www.huotublog.com/nginx-ssl-issue/</id>
     <published>2020-03-30T16:57:16.000Z</published>
     <updated>2020-03-30T17:39:19.694Z</updated>
     
@@ -289,17 +289,17 @@
     </summary>
     
     
-      <category term="Nginx" scheme="https://www.idce.com/categories/Nginx/"/>
+      <category term="Nginx" scheme="http://www.huotublog.com/categories/Nginx/"/>
     
     
-      <category term="Nginx" scheme="https://www.idce.com/tags/Nginx/"/>
+      <category term="Nginx" scheme="http://www.huotublog.com/tags/Nginx/"/>
     
   </entry>
   
   <entry>
     <title>PHPStorm逼死强迫症患者解决方法</title>
-    <link href="https://www.idce.com/phpstorm-no-ext-tip-issue/"/>
-    <id>https://www.idce.com/phpstorm-no-ext-tip-issue/</id>
+    <link href="http://www.huotublog.com/phpstorm-no-ext-tip-issue/"/>
+    <id>http://www.huotublog.com/phpstorm-no-ext-tip-issue/</id>
     <published>2020-03-30T16:40:47.000Z</published>
     <updated>2020-03-30T16:55:58.276Z</updated>
     
@@ -312,17 +312,17 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>PHP-CLI 常用命令参数</title>
-    <link href="https://www.idce.com/php-cli-arguments/"/>
-    <id>https://www.idce.com/php-cli-arguments/</id>
+    <link href="http://www.huotublog.com/php-cli-arguments/"/>
+    <id>http://www.huotublog.com/php-cli-arguments/</id>
     <published>2020-03-15T04:15:44.000Z</published>
     <updated>2020-03-15T06:07:14.121Z</updated>
     
@@ -335,17 +335,17 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>Trait - 优雅的复用方法</title>
-    <link href="https://www.idce.com/trait/"/>
-    <id>https://www.idce.com/trait/</id>
+    <link href="http://www.huotublog.com/trait/"/>
+    <id>http://www.huotublog.com/trait/</id>
     <published>2020-03-14T16:40:51.000Z</published>
     <updated>2020-03-14T17:59:31.889Z</updated>
     
@@ -358,17 +358,17 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>微服务</title>
-    <link href="https://www.idce.com/mini-server/"/>
-    <id>https://www.idce.com/mini-server/</id>
+    <link href="http://www.huotublog.com/mini-server/"/>
+    <id>http://www.huotublog.com/mini-server/</id>
     <published>2020-03-14T12:57:38.000Z</published>
     <updated>2020-03-14T13:45:32.344Z</updated>
     
@@ -381,17 +381,17 @@
     </summary>
     
     
-      <category term="架构" scheme="https://www.idce.com/categories/%E6%9E%B6%E6%9E%84/"/>
+      <category term="架构" scheme="http://www.huotublog.com/categories/%E6%9E%B6%E6%9E%84/"/>
     
     
-      <category term="架构" scheme="https://www.idce.com/tags/%E6%9E%B6%E6%9E%84/"/>
+      <category term="架构" scheme="http://www.huotublog.com/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>PHP-FPM</title>
-    <link href="https://www.idce.com/php-fpm/"/>
-    <id>https://www.idce.com/php-fpm/</id>
+    <link href="http://www.huotublog.com/php-fpm/"/>
+    <id>http://www.huotublog.com/php-fpm/</id>
     <published>2020-03-14T12:24:27.000Z</published>
     <updated>2020-03-14T12:26:28.374Z</updated>
     
@@ -404,17 +404,17 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>一文读懂Nginx</title>
-    <link href="https://www.idce.com/nginx-introduction/"/>
-    <id>https://www.idce.com/nginx-introduction/</id>
+    <link href="http://www.huotublog.com/nginx-introduction/"/>
+    <id>http://www.huotublog.com/nginx-introduction/</id>
     <published>2020-03-10T14:20:15.000Z</published>
     <updated>2020-03-18T05:42:25.827Z</updated>
     
@@ -427,19 +427,19 @@
     </summary>
     
     
-      <category term="Nginx" scheme="https://www.idce.com/categories/Nginx/"/>
+      <category term="Nginx" scheme="http://www.huotublog.com/categories/Nginx/"/>
     
     
-      <category term="Linux" scheme="https://www.idce.com/tags/Linux/"/>
+      <category term="Linux" scheme="http://www.huotublog.com/tags/Linux/"/>
     
-      <category term="Nginx" scheme="https://www.idce.com/tags/Nginx/"/>
+      <category term="Nginx" scheme="http://www.huotublog.com/tags/Nginx/"/>
     
   </entry>
   
   <entry>
     <title>PHP中的反射</title>
-    <link href="https://www.idce.com/php-reflex/"/>
-    <id>https://www.idce.com/php-reflex/</id>
+    <link href="http://www.huotublog.com/php-reflex/"/>
+    <id>http://www.huotublog.com/php-reflex/</id>
     <published>2020-03-10T09:55:28.000Z</published>
     <updated>2020-03-10T12:04:46.620Z</updated>
     
@@ -452,19 +452,19 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
-      <category term="技术" scheme="https://www.idce.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="http://www.huotublog.com/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>PHP中的魔术方法</title>
-    <link href="https://www.idce.com/php-magic-methods/"/>
-    <id>https://www.idce.com/php-magic-methods/</id>
+    <link href="http://www.huotublog.com/php-magic-methods/"/>
+    <id>http://www.huotublog.com/php-magic-methods/</id>
     <published>2020-03-10T05:42:44.000Z</published>
     <updated>2020-03-10T08:38:31.770Z</updated>
     
@@ -477,12 +477,12 @@
     </summary>
     
     
-      <category term="PHP" scheme="https://www.idce.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/categories/PHP/"/>
     
     
-      <category term="PHP" scheme="https://www.idce.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.huotublog.com/tags/PHP/"/>
     
-      <category term="技术" scheme="https://www.idce.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="http://www.huotublog.com/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
