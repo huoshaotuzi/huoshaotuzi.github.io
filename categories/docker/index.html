@@ -18,7 +18,7 @@
 
   <!-- 页面元数据 -->
   
-    <title>分類：docker - 火兔博客</title>
+    <title>分类：Docker - 火兔博客</title>
   
   
 
@@ -252,8 +252,8 @@
       
         
   <h2 class="title">
-    <a href="/centos-install-gitlab/">
-      Centos安装Gitlab
+    <a href="/docker-change-mirrors/">
+      Docker更换镜像源
     </a>
   </h2>
 
@@ -278,7 +278,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月7日</p>
+    <p>发布于：2020年3月31日</p>
   </a>
 </div>
 
@@ -309,13 +309,13 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      搭建自己的 Git 仓库。
+      更换 Docker 默认的镜像源为国内镜像，可以大幅提高镜像的下载速度。
       
         
           <div class="button readmore">
-            <a href="/centos-install-gitlab/" class="flat-box">
+            <a href="/docker-change-mirrors/" class="flat-box">
               <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              閱讀全文
+              阅读全文
             </a>
           </div>
         
@@ -324,9 +324,7 @@
     <!-- 
       <div class="full-width auto-padding tags">
         
-          <a href="/tags/centos/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> centos</a>
-        
-          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
+          <a href="/tags/Docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Docker</a>
         
       </div>
      -->
@@ -349,8 +347,8 @@
       
         
   <h2 class="title">
-    <a href="/docker-install-gitlab/">
-      再战！Docker 安装 Gitlab
+    <a href="/window-install-docker-issue/">
+      Window环境下安装Docker的坑
     </a>
   </h2>
 
@@ -375,7 +373,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月7日</p>
+    <p>发布于：2020年3月31日</p>
   </a>
 </div>
 
@@ -406,13 +404,13 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      Docker环境搭建Gitlab。
+      相比于 Linux 系统，要在 Window 系统安装 Docker 相对要麻烦得多。
       
         
           <div class="button readmore">
-            <a href="/docker-install-gitlab/" class="flat-box">
+            <a href="/window-install-docker-issue/" class="flat-box">
               <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              閱讀全文
+              阅读全文
             </a>
           </div>
         
@@ -421,9 +419,7 @@
     <!-- 
       <div class="full-width auto-padding tags">
         
-          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
-        
-          <a href="/tags/docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> docker</a>
+          <a href="/tags/Docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Docker</a>
         
       </div>
      -->
@@ -729,16 +725,16 @@
   
   <br>
   <div>
-    <p>博客內容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" rel="noopener">姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議</a></p>
+    <p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 
   </div>
   <div>
     本站使用
     <a href="http://www.huotublog.com/" target="_blank" class="codename">我的文档</a>
-    作為主題
+    作为主题
     
       ，
-      總訪問量為
+      总访问量为
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
       次
     
@@ -851,15 +847,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "複製成功";
-  let COPY_FAILURE = "複製失敗";
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>複製</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
@@ -960,6 +956,10 @@
 
 
 
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
 
   <script>setLoadingBarProgress(100);</script>
 </body>
