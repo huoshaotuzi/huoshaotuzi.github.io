@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4959a420-3501-4a63-b6c4-31be13e8270a" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/mysql-why-not-use-select-star.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/mysql-why-not-use-select-star.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/_config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" afterDir="false" />
@@ -59,8 +59,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/mysql-why-not-use-select-star.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-240">
-                <caret line="206" column="82" lean-forward="true" selection-start-line="206" selection-start-column="82" selection-end-line="206" selection-end-column="82" />
+              <first_editor relative-caret-position="187">
+                <caret line="139" column="6" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
               </first_editor>
               <second_editor />
             </state>
@@ -309,12 +309,12 @@
       <workItem from="1591102395235" duration="28000" />
       <workItem from="1592732536571" duration="2368000" />
       <workItem from="1593043360627" duration="281000" />
-      <workItem from="1593043876434" duration="6323000" />
+      <workItem from="1593043876434" duration="7460000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141125000" />
+    <option name="totallyTimeSpent" value="142262000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="812" extended-state="0" />
@@ -732,8 +732,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/mysql-why-not-use-select-star.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-240">
-            <caret line="206" column="82" lean-forward="true" selection-start-line="206" selection-start-column="82" selection-end-line="206" selection-end-column="82" />
+          <first_editor relative-caret-position="187">
+            <caret line="139" column="6" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
           </first_editor>
           <second_editor />
         </state>
