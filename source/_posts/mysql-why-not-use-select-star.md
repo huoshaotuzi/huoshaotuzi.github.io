@@ -254,6 +254,6 @@ explain select user_id,goods_id,price from orders where user_id = 1 limit 10;
 显然我们不可能给每一张表的所有字段都加上索引，因此使用 SELECT 星号在字段比较多的表中无法实现「覆盖查询」。
 
 ## 尾语
-凡事保存着一颗「千反田的好奇心」。
+保持一颗「千反田的好奇心」，相信技术一定会有很大突破。
 
 ![image.png](https://i.loli.net/2020/06/25/NgM2rOeXHQiFPwI.png)
