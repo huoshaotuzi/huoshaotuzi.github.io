@@ -401,8 +401,7 @@
 <p>「覆盖查询」是从索引直接拿到数据，不需要「回表查询」，因而查询速度更快。</p>
 <p>通过上面的分析，我们知道要实现「覆盖查询」的条件必须是：查询的字段全部都是索引。</p>
 <p>显然我们不可能给每一张表的所有字段都加上索引，因此使用 SELECT 星号在字段比较多的表中无法实现「覆盖查询」。</p>
-<h2 id="尾语"><a href="#尾语" class="headerlink" title="尾语"></a>尾语</h2><p>最后总结一下，使用 SELECT 星号确实对性能会造成影响。</p>
-<p>具体该什么时候用，什么时候不用，取决于场景，我们要灵活的应对眼前遇到的问题，而不是人云亦云，以为书上说的就是对的，以为一个世俗所承认的观点就是没问题的，凡事还是得思考。</p>
+<h2 id="尾语"><a href="#尾语" class="headerlink" title="尾语"></a>尾语</h2><p>凡事保存着一颗「千反田的好奇心」。</p>
 <p><img src="https://i.loli.net/2020/06/25/NgM2rOeXHQiFPwI.png" alt="image.png"></p>
 
           
@@ -500,7 +499,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>下一頁&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/mysql-init-action/" rel="prev" title="MySQL新增用户、修改密码、设置权限">
                                     
@@ -547,7 +546,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-memory-optimize/" title="MySQL占用内存过高优化记录" rel="bookmark">MySQL占用内存过高优化记录</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-init-action/" title="MySQL新增用户、修改密码、设置权限" rel="bookmark">MySQL新增用户、修改密码、设置权限</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-primary-key/" title="MySQL主键详解" rel="bookmark">MySQL主键详解</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/centos-install-gitlab/" title="Centos安装Gitlab" rel="bookmark">Centos安装Gitlab</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/docker-change-mirrors/" title="Docker更换镜像源" rel="bookmark">Docker更换镜像源</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-memory-optimize/" title="MySQL占用内存过高优化记录" rel="bookmark">MySQL占用内存过高优化记录</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-init-action/" title="MySQL新增用户、修改密码、设置权限" rel="bookmark">MySQL新增用户、修改密码、设置权限</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-primary-key/" title="MySQL主键详解" rel="bookmark">MySQL主键详解</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/docker-install-gitlab/" title="再战！Docker 安装 Gitlab" rel="bookmark">再战！Docker 安装 Gitlab</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/centos-install-gitlab/" title="Centos安装Gitlab" rel="bookmark">Centos安装Gitlab</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -760,20 +759,20 @@
   
   <br>
   <div>
-    <p>博客內容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" rel="noopener">姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議</a></p>
+    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
 
   </div>
   <div>
-    本站使用
+    Use
     <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
-    作為主題
+    as theme
     
-      ，
-      總訪問量為
+      , 
+      total visits
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      次
+      times
     
-    。
+    . 
   </div>
   
   <div>
@@ -882,15 +881,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "複製成功";
-  let COPY_FAILURE = "複製失敗";
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>複製</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
