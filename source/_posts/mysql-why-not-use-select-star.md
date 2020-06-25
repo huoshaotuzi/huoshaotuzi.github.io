@@ -254,8 +254,6 @@ explain select user_id,goods_id,price from orders where user_id = 1 limit 10;
 显然我们不可能给每一张表的所有字段都加上索引，因此使用 SELECT 星号在字段比较多的表中无法实现「覆盖查询」。
 
 ## 尾语
-最后总结一下，使用 SELECT 星号确实对性能会造成影响。
-
-具体该什么时候用，什么时候不用，取决于场景，我们要灵活的应对眼前遇到的问题，而不是人云亦云，以为书上说的就是对的，以为一个世俗所承认的观点就是没问题的，凡事还是得思考。
+凡事保存着一颗「千反田的好奇心」。
 
 ![image.png](https://i.loli.net/2020/06/25/NgM2rOeXHQiFPwI.png)
