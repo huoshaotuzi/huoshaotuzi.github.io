@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -18,8 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>Tag: composer - 火兔博客</title>
+    <title>MAC 系统打开网页速度缓慢问题的解决方法 - 火兔博客</title>
   
+    <meta name="keywords" content="MAC OS,解决方案">
+  
+  
+    <meta name="description" content="MAC系统的浏览器打开某些网站特别慢，有的甚至打不开。比如百度云网盘链接打开很快，但是点击输入提取码却要卡半天；百度图片甚至直接打不开了；还有B站打开也要半天，严重浪费时间和影响效率，其实不是家里网络的问题，而是苹果系统迷之BUG。">
   
 
   <!-- feed -->
@@ -69,7 +71,7 @@
 <body>
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <p class="title ">火兔博客</p>
@@ -222,29 +224,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-        
-          
-        
-          
-        
-      
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
+
   
+    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -253,11 +238,13 @@
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/composer-config/">
-      composer配置参数详解
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/mac-os-internet-slowly-resolved/">
+        MAC 系统打开网页速度缓慢问题的解决方法
+      </a>
+    </h1>
+  
 
 
       
@@ -277,20 +264,15 @@
           
         
           
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月8日</p>
-  </a>
-</div>
+            
 
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-05-26T19:18:43+08:00">
+            <div class="new-meta-item date">
   <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年5月26日</p>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2021年1月16日</p>
   </a>
 </div>
 
@@ -309,240 +291,229 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      composer.json 文件参数详解。
-      
-        
-          <div class="button readmore">
-            <a href="/composer-config/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
-        
-      
-    </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/composer/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> composer</a>
-        
-      </div>
-     -->
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/composer-package/">
-      从零开始开发自己的Composer包
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
           
-        
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>MAC系统的浏览器打开某些网站特别慢，有的甚至打不开。比如百度云网盘链接打开很快，但是点击输入提取码却要卡半天；百度图片甚至直接打不开了；还有B站打开也要半天，严重浪费时间和影响效率。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="改变位置"><a href="#改变位置" class="headerlink" title="改变位置"></a>改变位置</h3><p>其实不是家里网络的问题，而是苹果系统迷之BUG！</p>
+<p>首先点击左上角的苹果图标，然后选择“系统偏好设置”，接着选择“网络”。</p>
+<p>（小技巧：按Command+空格键可以打开聚焦搜索，然后直接输入“网络”两个字，MAC系统就会显示出系统偏好设置里的网络了）</p>
+<p>左侧默认有：</p>
+<ul>
+<li>Wi-Fi（已连接）</li>
+<li>蓝牙 PAN</li>
+<li>雷雳网桥</li>
+</ul>
+<p>这里我们不用修改。</p>
+<p>看中间部分，默认值是“自动”，点击下拉框，然后选择“编辑位置”。</p>
+<p>然后点击“+”号，输入新的位置：“家”，再点击完成。</p>
+<p>接着我们可以发现，左侧的 Wi-Fi 的 IP 地址已经没了，并且提示你无法连接到网络。</p>
+<p>只要你点击下方的“应用”，就会重新寻找 IP 地址。</p>
+<p>现在已经大功告成了！再打开那些网页，你可以发现速度起飞了！</p>
+<h3 id="改变-DNS"><a href="#改变-DNS" class="headerlink" title="改变 DNS"></a>改变 DNS</h3><p>如果上述方法依然无法提高访问速度，那就有可能是 DNS 地址在作怪。</p>
+<p>我们知道，域名只是一个指向服务器 IP 地址的代号，把域名解析为 IP 地址需要 DNS 服务商为我们提供服务，因此 DNS 服务器也会影响打开网页的速度。</p>
+<p>依然是系统偏好设置里的网络，点击左侧的 Wi-Fi，然后右下角的“高级”。</p>
+<p>在顶部选项卡选择“DNS”，然后点击左下角的“+”号，添加如下地址：</p>
+<ul>
+<li>8.8.8.8</li>
+<li>8.8.4.4</li>
+</ul>
+<p>以上任意一个即可，这两个是谷歌的 DNS 服务器。</p>
+<p>当然我们国内的还有臭名昭著的 114：</p>
+<ul>
+<li>114.114.114.114</li>
+</ul>
+<p>你也可以修改为 114，但是并不推荐这么做。</p>
+<p>因为它经常会在你打开的网页里加入一些奇奇怪怪的广告，最常见的就是手机访问网页时，右侧经常会出现一个红包领取的图标（并不是网站有这种东西，而是使用了 114 服务器解析后，它给这个网站加上的）</p>
+<p>以前刚毕业的时候，曾经被这个奇怪的问题困扰了半天，还以为自己的网站是被被人黑了呢！</p>
+<p>还有，当你访问的网站 404 时，114 会把网页改成它们的广告页，要知道互联网上 404 的页面有很多，光是广告费的收入就可想而知了。</p>
+<p>虽说 114 又不是在做公益，没道理不牟利。</p>
+<p>404 页面修改成广告倒是情有可原，但拦截别人的网站并在里面加入领取红包的广告，这样做就很不厚道了。</p>
+<h3 id="关闭蓝牙"><a href="#关闭蓝牙" class="headerlink" title="关闭蓝牙"></a>关闭蓝牙</h3><p>据说苹果的蓝牙也会影响 Wi-Fi，你可以尝试关闭蓝牙，如果能提高网页访问速度，那说明蓝牙也会影响。</p>
+<p>但是苹果系统又没有耳机接口，这样蓝牙耳机就用不了了……</p>
+<h3 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h3><p>如果你用了代理，那访问国内网站的速度肯定会变慢。</p>
+<p>最好的方法就是改成 PAC 自动模式，这样软件就会自动判断是否需要开启代理了。</p>
+
           
+            <br>
             
-<div class='new-meta-item author'>
-  <a href="http://www.huotublog.com" rel="nofollow">
-    <img src="https://s2.ax1x.com/2020/03/01/3gwvDK.png">
-    <p>火烧兔子</p>
-  </a>
-</div>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
 
-          
+<section class="widget copyright  widget-blur desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
         
           
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月8日</p>
-  </a>
-</div>
-
-          
-        
-          
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-05-26T19:18:43+08:00">
-  <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年5月26日</p>
-  </a>
-</div>
+            <p>转载请注明出处及链接。</p>
 
           
         
           
             
-
           
         
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      在使用 composer 的时候，我们几乎都是在用其他人分享出来的包，久而久之，难免会产生开发自己包的想法，不仅可以加深对 composer 的理解程度，同时还可以把自己常用的功能封装起来，作为自己的“小金库”储备起来。
-      
+          
+            <p>本文链接：<a href=http://www.huotublog.com/mac-os-internet-slowly-resolved/>http://www.huotublog.com/mac-os-internet-slowly-resolved/</a></p>
+          
         
-          <div class="button readmore">
-            <a href="/composer-package/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
-        
-      
-    </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/composer/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> composer</a>
-        
-      </div>
-     -->
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
-  
-
-
-  <section class='meta'>
+      </blockquote>
     
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/install-gitlab-satis-composer/">
-      Gitlab + Satis 搭建私有 Composer 仓库
-    </a>
-  </h2>
+  </div>
+</section>
 
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
+                
+              
+                
+              
             
-<div class='new-meta-item author'>
-  <a href="http://www.huotublog.com" rel="nofollow">
-    <img src="https://s2.ax1x.com/2020/03/01/3gwvDK.png">
-    <p>火烧兔子</p>
-  </a>
-</div>
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月7日</p>
-  </a>
-</div>
-
-          
-        
-          
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-05-26T19:18:43+08:00">
-  <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年5月26日</p>
-  </a>
-</div>
-
-          
-        
-          
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
             
-
           
+        </div>
         
-      </div>
+          <br>
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
       
-        <hr>
+        
+          
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/MAC-OS/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>MAC OS</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>解决方案</p></a></div>
+
+
+        
       
     </div>
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      搭建一套属于自己的composer私有仓库。
+        
+        
+            <div class="prev-next">
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/mysql-why-not-use-select-star/" rel="prev" title="MySQL为什么不使用 SELECT *(星号)查询？">
+                                    
+                                        MySQL为什么不使用 SELECT *(星号)查询？
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/MySQL/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> MySQL</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
       
         
-          <div class="button readmore">
-            <a href="/install-gitlab-satis-composer/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
-        
-      
+  
+
+  <section class="widget related_posts  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
+    
+  </header>
+
+
+    <div class="content">
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/centos-install-gitlab/" title="Centos安装Gitlab" rel="bookmark">Centos安装Gitlab</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/docker-change-mirrors/" title="Docker更换镜像源" rel="bookmark">Docker更换镜像源</a></h3></div></li></ul>
     </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
-        
-          <a href="/tags/docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> docker</a>
-        
-          <a href="/tags/composer/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> composer</a>
-        
-      </div>
-     -->
   </section>
-</article>
 
-          </div>
-        
+
       
     
-  </section>
+      
+    
+      
+    
   
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
 
   
 
 
-    
   
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'MAC 系统打开网页速度缓慢问题的解决方法',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -679,94 +650,20 @@
       
     
       
-    
-      
         
-  
 
-  <section class="widget category  widget-blur desktop">
+
+  <section class="widget toc-wrapper  widget-blur desktop mobile">
     
   <header>
     
-      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Hexo/" href="/categories/Hexo/"
-            id="categoriesHexo"
-            ><div class='name'>Hexo</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/JavaScript/" href="/categories/JavaScript/"
-            id="categoriesJavaScript"
-            ><div class='name'>JavaScript</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Linux/" href="/categories/Linux/"
-            id="categoriesLinux"
-            ><div class='name'>Linux</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/MySQL/" href="/categories/MySQL/"
-            id="categoriesMySQL"
-            ><div class='name'>MySQL</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/PHP/" href="/categories/PHP/"
-            id="categoriesPHP"
-            ><div class='name'>PHP</div><div class='badge'>(7)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/composer/" href="/categories/composer/"
-            id="categoriescomposer"
-            ><div class='name'>composer</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/docker/" href="/categories/docker/"
-            id="categoriesdocker"
-            ><div class='name'>docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9E%B6%E6%9E%84/" href="/categories/%E6%9E%B6%E6%9E%84/"
-            id="categoriesE69EB6E69E84"
-            ><div class='name'>架构</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%B8%B8%E6%88%8F/" href="/categories/%E6%B8%B8%E6%88%8F/"
-            id="categoriesE6B8B8E6888F"
-            ><div class='name'>游戏</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%B5%84%E6%96%99/" href="/categories/%E8%B5%84%E6%96%99/"
-            id="categoriesE8B584E69699"
-            ><div class='name'>资料</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/" href="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"
-            id="categoriesE9809AE794A8E68A80E69CAF"
-            ><div class='name'>通用技术</div><div class='badge'>(1)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#改变位置"><span class="toc-text">改变位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改变-DNS"><span class="toc-text">改变 DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭蓝牙"><span class="toc-text">关闭蓝牙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代理设置"><span class="toc-text">代理设置</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -775,39 +672,6 @@
     
       
     
-      
-    
-      
-    
-      
-    
-  
-    
-      
-    
-      
-    
-      
-    
-      
-        
-  
-
-  <section class="widget tagcloud  widget-blur desktop">
-    
-  <header>
-    
-      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 16.5px; color: #888">Docker</a> <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/Linux/" style="font-size: 19px; color: #777">Linux</a> <a href="/tags/MAC-OS/" style="font-size: 14px; color: #999">MAC OS</a> <a href="/tags/MySQL/" style="font-size: 21.5px; color: #666">MySQL</a> <a href="/tags/Nginx/" style="font-size: 16.5px; color: #888">Nginx</a> <a href="/tags/PHP/" style="font-size: 24px; color: #555">PHP</a> <a href="/tags/Redis/" style="font-size: 19px; color: #777">Redis</a> <a href="/tags/Supervisord/" style="font-size: 14px; color: #999">Supervisord</a> <a href="/tags/WebSite/" style="font-size: 14px; color: #999">WebSite</a> <a href="/tags/centos/" style="font-size: 14px; color: #999">centos</a> <a href="/tags/composer/" style="font-size: 19px; color: #777">composer</a> <a href="/tags/docker/" style="font-size: 16.5px; color: #888">docker</a> <a href="/tags/gitlab/" style="font-size: 21.5px; color: #666">gitlab</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 21.5px; color: #666">技术</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 19px; color: #777">架构</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 14px; color: #999">游戏</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 14px; color: #999">游戏开发</a> <a href="/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" style="font-size: 14px; color: #999">解决方案</a>
-    </div>
-  </section>
-
-
       
     
       
