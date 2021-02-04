@@ -309,11 +309,23 @@
 <li>可以缩短程序员的开发时间</li>
 <li>支持后期扩展</li>
 </ul>
-<p>考虑到以后可能会打包成 composer 包发布到网上，</p>
-<p>所以这次我还是提前准备，比如加上命名空间之类的。</p>
+<p>缩短程序员的开发时间是框架的核心机制，</p>
+<p>不是仅仅封装一下代码就行了，</p>
+<p>而是它整体的结构应该会让程序员开发起来非常舒服！</p>
+<p>比如验证用户权限之类的，如果都要程序员手写验证，</p>
+<p>那就非常绝望了，框架的作用就是代替程序员去处理那些复杂的工作。</p>
+<p>打一个比方，交通工具就好比是程序的框架，</p>
+<p>程序员骑自行车上路，还要脚踩，累得半死；</p>
+<p>但是坐公交车，程序员只要投币就可以安心的坐在座位上等下车了。</p>
+<p>这样我们就可以说公交车比自行车方便。</p>
+<p>衡量框架的好坏也是如此，程序员用起来很舒服的框架就是好框架，</p>
+<p>而不是说功能强就是好，</p>
+<p>比如你开坦克去上班，坦克虽然比公交车强，但是不方便。</p>
+<p>最好的框架是程序员在使用的时候“无感觉”，</p>
+<p>也就是说在不知不觉的时候框架就帮你把复杂的事情处理完成了。</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>PHP 版本：7.2.31<br>Swoole 版本：4.5.2<br>PHP Redis 版本：5.1.1</p>
 <p>这里我用的 redis 是 PHP 的扩展，</p>
-<p>如果你不安装 redis 扩展也可以用 composer 引入</p>
+<p>如果你不安装 redis 扩展也可以用 composer 引入。</p>
 <h2 id="框架起名"><a href="#框架起名" class="headerlink" title="框架起名"></a>框架起名</h2><p>第一步当然是给框架起个好名字，</p>
 <p>我把这个框架叫做“火兔引擎”，</p>
 <p>于是创建目录：<code>/firerabbit-engine</code>。</p>
@@ -340,15 +352,14 @@
 <p>首先在项目目录下新建一个 <code>http_server.php</code>。</p>
 <p>然后查看 Swoole 官方文档：<a href="https://wiki.swoole.com/#/start/start_http_server" target="_blank" rel="noopener">Http 服务器</a></p>
 <p>直接把代码抠下来复制到 <code>http_server.php</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$http &#x3D; new Swoole\Http\Server(&#39;0.0.0.0&#39;, 9502);</span><br><span class="line"></span><br><span class="line">$http-&gt;on(&#39;request&#39;, function ($request, $response) &#123;</span><br><span class="line">    var_dump($request-&gt;server);</span><br><span class="line">    $response-&gt;header(&quot;Content-Type&quot;, &quot;text&#x2F;html; charset&#x3D;utf-8&quot;);</span><br><span class="line">    $response-&gt;end(&quot;&lt;h1&gt;Hello Swoole. #&quot;.rand(1000, 9999).&quot;&lt;&#x2F;h1&gt;&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$http-&gt;start();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$http &#x3D; new Swoole\Http\Server(&#39;0.0.0.0&#39;, 9527);</span><br><span class="line"></span><br><span class="line">$http-&gt;on(&#39;request&#39;, function ($request, $response) &#123;</span><br><span class="line">    var_dump($request-&gt;server);</span><br><span class="line">    $response-&gt;header(&quot;Content-Type&quot;, &quot;text&#x2F;html; charset&#x3D;utf-8&quot;);</span><br><span class="line">    $response-&gt;end(&quot;&lt;h1&gt;Hello Swoole. #&quot;.rand(1000, 9999).&quot;&lt;&#x2F;h1&gt;&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$http-&gt;start();</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>注意我这里把默认端口改成 9527 了！</p>
 </blockquote>
-<p>先不用管这边的代码是干嘛的，只要知道我们设置了 9527 作为服务器端口。</p>
 <p>之后可以用 <code>127.0.0.1:9527</code> 进行访问。</p>
 <p>如果你跟我一样是用 docker 的话，</p>
-<p>记得容器的 9527 端口要放出来，</p>
+<p>记得宿主机的端口要映射到容器的 9527 端口，</p>
 <p>不然宿主机是访问不到的。</p>
 <p>接着还要在项目的目录下，在控制台输入命令：<code>php http_server.php</code></p>
 <p>你会看到光标卡住了，这说明程序已经运行了。</p>
@@ -431,7 +442,7 @@
 <p><img src="https://i.loli.net/2021/02/04/cm8xCQ5aLjNYbrK.png" alt="流程2.png"></p>
 <p>我个人比较喜欢这种方式，</p>
 <p>最终我们写的控制器会是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class IndexController &#123;</span><br><span class="line"></span><br><span class="line">    public function index() &#123;</span><br><span class="line">        &#x2F;&#x2F; 查询列表数据，为了方便调用，service全部做成单例的</span><br><span class="line">        $articles &#x3D; ArticleService::getInstance()-&gt;getList();</span><br><span class="line">        &#x2F;&#x2F; ... 这里返回视图</span><br><span class="line">        $this-&gt;view(&#39;index&#39;, [&#39;articles&#39; &#x3D;&gt; $articles]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class IndexController &#123;</span><br><span class="line">    public function index() &#123;</span><br><span class="line">        &#x2F;&#x2F; 查询列表数据，为了方便调用，service全部做成单例的</span><br><span class="line">        $articles &#x3D; ArticleService::getInstance()-&gt;getList();</span><br><span class="line">        &#x2F;&#x2F; ... 这里返回视图</span><br><span class="line">        $this-&gt;view(&#39;index&#39;, [&#39;articles&#39; &#x3D;&gt; $articles]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以看到，控制器的代码会变得十分简洁。</p>
 <p>对了，控制器还有一个作用就是验证数据，</p>
