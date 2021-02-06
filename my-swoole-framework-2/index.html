@@ -417,7 +417,7 @@
 <p>但是这种硬编码绝对会让你原地爆炸，</p>
 <p>即使你自己觉得没啥，你同事绝对会想在月黑风高的时候把你弄死……</p>
 <p>我们为什么不这样做呢？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 定义一个“规则”，把它命名为：2021_12_12_active</span><br><span class="line">规则 2021_12_12_active : </span><br><span class="line">如果当前时间大于等于 2021-12-12 21:00:00 则返回 true，否则返回 false</span><br><span class="line"></span><br><span class="line"># 然后再修改路由解析器：</span><br><span class="line">用户访问：http:&#x2F;&#x2F;127.0.0.1&#x2F;goods&#x2F;1</span><br><span class="line">路由解析器解析出：控制器：goods，方法：show，参数：1</span><br><span class="line"></span><br><span class="line">它正准备实例化对象呢！</span><br><span class="line">这个时候，中间件站了出来，说：路由老哥，等一哈！</span><br><span class="line"></span><br><span class="line">路由老哥愣住了，停下来听中间件想说什么。</span><br><span class="line">中间件不慌不忙的解释道：这个路径被加上了“规则”，要验证之后才可以。</span><br><span class="line"></span><br><span class="line">而这个规则叫做：2021_12_12_active</span><br><span class="line">根据《小学生手册》里规定：</span><br><span class="line">第 2021_12_12_active 条：</span><br><span class="line">好孩子在 2021-12-12 这一天必须在晚上九点以后上传睡觉。</span><br><span class="line">在九点之前睡觉的都不是好孩子！不能让它们通过！</span><br><span class="line"></span><br><span class="line">然后中间件接着说，我查下现在的时间，如果超过了九点就告诉你。</span><br><span class="line"></span><br><span class="line">于是路由解释器等中间件查完告诉他结果再决定能不能继续访问。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 定义一个“规则”，把它命名为：2021_12_12_active</span><br><span class="line">规则 2021_12_12_active : </span><br><span class="line">如果当前时间大于等于 2021-12-12 21:00:00 则返回 true，否则返回 false</span><br><span class="line"></span><br><span class="line"># 然后再修改路由解析器：</span><br><span class="line">用户访问：http:&#x2F;&#x2F;127.0.0.1&#x2F;goods&#x2F;1</span><br><span class="line">路由解析器解析出：控制器：goods，方法：show，参数：1</span><br><span class="line"></span><br><span class="line">它正准备实例化对象呢！</span><br><span class="line">这个时候，中间件站了出来，说：路由老哥，等一哈！</span><br><span class="line"></span><br><span class="line">路由老哥愣住了，停下来听中间件想说什么。</span><br><span class="line">中间件不慌不忙的解释道：这个路径被加上了“规则”，要验证之后才可以。</span><br><span class="line"></span><br><span class="line">而这个规则叫做：2021_12_12_active</span><br><span class="line">根据《小学生手册》里规定：</span><br><span class="line">第 2021_12_12_active 条：</span><br><span class="line">好孩子在 2021-12-12 这一天必须在晚上九点以后上传睡觉。</span><br><span class="line">在九点之前睡觉的都不是好孩子！不能让它们通过！</span><br><span class="line">这件事交给我来处理，你可以退下了。</span><br><span class="line"></span><br><span class="line">于是路由解释器就把执行权限交给了中间件。</span><br><span class="line">中间件就会查询时间是否符合要求，</span><br><span class="line">如果符合要求就让请求正常进行下去，</span><br><span class="line">不符合要求就返回异常的结果。</span><br></pre></td></tr></table></figure>
 
 <p>中间件就是一套“规则”，你可能会问那跟表单验证有什么不同？</p>
 <p>其实表单验证就是中间件的子集，除了表单验证之外，还有权限验证。</p>
@@ -569,7 +569,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>下一頁&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/my-swoole-framework-1/" rel="prev" title="从零开始搭建自己的Swoole框架（一）">
                                     
@@ -616,7 +616,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）" rel="bookmark">从零开始搭建自己的Swoole框架（一）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）" rel="bookmark">从零开始搭建自己的Swoole框架（一）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -829,16 +829,16 @@
   
   <br>
   <div>
-    <p>博客內容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" rel="noopener">姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議</a></p>
+    <p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 
   </div>
   <div>
     本站使用
     <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
-    作為主題
+    作为主题
     
       ，
-      總訪問量為
+      总访问量为
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
       次
     
@@ -951,15 +951,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "複製成功";
-  let COPY_FAILURE = "複製失敗";
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>複製</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
