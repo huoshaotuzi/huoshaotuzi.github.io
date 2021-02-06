@@ -426,6 +426,9 @@
 <p>但我们还是会单独拆分出来，</p>
 <p>因为他们在细节还是有些不同的，</p>
 <p>而且我们还可以通过封装实现更加简单的操作。</p>
+<blockquote>
+<p>表单验证和权限验证均可以在控制器里面处理，如果是在控制器层面处理的话就不叫做中间件的，为了实现复用性，我们会把表单验证跟用户验证以中间件的形式实现</p>
+</blockquote>
 <h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>不论是本地调试还是线上查询问题所在，</p>
 <p>日志都是非常重要的，日志系统可以支持数据库和文件。</p>
 <p>我们暂时只支持文件日志。</p>
@@ -569,7 +572,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/my-swoole-framework-1/" rel="prev" title="从零开始搭建自己的Swoole框架（一）">
                                     
@@ -616,7 +619,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）" rel="bookmark">从零开始搭建自己的Swoole框架（一）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-reflex/" title="PHP中的反射" rel="bookmark">PHP中的反射</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）" rel="bookmark">从零开始搭建自己的Swoole框架（一）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-magic-methods/" title="PHP中的魔术方法" rel="bookmark">PHP中的魔术方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -829,20 +832,20 @@
   
   <br>
   <div>
-    <p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
 
   </div>
   <div>
-    本站使用
+    Use
     <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
-    作为主题
+    as theme
     
-      ，
-      总访问量为
+      , 
+      total visits
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      次
+      times
     
-    。
+    . 
   </div>
   
   <div>
@@ -951,15 +954,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "复制成功";
-  let COPY_FAILURE = "复制失败";
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
