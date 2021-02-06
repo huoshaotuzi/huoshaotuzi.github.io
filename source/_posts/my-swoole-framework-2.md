@@ -236,7 +236,7 @@ http://127.0.0.1/article/1
 
 ```
 # 用户注册
-if(isset($_GET['name'] && strlen($_GET['name']) < 4 && strlen($_GET['name']) > 10) {
+if(isset($_GET['name'] && strlen($_GET['name']) < 4 || strlen($_GET['name']) > 10) {
     echo '用户名不能为空，且长度为4~10';
 }
 
