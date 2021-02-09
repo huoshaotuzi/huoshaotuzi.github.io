@@ -1,7 +1,13 @@
 ---
-title: 从零开始搭建自己的Swoole框架（三）路由模块
+title: 从零开始搭建自己的Swoole框架（四）路由模块
 date: 2021-02-09 11:25:34
 tags:
+ - PHP
+ - Swoole
+ 
+categories: 架构
+
+description: 实现简单路由功能。
 ---
 ## 前言
 路由是一个框架最基本的功能，

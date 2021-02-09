@@ -4,9 +4,7 @@
     <list default="true" id="4959a420-3501-4a63-b6c4-31be13e8270a" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/my-swoole-framework-1.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/my-swoole-framework-1.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/my-swoole-framework-2.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/my-swoole-framework-2.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.php" beforeDir="false" afterPath="$PROJECT_DIR$/test.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/_config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" afterDir="false" />
@@ -29,8 +27,20 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-3.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="2535">
-                <caret line="169" selection-start-line="169" selection-end-line="169" />
+              <first_editor relative-caret-position="45">
+                <caret line="3" selection-start-line="3" selection-end-line="9" selection-end-column="20" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="135">
+                <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
               </first_editor>
               <second_editor />
             </state>
@@ -38,11 +48,11 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md">
+        <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="331">
-                <caret line="726" column="4" selection-start-line="726" selection-start-column="4" selection-end-line="726" selection-end-column="4" />
+              <first_editor relative-caret-position="142">
+                <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
               </first_editor>
               <second_editor />
             </state>
@@ -71,8 +81,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>menu</find>
-      <find>博客首页</find>
       <find>advanced-settings</find>
       <find>这是文章页脚</find>
       <find>qrcode</find>
@@ -101,6 +109,8 @@
       <find>idce</find>
       <find>huotub</find>
       <find>我的文档</find>
+      <find>解释器</find>
+      <find>传给</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -109,7 +119,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/source/_posts/docker-install-gitlab.md" />
         <option value="$PROJECT_DIR$/source/_posts/easy-to-start-hexo.md" />
         <option value="$PROJECT_DIR$/source/_posts/install-gitlab-satis-composer.md" />
         <option value="$PROJECT_DIR$/source/_posts/ssh-no-password-method.md" />
@@ -160,6 +169,7 @@
         <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-3.md" />
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" />
+        <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md" />
       </list>
     </option>
   </component>
@@ -275,12 +285,12 @@
       <workItem from="1612609631021" duration="2532000" />
       <workItem from="1612613089393" duration="818000" />
       <workItem from="1612614013585" duration="4032000" />
-      <workItem from="1612839882882" duration="12571000" />
+      <workItem from="1612839882882" duration="19107000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="178310000" />
+    <option name="totallyTimeSpent" value="184846000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="833" extended-state="0" />
@@ -312,9 +322,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/themes/material-x/layout/_partial/head.ejs">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/php-reflex.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -686,8 +693,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-3.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="2535">
-            <caret line="169" selection-start-line="169" selection-end-line="169" />
+          <first_editor relative-caret-position="45">
+            <caret line="3" selection-start-line="3" selection-end-line="9" selection-end-column="20" />
           </first_editor>
           <second_editor />
         </state>
@@ -696,8 +703,18 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="331">
-            <caret line="726" column="4" selection-start-line="726" selection-start-column="4" selection-end-line="726" selection-end-column="4" />
+          <first_editor relative-caret-position="135">
+            <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="142">
+            <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
           </first_editor>
           <second_editor />
         </state>
