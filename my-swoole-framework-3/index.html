@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>从零开始搭建自己的Swoole框架（一）框架概述 - 火兔博客</title>
+    <title>从零开始搭建自己的Swoole框架（三）类的自动加载 - 火兔博客</title>
   
     <meta name="keywords" content="PHP,Swoole">
   
   
-    <meta name="description" content="从框架的执行流程开始。">
+    <meta name="description" content="类的自动加载。">
   
 
   <!-- feed -->
@@ -240,8 +240,8 @@
         
   
     <h1 class="title">
-      <a href="/my-swoole-framework-1/">
-        从零开始搭建自己的Swoole框架（一）框架概述
+      <a href="/my-swoole-framework-3/">
+        从零开始搭建自己的Swoole框架（三）类的自动加载
       </a>
     </h1>
   
@@ -280,7 +280,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2021年2月4日</p>
+    <p>发布于：2021年2月6日</p>
   </a>
 </div>
 
@@ -302,160 +302,54 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="从入口文件开始说起"><a href="#从入口文件开始说起" class="headerlink" title="从入口文件开始说起"></a>从入口文件开始说起</h2><h2 id="框架概述"><a href="#框架概述" class="headerlink" title="框架概述"></a>框架概述</h2><p>简单地说框架就是封装好各种便利功能的工具，</p>
-<p>同时还会“自动化”的处理复杂的事情，</p>
-<p>通俗的说就是让程序员开开心心码代码的结构。</p>
-<p>我们现在要撸的这套框架，应该满足以下需求：</p>
-<ul>
-<li>可以缩短开发时间</li>
-<li>支持后期扩展</li>
-</ul>
-<p>不是仅仅封装一下类和方法就叫框架了，</p>
-<p>它整体的结构应该让程序员使用起来非常舒服！</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>PHP 版本：7.2.31<br>Swoole 版本：4.5.2<br>PHP Redis 版本：5.1.1</p>
-<p>这里我用的 redis 是 PHP 的扩展，</p>
-<p>如果你不安装 redis 扩展也可以用 composer 引入。</p>
-<h2 id="框架起名"><a href="#框架起名" class="headerlink" title="框架起名"></a>框架起名</h2><p>第一步是给框架起个好名字，</p>
-<p>我把这个框架叫做“火兔引擎”，</p>
-<p>创建目录：<code>/firerabbit-engine</code>。</p>
-<p>这个目录名称和位置你可以随意设置，</p>
-<p>之后用 nginx 指定就行了，最简单的就是放到 www 目录下。</p>
-<h2 id="虚拟域名"><a href="#虚拟域名" class="headerlink" title="虚拟域名"></a>虚拟域名</h2><p>平时我们可能都是用 <code>127.0.0.1</code>，</p>
-<p>但是本地的项目多了的话，就不能用单一的地址了。</p>
-<p>我们可以设置一个虚拟域名，即修改本地的主机解析记录。</p>
-<p>windows 系统和 mac os 都是修改 hosts 文件，</p>
-<p>以 mac os 为例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;hosts</span><br></pre></td></tr></table></figure>
+          <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>创建文件目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">blog</span><br><span class="line">|-- app</span><br><span class="line">|   &#96;-- public</span><br><span class="line">|-- firerabbit-engine</span><br><span class="line">|   &#96;-- module</span><br><span class="line">&#96;-- http_server.php</span><br></pre></td></tr></table></figure>
 
-<p>在最底下插入一行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 firerabbit-engine.ht</span><br></pre></td></tr></table></figure>
+<p>其中，根目录 blog 为项目根目录，app 文件夹是项目所在目录，</p>
+<p>public 用来存放 web 的静态资源如图片、js 文件等。</p>
+<p>firerabbit-engine 是框架目录，module 存放模块代码，</p>
+<p>目前框架代码跟是项目代码放在一起的，</p>
+<p>为了以后方便分离，所以把项目的代码放在 app 里面处理。</p>
+<blockquote>
+<p>文件夹的大小写规范自己定义即可</p>
+</blockquote>
+<h2 id="psr-4-自动加载"><a href="#psr-4-自动加载" class="headerlink" title="psr-4 自动加载"></a>psr-4 自动加载</h2><p>在根目录创建文件 <code>composer.json</code>，并输入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;require&quot;: &#123;&#125;,</span><br><span class="line">  &quot;autoload&quot;: &#123;</span><br><span class="line">    &quot;psr-4&quot;: &#123;</span><br><span class="line">      &quot;FireRabbitEngine\\Module\\&quot;: &quot;firerabbit-engine&#x2F;module&#x2F;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;repositories&quot;: &#123;</span><br><span class="line">    &quot;packagist&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;composer&quot;,</span><br><span class="line">      &quot;url&quot;: &quot;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;composer&#x2F;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><code>firerabbit-engine.ht</code> 是你设置的虚拟域名，</p>
-<p>可以任意设置，但是最好不要是跟真正域名冲突的，</p>
-<p>比如你设置了 <code>baidu.com</code>，</p>
-<p>那你访问百度就会变成解析到自己本机了，</p>
-<p>这个 <code>.ht</code> 后缀也是我虚构的。</p>
-<p>测试的时候就可以在浏览器输入 <code>firerabbit-engine.ht</code> 访问博客地址。</p>
-<h2 id="Hello-World！"><a href="#Hello-World！" class="headerlink" title="Hello World！"></a>Hello World！</h2><p>现在项目是空的，一个文件也没有，</p>
-<p>首先在项目目录下新建一个 <code>http_server.php</code>。</p>
-<p>然后查看 Swoole 官方文档：<a href="https://wiki.swoole.com/#/start/start_http_server" target="_blank" rel="noopener">Http 服务器</a></p>
-<p>直接把示例代码抠下来复制到 <code>http_server.php</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$http &#x3D; new Swoole\Http\Server(&#39;0.0.0.0&#39;, 9527);</span><br><span class="line"></span><br><span class="line">$http-&gt;on(&#39;request&#39;, function ($request, $response) &#123;</span><br><span class="line">    var_dump($request-&gt;server);</span><br><span class="line">    $response-&gt;header(&quot;Content-Type&quot;, &quot;text&#x2F;html; charset&#x3D;utf-8&quot;);</span><br><span class="line">    $response-&gt;end(&quot;&lt;h1&gt;Hello Swoole. #&quot;.rand(1000, 9999).&quot;&lt;&#x2F;h1&gt;&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$http-&gt;start();</span><br></pre></td></tr></table></figure>
+<p>这里我们指定了框架的命名空间以及将镜像源修改为阿里云。</p>
+<p>接着使用命令 <code>composer install</code> 执行安装，</p>
+<p>完成后出现 vendor 文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">|-- app</span><br><span class="line">|   &#96;-- public</span><br><span class="line">|-- composer.json</span><br><span class="line">|-- firerabbit-engine</span><br><span class="line">|   &#96;-- module</span><br><span class="line">|-- http_server.php</span><br><span class="line">&#96;-- vendor</span><br><span class="line">    |-- autoload.php</span><br><span class="line">    &#96;-- composer</span><br><span class="line">        |-- ClassLoader.php</span><br><span class="line">        |-- LICENSE</span><br><span class="line">        |-- autoload_classmap.php</span><br><span class="line">        |-- autoload_namespaces.php</span><br><span class="line">        |-- autoload_psr4.php</span><br><span class="line">        |-- autoload_real.php</span><br><span class="line">        |-- autoload_static.php</span><br><span class="line">        &#96;-- installed.json</span><br></pre></td></tr></table></figure>
+
+<p>我们第一步要实现路由功能，路由是一个模块，</p>
+<p>因此在 modlue 下新建文件夹 Route，</p>
+<p>接着在该目录新建文件 <code>Router.php</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace FireRabbitEngine\Module\Route;</span><br><span class="line"></span><br><span class="line">class Router</span><br><span class="line">&#123;</span><br><span class="line">    public function test()</span><br><span class="line">    &#123;</span><br><span class="line">        var_dump(&#39;ok&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>注意我这里把默认端口改成 9527 了。</p>
+<p>FireRabbitEngine 即框架的命名空间</p>
 </blockquote>
-<p>之后可以用 <code>127.0.0.1:9527</code> 进行访问。</p>
-<p>如果你跟我一样是用 docker 的话，</p>
-<p>记得要设置端口映射：<code>-p 9527:9527</code>，不然宿主机是访问不到的。</p>
-<p>接着在项目的目录下，在控制台输出命令启动程序：<code>php http_server.php</code></p>
-<p>你会看到光标卡住了，这说明程序已经运行了。</p>
+<p>接着编辑 <code>http_server.php</code>，引入 composer 加载文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">require &#39;.&#x2F;vendor&#x2F;autoload.php&#39;;</span><br><span class="line"></span><br><span class="line">$http &#x3D; new Swoole\Http\Server(&#39;0.0.0.0&#39;, 9527);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 测试</span><br><span class="line">$router &#x3D; new \FireRabbitEngine\Module\Route\Router();</span><br><span class="line">$router-&gt;test();</span><br><span class="line"></span><br><span class="line">$http-&gt;on(&#39;request&#39;, function ($request, $response) &#123;</span><br><span class="line">    $response-&gt;header(&quot;Content-Type&quot;, &quot;text&#x2F;html; charset&#x3D;utf-8&quot;);</span><br><span class="line">    $response-&gt;end(&quot;&lt;h1&gt;Hello Swoole. #&quot;.rand(1000, 9999).&quot;&lt;&#x2F;h1&gt;&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$http-&gt;start();</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入 <code>php http_server.php</code>，看到打印出 ok 就说明自动加载没问题了。</p>
 <blockquote>
-<p>swoole 本身就自带了 http 服务器的功能，因此不需要借助 nginx</p>
+<p>每次修改代码都要 Ctrl+C 关掉再重新启动，不然修改了代码也不会生效，因为 swoole 是常驻内存的，只在启动时加载一次</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;www&#x2F;firerabbit-engine&#x2F;</span><br><span class="line">php http_server.php</span><br></pre></td></tr></table></figure>
+<p>完整的项目目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">|-- app</span><br><span class="line">|   &#96;-- public</span><br><span class="line">|-- composer.json</span><br><span class="line">|-- firerabbit-engine</span><br><span class="line">|   &#96;-- module</span><br><span class="line">|       &#96;-- Route</span><br><span class="line">|           &#96;-- Router.php</span><br><span class="line">|-- http_server.php</span><br><span class="line">&#96;-- vendor</span><br><span class="line">    |-- autoload.php</span><br><span class="line">    &#96;-- composer</span><br><span class="line">        |-- ClassLoader.php</span><br><span class="line">        |-- LICENSE</span><br><span class="line">        |-- autoload_classmap.php</span><br><span class="line">        |-- autoload_namespaces.php</span><br><span class="line">        |-- autoload_psr4.php</span><br><span class="line">        |-- autoload_real.php</span><br><span class="line">        |-- autoload_static.php</span><br><span class="line">        &#96;-- installed.json</span><br></pre></td></tr></table></figure>
 
-<p>做完这一步就可以用 IP 地址+端口号的方式访问了，</p>
-<p>打开浏览器，输入地址：<code>127.0.0.1:9527</code></p>
-<p>可以看到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello Swoole. #7090</span><br></pre></td></tr></table></figure>
+<p>我们需要同步到 Git 防止丢失代码，</p>
+<p>因此需要设置 .gitignore 文件来忽略不需要上传的文件或者目录。</p>
+<p>在终端或者直接右键创建文件都可以，.gitignore 内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vendor</span><br><span class="line">.idea</span><br></pre></td></tr></table></figure>
 
-<p>后面的是随机数字所以每次刷新都不一样。</p>
-<p>控制台也打印出了请求详情，</p>
-<p>这样，第一步就成功了。</p>
-<h2 id="Nginx-转发"><a href="#Nginx-转发" class="headerlink" title="Nginx 转发"></a>Nginx 转发</h2><p>虽然 swoole 自带了 http 服务器，</p>
-<p>但是 swoole 处理 css、js 等静态文件却没有什么好的方法，</p>
-<p>而 nginx 的强项就是处理静态文件，一拍即合，各展所长！</p>
-<p>所以这里我们结合 nginx 处理静态文件，</p>
-<p>静态文件 nginx 处理，动态文件 swoole 处理；</p>
-<p>同时还可以利用上面的虚拟域名来访问网站。</p>
-<p>nginx 增加一个配置文件 <code>firerabbit.conf</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name firerabbit-engine.ht;</span><br><span class="line"></span><br><span class="line">    location ~* \.(gif|jpg|jpeg|png|css|js|ico|ttf|woff|woff2|svg|map)$ &#123;</span><br><span class="line">        root &#x2F;www&#x2F;firerabbit-engine&#x2F;public;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_http_version 1.1;</span><br><span class="line">        proxy_set_header Connection &quot;keep-alive&quot;;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        </span><br><span class="line">        if (!-e $request_filename)&#123;</span><br><span class="line">            proxy_pass http:&#x2F;&#x2F;php-fpm72:9527; # 注意</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因为我是用 docker 搭建的 nginx 和 php 环境，</p>
-<p>容器之间不能直接通过 IP 访问，而是要用容器名。</p>
-<p>如果你不是用 docker 环境，php-fpm72 要改成 <code>127.0.0.1</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass http:&#x2F;&#x2F;127.0.0.1:9527;</span><br></pre></td></tr></table></figure>
-
-<p>然后执行命令：<code>nginx -s reload</code> 来平滑重启 nginx。</p>
-<p>接着在浏览器输入上面设置的虚拟域名：<code>http://firerabbit-engine.ht/</code></p>
-<p>可以看到同样的 hello world 页面。</p>
-<p>通过 nginx 的转发，</p>
-<p>所有静态文件如图片、css 文件等都会被转发到请求 public 这个目录，</p>
-<p>不会发送到 swoole 那边，只有找不到文件才会转发给 swoole。</p>
-<p>捋一捋程序的处理流程：</p>
-<p>在浏览器输入域名的时候，用户的请求先经过 nginx 的正则判断，</p>
-<p>如果是 jpg 之类的结尾，就去 public 这个目录下面找，</p>
-<p>如果找不到文件了，再转发给 <code>http://php-fpm72:9527</code>。</p>
-<p>这样 nginx 的配置也弄好了。</p>
-<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><p>一个典型的框架，包含以下几个特征：</p>
-<ul>
-<li>单一入口</li>
-<li>MVC 结构（模型、视图、控制器分离）</li>
-<li>自动加载（composer）</li>
-</ul>
-<p>单一入口这个很好理解，</p>
-<p>swoole 默认即单一入口，</p>
-<p>也就是全部请求都转发给 <code>http_server.php</code> 文件处理。</p>
-<p>MVC 就是分离代码，让每个类的功能更加单一，</p>
-<p>简单的说就是 PHP 写接口，前端人员写前端页面，</p>
-<p>但是我们并不会真正的完全分离，因为博客是要做 SEO 的，</p>
-<p>如果全部都用接口，搜索引擎就不会收录了。</p>
-<p>我们的 MVC 结构会用模板引擎来实现代码解耦。</p>
-<p>自动加载是我们这个框架的核心部分，</p>
-<p>因为我们会依赖其他组件，同时我们自己的类也需要加上命名空间。</p>
-<p>现代 PHP composer 自动加载几乎是必备的。</p>
-<h3 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h3><p>捋一捋框架的整体运行流程：</p>
-<p>swoole 收到 nginx 转发来的请求，</p>
-<p>通过“解析器”将请求 uri 解析成对应的控制器和方法，</p>
-<p>（解析器就是路由功能，解析器是一个类文件，自己要写的）</p>
-<p>以及获取各种参数、cookie 等等，</p>
-<p>将这些参数传递给 controller，</p>
-<p>controller 负责处理业务逻辑。</p>
-<p>虽然 MVC 框架已经很流行了，</p>
-<p>但是我们这里不推荐在 controller 处理逻辑，</p>
-<p>在这里写业务，后面这个文件就会变成几千行，不方便维护。</p>
-<p>我们再增加一个 Service 层，将业务逻辑的代码移到 Service 去处理。</p>
-<p>这样整个框架的流程大致可以捋顺了，如下图：</p>
-<p><img src="https://i.loli.net/2021/02/04/INCJc6vlGMBYH8r.png" alt="流程1.png"></p>
-<p>swoole 收到 nginx 转发的请求，</p>
-<p>通过解析器（一个类文件），</p>
-<p>将请求的 uri 解析成对应的路由和参数，</p>
-<p>实例化路由的类并且调用对应的方法，并将参数传递给类的实例化对象，</p>
-<p>类的实例化对象（controller）再调用 service 来处理逻辑。</p>
-<p>（controller 的作用 与 nginx 类似，也是分发请求，但是它还有一个返回响应的功能）</p>
-<p>controller 得到参数和 cookie 等，交给 service 处理，</p>
-<p>service 再调用 model 或者其他的类库，返回处理结果，将值返回给  controller，</p>
-<p>最后一步，controoler 收到返回的值，再返回对应类型的响应。</p>
-<p>（响应的种类有很多，例如 json、html 等等，如：<code>content-type: text/html; charset=UTF-8</code>）</p>
-<p>原本 controller 是处理逻辑代码的地方，</p>
-<p>在这里我们把它变成分发请求了，</p>
-<p>这是防止以后 controller 变得臃肿，</p>
-<p>但实际上，</p>
-<p>逻辑代码转移到 service 会让 service 变得臃肿……</p>
-<p>（目前没有更好的方法了）</p>
-<p>控制器的处理流程可以看图：</p>
-<p><img src="https://i.loli.net/2021/02/04/cm8xCQ5aLjNYbrK.png" alt="流程2.png"></p>
-<p>我个人比较喜欢这种方式，</p>
-<p>最终我们写的控制器会是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class IndexController &#123;</span><br><span class="line">    public function index() &#123;</span><br><span class="line">        &#x2F;&#x2F; 查询列表数据，为了方便调用，service全部做成单例的</span><br><span class="line">        $articles &#x3D; ArticleService::getInstance()-&gt;getList();</span><br><span class="line">        &#x2F;&#x2F; ... 这里返回视图</span><br><span class="line">        $this-&gt;view(&#39;index&#39;, [&#39;articles&#39; &#x3D;&gt; $articles]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>控制器的代码会变得十分简洁。</p>
-<p>控制器还有一个作用就是验证数据，</p>
-<p>比如用户提交的表单，</p>
-<p>如果输入的邮箱格式不正确就直接返回错误的响应，</p>
-<p>数据验证就全部在 controller 处理了，而不是传到 service。</p>
-<p>我把控制器的功能限制为：① 验证数据 ② 转发给 service 处理 ③ 返回结果</p>
-<p>而 service 则处理数据库操作之类的业务逻辑。</p>
-<p>controller 和 service 的功能变得十分单一，从而降低耦合性。</p>
-<p>问题就是，控制器干净了，service 却脏了……</p>
-<p>service 不仅要处理数据库，还要更新缓存之类的，想想就可怕。</p>
-<p>后面我们可以考虑把数据库处理的逻辑转移到 model，</p>
-<p>这样可以减少 service 臃肿度。</p>
-<h2 id="第一阶段目标"><a href="#第一阶段目标" class="headerlink" title="第一阶段目标"></a>第一阶段目标</h2><p>现在思路已经很明确了，</p>
-<p>但是很多细节部分我们还没有设计，</p>
-<p>比如日志系统、缓存系统、数据库系统、配置参数文件、中间件……</p>
-<p>下期统一进行规划，本篇文章就到这了。</p>
+<blockquote>
+<p>我用的是 PhpStorm 会产生 .idea 文件夹，但这个是不需要上传的，如果你用的是 vscode，要把 .vscode 文件夹也加进去</p>
+</blockquote>
+<p>然后就可以把项目同步到 Git 上面了。</p>
+<p>如此一来类的自动加载就实现了，</p>
+<p>下一步我们就可以开始编写路由模块了。</p>
 
           
             <br>
@@ -489,7 +383,7 @@
           
         
           
-            <p>本文链接：<a href=http://www.huotublog.com/my-swoole-framework-1/>http://www.huotublog.com/my-swoole-framework-1/</a></p>
+            <p>本文链接：<a href=http://www.huotublog.com/my-swoole-framework-3/>http://www.huotublog.com/my-swoole-framework-3/</a></p>
           
         
       </blockquote>
@@ -553,17 +447,12 @@
                         <span class="art-item-left">
                             <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一頁</h6>
                             <h4>
-                                <a href="/my-swoole-framework-2/" rel="prev" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案">
+                                <a href="/my-swoole-framework-4/" rel="prev" title="从零开始搭建自己的Swoole框架（三）路由模块">
                                   
-                                      从零开始搭建自己的Swoole框架（二）项目的规划和设计草案
+                                      从零开始搭建自己的Swoole框架（三）路由模块
                                   
                                 </a>
                             </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
-                                </h6>
                             
                         </span>
                     </section>
@@ -573,9 +462,9 @@
                         <span class="art-item-right" aria-hidden="true">
                             <h6>下一頁&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/my-swoole-framework-0/" rel="prev" title="从零开始搭建自己的Swoole框架（序章）">
+                                <a href="/my-swoole-framework-2/" rel="prev" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案">
                                     
-                                        从零开始搭建自己的Swoole框架（序章）
+                                        从零开始搭建自己的Swoole框架（二）项目的规划和设计草案
                                     
                                 </a>
                             </h4>
@@ -618,7 +507,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-2/" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案" rel="bookmark">从零开始搭建自己的Swoole框架（二）项目的规划和设计草案</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-2/" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案" rel="bookmark">从零开始搭建自己的Swoole框架（二）项目的规划和设计草案</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）框架概述" rel="bookmark">从零开始搭建自己的Swoole框架（一）框架概述</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/phpstorm-no-ext-tip-issue/" title="PHPStorm逼死强迫症患者解决方法" rel="bookmark">PHPStorm逼死强迫症患者解决方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/trait/" title="Trait - 优雅的复用方法" rel="bookmark">Trait - 优雅的复用方法</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-fpm/" title="PHP-FPM" rel="bookmark">PHP-FPM</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -650,7 +539,7 @@
 
   <script>
     window.subData = {
-      title: '从零开始搭建自己的Swoole框架（一）框架概述',
+      title: '从零开始搭建自己的Swoole框架（三）类的自动加载',
       tools: true
     }
   </script>
@@ -805,7 +694,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从入口文件开始说起"><span class="toc-text">从入口文件开始说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#框架概述"><span class="toc-text">框架概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境"><span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#框架起名"><span class="toc-text">框架起名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#虚拟域名"><span class="toc-text">虚拟域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-World！"><span class="toc-text">Hello World！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-转发"><span class="toc-text">Nginx 转发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目结构"><span class="toc-text">项目结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本结构"><span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行流程"><span class="toc-text">执行流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一阶段目标"><span class="toc-text">第一阶段目标</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#psr-4-自动加载"><span class="toc-text">psr-4 自动加载</span></a></li></ol>
     </div>
   </section>
 
