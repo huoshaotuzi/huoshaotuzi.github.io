@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4959a420-3501-4a63-b6c4-31be13e8270a" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/_config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" afterDir="false" />
@@ -47,12 +45,24 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="142">
-                <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
+              <first_editor relative-caret-position="60">
+                <caret line="4" selection-start-line="4" selection-end-line="9" selection-end-column="29" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-6.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="326">
+                <caret line="627" selection-start-line="627" selection-end-line="627" />
               </first_editor>
               <second_editor />
             </state>
@@ -81,8 +91,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>advanced-settings</find>
-      <find>这是文章页脚</find>
       <find>qrcode</find>
       <find>标签查询</find>
       <find>copyright</find>
@@ -111,6 +119,8 @@
       <find>我的文档</find>
       <find>解释器</find>
       <find>传给</find>
+      <find>把上一步</find>
+      <find>因为斜杠是正则符号</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -119,7 +129,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/source/_posts/easy-to-start-hexo.md" />
         <option value="$PROJECT_DIR$/source/_posts/install-gitlab-satis-composer.md" />
         <option value="$PROJECT_DIR$/source/_posts/ssh-no-password-method.md" />
         <option value="$PROJECT_DIR$/source/_posts/Intelligence-comic-recommend.md" />
@@ -170,6 +179,7 @@
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-4.md" />
         <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md" />
+        <option value="$PROJECT_DIR$/source/_posts/my-swoole-framework-6.md" />
       </list>
     </option>
   </component>
@@ -285,12 +295,12 @@
       <workItem from="1612609631021" duration="2532000" />
       <workItem from="1612613089393" duration="818000" />
       <workItem from="1612614013585" duration="4032000" />
-      <workItem from="1612839882882" duration="19107000" />
+      <workItem from="1612839882882" duration="29881000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184846000" />
+    <option name="totallyTimeSpent" value="195620000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="833" extended-state="0" />
@@ -310,8 +320,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.31292516" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007153" side_tool="true" weight="0.31292516" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49928468" visible="true" weight="0.31292516" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -322,16 +332,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/source/_posts/php-reflex.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="135">
-            <caret line="9" column="11" selection-start-line="9" selection-end-line="9" selection-end-column="11" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/phpstorm-no-ext-tip-issue.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -676,13 +676,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -713,8 +706,25 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-5.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="142">
-            <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
+          <first_editor relative-caret-position="60">
+            <caret line="4" selection-start-line="4" selection-end-line="9" selection-end-column="29" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/my-swoole-framework-6.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="326">
+            <caret line="627" selection-start-line="627" selection-end-line="627" />
           </first_editor>
           <second_editor />
         </state>
