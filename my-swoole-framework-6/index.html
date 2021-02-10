@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>从零开始搭建自己的Swoole框架（六）为路由模块添加命名功能 - 火兔博客</title>
+  
+    <meta name="keywords" content="PHP,Swoole">
+  
+  
+    <meta name="description" content="为路由模块添加命名功能。">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="火兔博客">
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+
+  
+
+  <!-- import link -->
+  
+
+  
+    
+<link rel="stylesheet" href="/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <p class="title ">火兔博客</p>
+  
+    <p class="subtitle ">火烧兔子的开发日记，联系QQ：874811226。</p>
+  
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <i class="icon fas fa-search fa-fw"></i>
+      <input type="text" class="input u-search-input" placeholder="搜索文档" />
+    </form>
+  </div>
+
+<div class='menu navigation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home "
+            href="/"
+            
+            
+            id="home">
+            <i class='fas fa-bullhorn fa-fw'></i>&nbsp;首页
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home "
+            href="/archives/"
+            
+            
+            id="archives">
+            <i class='fas fa-book fa-fw'></i>&nbsp;归档
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home "
+            href="/categories/"
+            
+            
+            id="categories">
+            <i class='fas fa-book fa-fw'></i>&nbsp;分类
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home "
+            href="/tags/"
+            
+            
+            id="tags">
+            <i class='fas fa-book fa-fw'></i>&nbsp;标签
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home "
+            href="/about/"
+            
+            
+            id="about">
+            <i class='fas fa-handshake fa-fw'></i>&nbsp;作者
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header nav-blur">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar"></div>
+  </div>
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      
+        <a class="logo flat-box" target="_self" href='/' >
+          
+            
+              火兔博客 <sup style='color:#2196f3'></sup>
+            
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="搜索文档" />
+        </form>
+      </div>
+
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+	
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e495693491e78dd355ab9dd8f8b3e207";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</header>
+	<aside class="menu-phone white-box">
+    <header>
+		<nav class="menu navigation">
+      <ul>
+        
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/my-swoole-framework-6/">
+        从零开始搭建自己的Swoole框架（六）为路由模块添加命名功能
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="http://www.huotublog.com" rel="nofollow">
+    <img src="https://s2.ax1x.com/2020/03/01/3gwvDK.png">
+    <p>火烧兔子</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/%E6%9E%B6%E6%9E%84/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>架构</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2021年2月10日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>参考 Laravel 的路由，希望我的框架可以跟 Laravel 一样给路由命名，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$router-&gt;get(&#39;&#x2F;home&#39;, &#39;IndexController@index&#39;)-&gt;name(&#39;index&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>然后提供一个全局函数 <code>route</code> 生成链接。</p>
+<p>比如定义一个路由名 index，路由规则是：“/home”，</p>
+<p>然后通过 <code>route(&#39;index&#39;)</code> 会生成 “/home” 链接。</p>
+<p>其实就是从路由配置表里找到对应名字的路由然后取出路由规则而已。</p>
+<p>对于需要解析路由参数的就不能只是简单的返回字符串了，</p>
+<p>比如显示文章详情：路由命名为：<code>article.show</code>，对应的路由规则：<code>/article/{id}</code>，</p>
+<p>通过全局函数生成文章详情的链接 <code>route(&#39;article.show&#39;, [&#39;id&#39;=&gt;1])</code> 返回：“/article/1”。</p>
+<p>原理与解析路由参数一样，即正则匹配进行替换。</p>
+<h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><p>只要方法返回类本身就可以实现链式调用了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    protected $word &#x3D; &#39;&#39;;</span><br><span class="line"></span><br><span class="line">    public function say($word)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;word .&#x3D; $word . PHP_EOL;</span><br><span class="line"></span><br><span class="line">        return $this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function showResult()</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;word;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$test &#x3D; new Test();</span><br><span class="line"></span><br><span class="line">$test-&gt;say(&#39;hello&#39;)-&gt;say(&#39;world&#39;)-&gt;showResult();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Router：添加命名功能"><a href="#Router：添加命名功能" class="headerlink" title="Router：添加命名功能"></a>Router：添加命名功能</h2><p>其实这个地方我有点疑惑，为什么 name 方法是写在最后面，</p>
+<p>get 方法已经将路由参数写入到配置里面了，写在链式调用最后的方法如何修改前面设定的值？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$router-&gt;get(&#39;&#x2F;home&#39;, &#39;IndexController@index&#39;)-&gt;name(&#39;index&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>结果灵鸡一动！突然想到一种奇妙的方法来实现“后调改前值”，</p>
+<p>就是加入一个 lastIndex，在插入路由配置的时候，计算这个插入值所在数组的索引并保存下来。</p>
+<p>如果要修改最后一个调用的配置，就可以从 lastIndex 获取到了。</p>
+<p>修改 Router 原来生成路由配置的方法，</p>
+<p>为了链式调用必须返回类本身，同时加入 lastIndex 变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 保存最后一个操作的路由对象索引</span><br><span class="line"> * @var null</span><br><span class="line"> *&#x2F;</span><br><span class="line">private $lastHandleRouteIndex &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 定义一个 GET 请求路由</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $controller</span><br><span class="line"> * @return Router</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function get($route, $controller)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;addRoute(RequestMethod::GET, $route, $controller);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 定义一个 POST 请求路由</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $controller</span><br><span class="line"> * @return Router</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function post($route, $controller)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;addRoute(RequestMethod::POST, $route, $controller);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 定义一个任意请求皆可的路由</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $controller</span><br><span class="line"> * @return Router</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function any($route, $controller)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;addRoute(RequestMethod::ANY, $route, $controller);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 将路由加入配置数组</span><br><span class="line"> * @param $method</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $controller</span><br><span class="line"> * @return Router</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">protected function addRoute($method, $route, $controller)</span><br><span class="line">&#123;</span><br><span class="line">    $param &#x3D; new RouteParams();</span><br><span class="line"></span><br><span class="line">    $param-&gt;method &#x3D; $method;</span><br><span class="line">    $param-&gt;route &#x3D; $route;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 格式为：控制器@方法名</span><br><span class="line">    $actions &#x3D; explode(&#39;@&#39;, $controller);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 如果不按照规则设置控制器和方法名则抛出异常</span><br><span class="line">    if (count($actions) !&#x3D; 2) &#123;</span><br><span class="line">        throw new RouteParamException(&#39;控制器和方法名称错误，应该为：控制器名称@方法名称&#39;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $param-&gt;controller &#x3D; $actions[0];</span><br><span class="line">    $param-&gt;action &#x3D; $actions[1];</span><br><span class="line">    $param-&gt;namespace &#x3D; $this-&gt;namespace;</span><br><span class="line">    $param-&gt;pattern &#x3D; $this-&gt;getPattern($route);</span><br><span class="line"></span><br><span class="line">    self::$routes[] &#x3D; $param;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 新加入行</span><br><span class="line">    $this-&gt;lastHandleRouteIndex &#x3D; count(self::$routes) - 1;</span><br><span class="line"></span><br><span class="line">    return $this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>索引一开始是空的，所以赋值为 null，在插入路由配置的时候，</p>
+<p>通过 <code>count(self::$routes) - 1</code> 计算当前新插入值的索引。</p>
+<p>接下来新增一个 name 方法，路由名相当于唯一的 ID，因此不允许重复：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 给路由命名</span><br><span class="line"> * @param $routeName</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function name($routeName)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;lastHandleRouteIndex &#x3D;&#x3D;&#x3D; null) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 判断路由是否存在同名</span><br><span class="line">    foreach (self::$routes as $route) &#123;</span><br><span class="line">        if ($route-&gt;name &#x3D;&#x3D; $routeName) &#123;</span><br><span class="line">            throw  new RouteParamException(&#39;路由名称重复[&#39; . $routeName . &#39;]&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $route &#x3D; self::$routes[$this-&gt;lastHandleRouteIndex];</span><br><span class="line">    $route-&gt;name &#x3D; $routeName;</span><br><span class="line"></span><br><span class="line">    self::$routes[$this-&gt;lastHandleRouteIndex] &#x3D; $route;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 lastIndex 找到最后一个修改的路由配置，然后给它赋值 name 属性。</p>
+<h3 id="避坑指南：诡异的-null-值"><a href="#避坑指南：诡异的-null-值" class="headerlink" title="避坑指南：诡异的 null 值"></a>避坑指南：诡异的 null 值</h3><blockquote>
+<p>这里有个神坑！</p>
+</blockquote>
+<p><strong>PHP 对 null 值的判定很诡异</strong>。</p>
+<p>在 PHP 中，<code>0 == null</code> 的结果为 true。</p>
+<p>因此必须使用三等号：<code>===</code> 来判定包括类型也必须完全一致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if ($this-&gt;lastHandleRouteIndex &#x3D;&#x3D;&#x3D; null) &#123;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的 if 本来是为了判定是否有路由配置，如果还没配置路由就调用 name 就直接跳过，</p>
+<p>第一次操作时，lastIndex 的索引是 0，如果不使用三等号第一个配置的路由就会被跳过了。</p>
+<blockquote>
+<p>在使用判空操作，如：empty、isset 时必须注意 0、null、false 这几个值</p>
+</blockquote>
+<p>再来个有趣的小测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var_dump(0 &#x3D;&#x3D; false);</span><br><span class="line">var_dump(0 &#x3D;&#x3D; null);</span><br><span class="line">var_dump(0 &#x3D;&#x3D; &#39;&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>以上三个，全部输出：<code>bool(true)</code>，是不是惊到了！</p>
+<p>在某些场合双等号判定会造成失误，应该改用三等号。</p>
+<h2 id="测试路由名称"><a href="#测试路由名称" class="headerlink" title="测试路由名称"></a>测试路由名称</h2><p>编辑 web.php 修改路由配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$router &#x3D; new \FireRabbitEngine\Module\Route\Router();</span><br><span class="line"></span><br><span class="line">$router-&gt;setConfig([</span><br><span class="line"></span><br><span class="line">    &#39;namespace&#39; &#x3D;&gt; &#39;App\\Controller\\Home\\&#39;,</span><br><span class="line"></span><br><span class="line">])-&gt;group(function () use ($router) &#123;</span><br><span class="line"></span><br><span class="line">    $router-&gt;get(&#39;&#x2F;&#39;, &#39;IndexController@index&#39;)-&gt;name(&#39;index&#39;);</span><br><span class="line">    $router-&gt;get(&#39;&#x2F;login&#39;, &#39;IndexController@login&#39;)-&gt;name(&#39;login&#39;);</span><br><span class="line">    $router-&gt;get(&#39;&#x2F;user&#39;, &#39;UserController@index&#39;)-&gt;name(&#39;user.index&#39;);</span><br><span class="line">    $router-&gt;post(&#39;&#x2F;user&#x2F;loginSubmit&#39;, &#39;UserController@loginSubmit&#39;)-&gt;name(&#39;login.submit&#39;);</span><br><span class="line">    $router-&gt;get(&#39;&#x2F;article&#x2F;&#123;id&#125;&#39;, &#39;ArticleController@show&#39;)-&gt;name(&#39;article.show&#39;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>然后在 Router 执行 <code>var_dump(self::$routes)</code> 即可看到所有路由，name 字段已经变成设置的值了。</p>
+<h2 id="RouteParams：生成链接"><a href="#RouteParams：生成链接" class="headerlink" title="RouteParams：生成链接"></a>RouteParams：生成链接</h2><p>RouteParams 保存了路由的所有配置，接下来要让它能根据路由规则生成对应的链接。</p>
+<p>PHP 提供了一个正则替换函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$uri &#x3D; &#39;&#x2F;article&#x2F;&#123;id&#125;&#x2F;classify&#x2F;&#123;classify&#125;&#39;;</span><br><span class="line"></span><br><span class="line">$pattern &#x3D; &#39;&#x2F;&#123;id&#125;&#x2F;&#39;;</span><br><span class="line"></span><br><span class="line">$res &#x3D; preg_replace($pattern, &#39;123&#39;, $uri);</span><br><span class="line"></span><br><span class="line">var_dump($res);</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例代码通过正则替换将自定义规则的 id 替换成数字 123。</p>
+<p>接着，继续看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$uri &#x3D; &#39;&#x2F;article&#x2F;&#123;id&#125;&#x2F;classify&#x2F;&#123;classify&#125;&#39;;</span><br><span class="line"></span><br><span class="line">$patterns &#x3D; [&#39;&#x2F;&#123;id&#125;&#x2F;&#39;, &#39;&#x2F;&#123;classify&#125;&#x2F;&#39;, ];</span><br><span class="line">$replacements &#x3D; [123, 456];</span><br><span class="line"></span><br><span class="line">$res &#x3D; preg_replace($patterns, $replacements, $uri);</span><br><span class="line"></span><br><span class="line">var_dump($res);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(25) &quot;&#x2F;article&#x2F;123&#x2F;classify&#x2F;456&quot;</span><br></pre></td></tr></table></figure>
+
+<p>通过传入数组参数即可实现批量替换，输出的字符串即链接地址。</p>
+<p>原理已经搞清楚了，开始实际上手，修改 RouteParams，创建一个空方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function createLink($params)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着创建一个用来生成 query 参数的私有方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> &#x2F;**</span><br><span class="line"> * 构建query参数的地址</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $query</span><br><span class="line"> * @return string</span><br><span class="line"> *&#x2F;</span><br><span class="line">private function buildQuery($route, $query)</span><br><span class="line">&#123;</span><br><span class="line">    if (empty($query)) &#123;</span><br><span class="line">        return $route;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return $route . &#39;?&#39; . http_build_query($query);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有参数就直接返回，不然就返回包含 query 参数的路由地址。</p>
+<p>现在可以开始编写 createLink 的方法体了，</p>
+<p>因为斜杠是正则符号，所以首页的路由“/”要单独返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function createLink($params)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;route &#x3D;&#x3D; &#39;&#x2F;&#39;) &#123;</span><br><span class="line">        return $this-&gt;buildQuery($this-&gt;route, $params);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着判断是否包含路由参数，没有参数的也直接返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public function createLink($params)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;route &#x3D;&#x3D; &#39;&#x2F;&#39;) &#123;</span><br><span class="line">        return $this-&gt;buildQuery($this-&gt;route, $params);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 取出自定义规则</span><br><span class="line">    $pattern &#x3D; &#39;&#x2F;.*?\&#x2F;(\&#123;.*?\&#125;)&#x2F;&#39;;</span><br><span class="line">    preg_match_all($pattern, $this-&gt;route, $result);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 如果匹配不到自定义参数则直接返回路由规则</span><br><span class="line">    if (count($result[0]) &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        return $this-&gt;buildQuery($this-&gt;route, $params);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我希望实现全局函数 <code>route</code> 传入指定的参数就可以替换掉路由自定义的参数，生成替换了值的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 通过调用全局函数生成路由</span><br><span class="line">route(&#39;article.show&#39;, [&#39;id&#39; &#x3D;&gt; 1])    &#x3D;&gt; 返回结果：&#x2F;article&#x2F;1</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 也就是说，路由规则需要实现如下变换效果</span><br><span class="line">&#x2F;article&#x2F;&#123;id&#125;   &#x3D;&gt; 从 route 函数传入的数组中取出 id 变量，然后再替换掉 &#123;id&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这一步比较复杂，要先获取到匹配的规则：<code>{id}</code>，以及花括号里面的参数名 <code>id</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 获取自定义匹配规则</span><br><span class="line">$patterns &#x3D; [];</span><br><span class="line">$paramNames &#x3D; [];</span><br><span class="line"></span><br><span class="line">for ($i &#x3D; 1, $count &#x3D; count($result[1]); $i &lt;&#x3D; $count; $i++) &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 此处得到自定义规则的参数，如：&#123;id&#125;</span><br><span class="line">    $rule &#x3D; $result[1][$i - 1];</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 花括号是正则表达式的符号，必须加上反斜杠转转义</span><br><span class="line">     * 最后，在前后加上斜杠才是一个完整的正则表达式</span><br><span class="line">     *&#x2F;</span><br><span class="line">    $patterns[] &#x3D; &#39;&#x2F;&#39; . str_replace([&#39;&#123;&#39;, &#39;&#125;&#39;], [&#39;\&#123;&#39;, &#39;\&#125;&#39;], $rule) . &#39;&#x2F;&#39;;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 截取中间的变量名</span><br><span class="line">     *&#x2F;</span><br><span class="line">    $paramNames[] &#x3D; substr($rule, 1, strlen($rule) - 2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一共得到了两个数组，<code>$patterns</code> 是正则替换表达式，而 <code>$paramNames</code> 是自定义路由参数的名字。</p>
+<p>接下来把自定义路由中的 <code>{id}</code> 替换成  <code>$params</code> 传入的变量值，</p>
+<p>因为传入的 <code>$params</code> 是一个关联数组，而 PHP 的正则替换函数是一维数组，</p>
+<p>所以要把 <code>$params</code> 中对应的参数提取出来，</p>
+<p>从 <code>$paramNames</code> 获取到的路径参名称作为键，取 <code>$params</code> 传进来的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 生成要替换的数组结构，根据规则与传入的参数一一对应</span><br><span class="line"> * 假设路由规则是 &#x2F;article&#x2F;&#123;id&#125;</span><br><span class="line"> * 那么$params传入的参数就应该是：[&#39;id&#39;&#x3D;&gt;1]</span><br><span class="line"> *&#x2F;</span><br><span class="line">$replacements &#x3D; [];</span><br><span class="line">foreach ($paramNames as $key) &#123;</span><br><span class="line"></span><br><span class="line">    if (!isset($params[$key])) &#123;</span><br><span class="line">        throw new RouteParamException(&#39;路由缺失参数[&#39; . $key . &#39;]&#39;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $replacements[] &#x3D; $params[$key];</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 移除路径参数</span><br><span class="line">    unset($params[$key]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的数组不符合规则就抛出一个 <code>RouteParamException</code> 异常（这个异常是之前定义的）。</p>
+<p>生成替换的值后，就可以把这个键从 <code>$params</code> 里面移除了，因为最后我们要生成 query 参数，</p>
+<p>而路径参数已经被使用了，如果不去掉，最后就会变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;article&#x2F;1?id&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<p>所以这一步顺便使用 <code>unset</code> 方法把已经用过的数组元素去掉。</p>
+<p>接下来就可以使用正则替换将规则中的 <code>{id}</code> 替换成对应的值了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 然后将替换值根据规则进行置换</span><br><span class="line">$res &#x3D; preg_replace($patterns, $replacements, $this-&gt;route);</span><br></pre></td></tr></table></figure>
+
+<p>最后再构建 query 参数就大功告成，完整代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 生成链接</span><br><span class="line"> * @param $params</span><br><span class="line"> * @return string</span><br><span class="line"> * @throws RouteParamException</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function createLink($params)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;route &#x3D;&#x3D; &#39;&#x2F;&#39;) &#123;</span><br><span class="line">        return $this-&gt;buildQuery($this-&gt;route, $params);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 取出自定义规则</span><br><span class="line">    $pattern &#x3D; &#39;&#x2F;.*?\&#x2F;(\&#123;.*?\&#125;)&#x2F;&#39;;</span><br><span class="line">    preg_match_all($pattern, $this-&gt;route, $result);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 如果匹配不到自定义参数则直接返回路由规则</span><br><span class="line">    if (count($result) &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        return $this-&gt;buildQuery($this-&gt;route, $params);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 获取自定义匹配规则</span><br><span class="line">    $patterns &#x3D; [];</span><br><span class="line">    $paramNames &#x3D; [];</span><br><span class="line"></span><br><span class="line">    for ($i &#x3D; 1, $count &#x3D; count($result[1]); $i &lt;&#x3D; $count; $i++) &#123;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 此处得到自定义规则的参数，如：&#123;id&#125;</span><br><span class="line">        $rule &#x3D; $result[1][$i - 1];</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 花括号是正则表达式的符号，必须加上反斜杠转转义</span><br><span class="line">         * 最后，在前后加上斜杠才是一个完整的正则表达式</span><br><span class="line">         *&#x2F;</span><br><span class="line">        $patterns[] &#x3D; &#39;&#x2F;&#39; . str_replace([&#39;&#123;&#39;, &#39;&#125;&#39;], [&#39;\&#123;&#39;, &#39;\&#125;&#39;], $rule) . &#39;&#x2F;&#39;;</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 截取中间的变量名</span><br><span class="line">         *&#x2F;</span><br><span class="line">        $paramNames[] &#x3D; substr($rule, 1, strlen($rule) - 2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 生成要替换的数组结构，根据规则与传入的参数一一对应</span><br><span class="line">     * 假设路由规则是 &#x2F;article&#x2F;&#123;id&#125;</span><br><span class="line">     * 那么$params传入的参数就应该是：[&#39;id&#39;&#x3D;&gt;1]</span><br><span class="line">     *&#x2F;</span><br><span class="line">    $replacements &#x3D; [];</span><br><span class="line">    foreach ($paramNames as $key) &#123;</span><br><span class="line"></span><br><span class="line">        if (!isset($params[$key])) &#123;</span><br><span class="line">            throw new RouteParamException(&#39;路由缺失参数[&#39; . $key . &#39;]&#39;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $replacements[] &#x3D; $params[$key];</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 移除路径参数</span><br><span class="line">        unset($params[$key]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 然后将替换值根据规则进行置换</span><br><span class="line">    $res &#x3D; preg_replace($patterns, $replacements, $this-&gt;route);</span><br><span class="line"></span><br><span class="line">    return $this-&gt;buildQuery($res, $params);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 构建query参数的地址</span><br><span class="line"> * @param $route</span><br><span class="line"> * @param $query</span><br><span class="line"> * @return string</span><br><span class="line"> *&#x2F;</span><br><span class="line">private function buildQuery($route, $query)</span><br><span class="line">&#123;</span><br><span class="line">    if (empty($query)) &#123;</span><br><span class="line">        return $route;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return $route . &#39;?&#39; . http_build_query($query);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Router：查找路由名"><a href="#Router：查找路由名" class="headerlink" title="Router：查找路由名"></a>Router：查找路由名</h2><p>路由的名称是唯一的，每一个名称对应一个路由，相当于路由的唯一 ID。</p>
+<p>只要根据这个 ID 就可以找到对应的路由。</p>
+<p>Router 方法应该暴露一个可供外部调用的查找路由名方法，修改 Router 添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 根据路由名称寻找路由</span><br><span class="line"> * @param $routeName</span><br><span class="line"> * @return mixed|null</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function findRouteFromName($routeName)</span><br><span class="line">&#123;</span><br><span class="line">    foreach (self::$routes as $route) &#123;</span><br><span class="line">        if ($route-&gt;name &#x3D;&#x3D; $routeName) &#123;</span><br><span class="line">            return $route;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法倒是很简单，只要循环找到对应名字的路由配置就行了。</p>
+<blockquote>
+<p>查找数组效率最高的方法不是遍历而是通过数组的下标，我考虑过将路由分为已命名路由和未命名路由，未命名路由就是一个普通的索引数组，而已命名路由则是关联数组，键即路由的名字，这样查找路由时优先从已命名路由通过下标查询，如果没有再去遍历未命名路由，但是如果改成这样，Router 匹配路由规则时就要再进行一次数组合并，反而会降低路由解析的性能，因此舍弃了这种想法</p>
+</blockquote>
+<h2 id="route：全局函数"><a href="#route：全局函数" class="headerlink" title="route：全局函数"></a>route：全局函数</h2><p>只要 <code>new</code> 一个 Router 对象就可以调用 <code>findRouteFromName</code> 找到对应的路由，</p>
+<p>然后再调用路由的 <code>createLink</code> 生成路由链接。</p>
+<p>现在缺少一个全局函数：<code>route</code>。</p>
+<p>同样借助 composer 的自动加载功能，修改 composer.jsp，添加加载规则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;require&quot;: &#123;&#125;,</span><br><span class="line">  &quot;autoload&quot;: &#123;</span><br><span class="line">    &quot;psr-4&quot;: &#123;</span><br><span class="line">      &quot;App\\&quot;: &quot;app&#x2F;&quot;,</span><br><span class="line">      &quot;FireRabbitEngine\\Module\\&quot;: &quot;firerabbit-engine&#x2F;module&#x2F;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;files&quot;: [</span><br><span class="line">      &quot;firerabbit-engine&#x2F;common&#x2F;function.php&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;repositories&quot;: &#123;</span><br><span class="line">    &quot;packagist&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;composer&quot;,</span><br><span class="line">      &quot;url&quot;: &quot;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;composer&#x2F;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 psr-4 下面增加了一个字段 files，而这个文件即框架的通用函数库。</p>
+<p>创建 <code>firerabbit-engine/common/function.php</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;**</span><br><span class="line"> * 根据路由名称生成对应路由</span><br><span class="line"> * @param $routeName</span><br><span class="line"> * @param array $params</span><br><span class="line"> * @return mixed|null</span><br><span class="line"> * @throws \FireRabbitEngine\Module\Route\Exception\RouteNotFoundException</span><br><span class="line"> *&#x2F;</span><br><span class="line">function route($routeName, $params &#x3D; [])</span><br><span class="line">&#123;</span><br><span class="line">    $router &#x3D; new \FireRabbitEngine\Module\Route\Router();</span><br><span class="line"></span><br><span class="line">    $route &#x3D; $router-&gt;findRouteFromName($routeName);</span><br><span class="line"></span><br><span class="line">    if ($route &#x3D;&#x3D; null) &#123;</span><br><span class="line">        throw new \FireRabbitEngine\Module\Route\Exception\RouteNotFoundException(&#39;不存在路由[&#39; . $routeName . &#39;]&#39;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return $route-&gt;createLink($params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我不使用 <code>function_exists</code> 来判断方法是否存在，即使真的冲突了就直接报错，</p>
+<p>实际上使用了这个方法来判断也没任何意义，重名了就不定义这个函数？</p>
+<p>那连错在哪都不知道，为何要屏蔽可能报错的信息？我是百思不得其解。</p>
+<p>如果遇到重名的函数，在我们执行 <code>php http_server.php</code> 启动程序的时候就会报错了，完全不用担心。</p>
+<p>如果我们引入了第三方的包，其他人也定义了 route 函数那样才会产生麻烦。</p>
+<p>一般的第三方包也不会去定义全局函数，而是封装成类进行调用，</p>
+<p>函数是面向过程开发，也不符合开发包的理念，所以这一点完全不用担心。</p>
+<p>因为我开发的是框架，只有框架才会定义全局函数，我的框架里也不可能引入其他框架。</p>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>三种不同类型的路由：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$router-&gt;get(&#39;&#x2F;login&#39;, &#39;IndexController@login&#39;)-&gt;name(&#39;login&#39;);</span><br><span class="line">$router-&gt;get(&#39;&#x2F;article&#x2F;&#123;id&#125;&#39;, &#39;ArticleController@show&#39;)-&gt;name(&#39;article.show&#39;);</span><br><span class="line">$router-&gt;get(&#39;&#x2F;test&#x2F;&#123;id&#125;&#x2F;user&#x2F;&#123;name&#125;&#x2F;goods&#x2F;&#123;qq&#125;&#39;, &#39;TestController@test&#39;)-&gt;name(&#39;test&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>测试代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$link &#x3D; route(&#39;test&#39;, [&#39;id&#39; &#x3D;&gt; 1, &#39;name&#39; &#x3D;&gt; &#39;哈哈怪&#39;, &#39;qq&#39; &#x3D;&gt; &#39;okok&#39;]);</span><br><span class="line">$link2 &#x3D; route(&#39;article.show&#39;, [&#39;id&#39; &#x3D;&gt; 123]);</span><br><span class="line">$link3 &#x3D; route(&#39;login&#39;);</span><br><span class="line"></span><br><span class="line">var_dump($link, $link2, $link3);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string(33) &quot;&#x2F;test&#x2F;1&#x2F;user&#x2F;哈哈怪&#x2F;goods&#x2F;okok&quot;</span><br><span class="line">string(12) &quot;&#x2F;article&#x2F;123&quot;</span><br><span class="line">string(6) &quot;&#x2F;login&quot;</span><br></pre></td></tr></table></figure>
+
+<p>看上去没有问题了！</p>
+
+          
+            <br>
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+
+<section class="widget copyright  widget-blur desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>转载请注明出处及链接。</p>
+
+          
+        
+          
+            
+          
+        
+          
+            <p>本文链接：<a href=http://www.huotublog.com/my-swoole-framework-6/>http://www.huotublog.com/my-swoole-framework-6/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+                
+              
+                
+              
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+        </div>
+        
+          <br>
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/PHP/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>PHP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Swoole/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Swoole</p></a></div>
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/my-swoole-framework-5/" rel="prev" title="从零开始搭建自己的Swoole框架（五）为路由模块添加解析路径参数功能">
+                                    
+                                        从零开始搭建自己的Swoole框架（五）为路由模块添加解析路径参数功能
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+  
+
+  <section class="widget related_posts  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
+    
+  </header>
+
+
+    <div class="content">
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）框架概述" rel="bookmark">从零开始搭建自己的Swoole框架（一）框架概述</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-2/" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案" rel="bookmark">从零开始搭建自己的Swoole框架（二）项目的规划和设计草案</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-5/" title="从零开始搭建自己的Swoole框架（五）为路由模块添加解析路径参数功能" rel="bookmark">从零开始搭建自己的Swoole框架（五）为路由模块添加解析路径参数功能</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-4/" title="从零开始搭建自己的Swoole框架（四）路由模块" rel="bookmark">从零开始搭建自己的Swoole框架（四）路由模块</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mac-install-pecl/" title="Mac系统安装Pecl" rel="bookmark">Mac系统安装Pecl</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/php-cli-arguments/" title="PHP-CLI 常用命令参数" rel="bookmark">PHP-CLI 常用命令参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li></ul>
+    </div>
+  </section>
+
+
+      
+    
+      
+    
+      
+    
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '从零开始搭建自己的Swoole框架（六）为路由模块添加命名功能',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+
+<section class="widget grid  widget-blur desktop mobile">
+  
+  <header>
+    
+      <i class="fas fa-map-signs fa-fw" aria-hidden="true"></i><span class='name'>文档导航</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <ul class="grid navigation">
+      
+        <li><a class="flat-box" title="/" href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-question-circle fa-fw" aria-hidden="true"></i>
+          
+          博客首页
+        </a></li>
+      
+        <li><a class="flat-box" title="/archives/" href="/archives/"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-play-circle fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" title="/about/" href="/about/"
+          
+          
+          id="about">
+          
+            <i class="fas fa-handshake fa-fw" aria-hidden="true"></i>
+          
+          关于作者
+        </a></li>
+      
+        <li><a class="flat-box" title="https://huotuyouxi.com" href="https://huotuyouxi.com"
+          
+          
+            target="_blank"
+          
+          id="https:huotuyouxi.com">
+          
+            <i class="fas fa-flag fa-fw" aria-hidden="true"></i>
+          
+          游戏官网
+        </a></li>
+      
+        <li><a class="flat-box" title="/categories/" href="/categories/"
+          
+          
+          id="categories">
+          
+            <i class="fas fa-handshake fa-fw" aria-hidden="true"></i>
+          
+          文章分类
+        </a></li>
+      
+        <li><a class="flat-box" title="/tags/" href="/tags/"
+          
+          
+          id="tags">
+          
+            <i class="fas fa-handshake fa-fw" aria-hidden="true"></i>
+          
+          标签查询
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+        
+
+
+  <section class="widget toc-wrapper  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链式调用"><span class="toc-text">链式调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Router：添加命名功能"><span class="toc-text">Router：添加命名功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#避坑指南：诡异的-null-值"><span class="toc-text">避坑指南：诡异的 null 值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试路由名称"><span class="toc-text">测试路由名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RouteParams：生成链接"><span class="toc-text">RouteParams：生成链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Router：查找路由名"><span class="toc-text">Router：查找路由名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#route：全局函数"><span class="toc-text">route：全局函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试结果"><span class="toc-text">测试结果</span></a></li></ol>
+    </div>
+  </section>
+
+
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+</aside>
+
+<footer class="clearfix ">
+  <br><br>
+  
+  
+  <br>
+  <div>
+    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+
+  </div>
+  <div>
+    Use
+    <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
+    as theme
+    
+      , 
+      total visits
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      times
+    
+    . 
+  </div>
+  
+  <div>
+    <p align="center">
+      <a href="http://beian.miit.gov.cn/publish/query/indexFirst.action" target="_blank">闽ICP备17004120号</a>
+    </p>
+  </div>
+</footer>
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@1.6.3/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js" async></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="//cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        if ('') {
+          $('').backstretch(
+          ["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/BBC19066-E176-47C2-9D22-48C81EE5DF6B.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/B18FCBB3-67FD-48CC-B4F3-457BA145F17A.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/00E0F0ED-9F1C-407A-9AA6-545649D919F4.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/67239FBB-E15D-4F4F-8EE8-0F1C9F3C4E7C.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/B951AE18-D431-417F-B3FE-A382403FF21B.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/AEB33F9D-7294-4CF1-B8C5-3020748A9D45.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/2884F904-F1F3-479E-AE27-5EBC291B63B0.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/10A0FCE5-36A1-4AD0-8CF0-019259A89E03.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/250662D4-5A21-4AAA-BB63-CD25CF97CFF1.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/298468D7-E388-44A8-8CC5-8213BDC33CED.jpeg"],
+          {
+            duration: "20000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/BBC19066-E176-47C2-9D22-48C81EE5DF6B.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/B18FCBB3-67FD-48CC-B4F3-457BA145F17A.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/00E0F0ED-9F1C-407A-9AA6-545649D919F4.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/67239FBB-E15D-4F4F-8EE8-0F1C9F3C4E7C.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/B951AE18-D431-417F-B3FE-A382403FF21B.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/AEB33F9D-7294-4CF1-B8C5-3020748A9D45.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/2884F904-F1F3-479E-AE27-5EBC291B63B0.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/10A0FCE5-36A1-4AD0-8CF0-019259A89E03.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/250662D4-5A21-4AAA-BB63-CD25CF97CFF1.jpeg", "https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/landscape/298468D7-E388-44A8-8CC5-8213BDC33CED.jpeg"],
+          {
+            duration: "20000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@1.6.3/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
