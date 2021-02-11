@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>从零开始搭建自己的Swoole框架（七）路由传参</title>
+      <title>从零开始搭建自己的Swoole框架（七）路由动态注入参数</title>
       <link href="/my-swoole-framework-7/"/>
       <url>/my-swoole-framework-7/</url>
       
