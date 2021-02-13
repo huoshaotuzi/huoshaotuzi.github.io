@@ -18,7 +18,7 @@
 
   <!-- 页面元数据 -->
   
-    <title>Tag: Docker - 火兔博客</title>
+    <title>Tag: docker - 火兔博客</title>
   
   
 
@@ -252,8 +252,8 @@
       
         
   <h2 class="title">
-    <a href="/docker-change-mirrors/">
-      Docker更换镜像源
+    <a href="/docker-install-gitlab/">
+      再战！Docker 安装 Gitlab
     </a>
   </h2>
 
@@ -278,7 +278,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月31日</p>
+    <p>发布于：2020年3月7日</p>
   </a>
 </div>
 
@@ -309,11 +309,11 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      更换 Docker 默认的镜像源为国内镜像，可以大幅提高镜像的下载速度。
+      Docker环境搭建Gitlab。
       
         
           <div class="button readmore">
-            <a href="/docker-change-mirrors/" class="flat-box">
+            <a href="/docker-install-gitlab/" class="flat-box">
               <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
               Read More
             </a>
@@ -324,7 +324,9 @@
     <!-- 
       <div class="full-width auto-padding tags">
         
-          <a href="/tags/Docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Docker</a>
+          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
+        
+          <a href="/tags/docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> docker</a>
         
       </div>
      -->
@@ -347,8 +349,8 @@
       
         
   <h2 class="title">
-    <a href="/window-install-docker-issue/">
-      Window环境下安装Docker的坑
+    <a href="/install-gitlab-satis-composer/">
+      Gitlab + Satis 搭建私有 Composer 仓库
     </a>
   </h2>
 
@@ -373,7 +375,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月31日</p>
+    <p>发布于：2020年3月7日</p>
   </a>
 </div>
 
@@ -404,11 +406,11 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      相比于 Linux 系统，要在 Window 系统安装 Docker 相对要麻烦得多。
+      搭建一套属于自己的composer私有仓库。
       
         
           <div class="button readmore">
-            <a href="/window-install-docker-issue/" class="flat-box">
+            <a href="/install-gitlab-satis-composer/" class="flat-box">
               <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
               Read More
             </a>
@@ -419,7 +421,11 @@
     <!-- 
       <div class="full-width auto-padding tags">
         
-          <a href="/tags/Docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Docker</a>
+          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
+        
+          <a href="/tags/docker/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> docker</a>
+        
+          <a href="/tags/composer/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> composer</a>
         
       </div>
      -->
@@ -943,23 +949,6 @@
        * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
        * 那么此处将原本的属性名src替换为对应属性名data-original,
        * 修改如下
-       */
-       if (LAZY_LOAD_IMAGE) {
-         $(element).attr("href", $(this).attr("data-original"));
-       }
-      $(this).wrap(element);
-  });
-</script>
-
-
-
-
-
-
-  <script>setLoadingBarProgress(100);</script>
-</body>
-</html>
-下
        */
        if (LAZY_LOAD_IMAGE) {
          $(element).attr("href", $(this).attr("data-original"));
