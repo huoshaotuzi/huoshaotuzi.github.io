@@ -158,6 +158,7 @@ require './vendor/autoload.php';
 require_once './app/route/web.php';
 require_once './app/config/app.php';
 
+\FireRabbitEngine\Module\Http\Middleware\Kernel::setConfig(require './app/config/middleware.php');
 \FireRabbitEngine\Module\View\Blade::setConfig($config['view_path'], $config['view_cache_path']);
 
 $http = new Swoole\Http\Server('0.0.0.0', 9527);

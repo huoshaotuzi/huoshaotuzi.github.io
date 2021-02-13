@@ -1878,4 +1878,83 @@ return $router;
 
 通过访问上述定义的路由，然后修改 a 和 b 参数的值即可看到中间件的拦截功能。
 
+## 修改记录
+### 中间件配置化
+修改时间：2020-02-13 22:47
 
+突然发现 PipeLine 方法调用 Kernel 类十分不合理。
+
+框架的代码不应该依赖项目的代码，因此需要优化。
+
+在 app/config 目录下创建 middleware.php 用来保存中间件的名称映射关系：
+
+```
+<?php
+
+return [
+    'a' => App\Middleware\TestMiddlewareA::class,
+    'b' => App\Middleware\TestMiddlewareB::class,
+];
+```
+
+接着将原本放在 app/Middleware 下面的 Kernel 删掉，
+
+并且在框架 module/Http 目录新建一个 Middleware 目录，将 Middleware.php 移到这个目录下。
+
+同时重新创建一个 Kernel 类：
+
+```
+<?php
+
+namespace FireRabbitEngine\Module\Http\Middleware;
+
+class Kernel
+{
+    /**
+     * 实例化的中间件
+     *
+     * @var [Middleware]
+     */
+    protected static $instances;
+
+    protected static $middlewares = [];
+
+    /**
+     * 读取配置文件
+     * @param $middlewares
+     */
+    public static function setConfig($middlewares)
+    {
+        self::$middlewares = $middlewares;
+    }
+
+    public static function getMiddlewareInstance($name)
+    {
+        // 从已实例化的对象数组中取
+        if (isset(self::$instances[$name])) {
+            return self::$instances[$name];
+        }
+
+        // 未实例化的创建新对象
+        $middlewareName = self::$middlewares[$name] ?? null;
+
+        if ($middlewareName == null) {
+            self::$instances[$name] = null;
+        } else {
+            self::$instances[$name] = new $middlewareName;
+        }
+
+        return self::$instances[$name];
+    }
+}
+```
+
+中间件的配置不再直接写在这个类里，而是通过 `setConfig` 读取配置参数。
+
+接着在修改文件 http_server.php，加入一行代码：
+
+```
+\FireRabbitEngine\Module\Http\Middleware\Kernel::setConfig(require './app/config/middleware.php');
+```
+
+这样框架和项目之间就不再有直接的依赖关系了。
