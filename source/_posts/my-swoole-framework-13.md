@@ -363,3 +363,120 @@ nginx 转发的三组分别为：194.72、182.34、182.45
 关于 swoole 的特性还是需要仔细学习一番，框架方面的代码也还有很大的优化空间。
 
 如果后续不断更新的话，可支持的并发量应该也会不断变大吧！
+
+## 后记
+为了提高性能，我把 PHP 升级到 7.4，同时 swoole 扩展也升级到 4.6.3，
+
+然后重新测试了一遍。
+
+### Nginx 反向代理
+
+测试数据：
+
+```
+Server Software:        nginx/1.15.12
+Server Hostname:        firerabbit-engine.ht
+Server Port:            80
+
+Document Path:          /
+Document Length:        398 bytes
+
+Concurrency Level:      100
+Time taken for tests:   55.727 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      5570000 bytes
+HTML transferred:       3980000 bytes
+Requests per second:    179.45 [#/sec] (mean)
+Time per request:       557.265 [ms] (mean)
+Time per request:       5.573 [ms] (mean, across all concurrent requests)
+Transfer rate:          97.61 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.6      0      26
+Processing:    37  555  58.0    550     938
+Waiting:       24  550  57.8    545     938
+Total:         37  555  57.8    550     938
+
+Percentage of the requests served within a certain time (ms)
+  50%    550
+  66%    565
+  75%    576
+  80%    583
+  90%    604
+  95%    628
+  98%    676
+  99%    797
+ 100%    938 (longest request)
+```
+
+### 直接访问 swoole 程序 
+
+测试数据：
+
+```
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        swoole-http-server
+Server Hostname:        127.0.0.1
+Server Port:            9527
+
+Document Path:          /
+Document Length:        398 bytes
+
+Concurrency Level:      100
+Time taken for tests:   41.988 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      5620000 bytes
+HTML transferred:       3980000 bytes
+Requests per second:    238.16 [#/sec] (mean)
+Time per request:       419.885 [ms] (mean)
+Time per request:       4.199 [ms] (mean, across all concurrent requests)
+Transfer rate:          130.71 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.3      0       5
+Processing:    44  416  50.0    411    1090
+Waiting:       44  416  50.0    410    1090
+Total:         47  416  50.1    411    1092
+
+Percentage of the requests served within a certain time (ms)
+  50%    411
+  66%    421
+  75%    428
+  80%    434
+  90%    448
+  95%    464
+  98%    520
+  99%    559
+ 100%   1092 (longest request)
+```
+
+### 对比结果
+升级了 PHP 和 swoole 扩展的版本后，
+
+nginx=179.45，swoole=238.16
+
+> 原本为：nginx=186.50，swoole=243.62
+
+好像也没有肉眼可见的提升……
+
+然后又尝试优化 composer 生成的自动加载：`composer dump-autoload -o`
+
+测试的结果也没有太大的变化。
+
+看来，如果想进一步提升 QPS 的话，重点应该是解决阻塞的地方了。
