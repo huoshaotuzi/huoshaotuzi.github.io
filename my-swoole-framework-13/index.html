@@ -370,6 +370,24 @@
 <p>然后又尝试优化 composer 生成的自动加载：<code>composer dump-autoload -o</code></p>
 <p>测试的结果也没有太大的变化。</p>
 <p>看来，如果想进一步提升 QPS 的话，重点应该是解决阻塞的地方了。</p>
+<h3 id="工作进程数"><a href="#工作进程数" class="headerlink" title="工作进程数"></a>工作进程数</h3><p>忽然想到提高工作进程数，按道理应该可以提高一定的性能，</p>
+<p>编辑 http_server.php 为 swoole 的 http 设置参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$http-&gt;set([</span><br><span class="line">    &#39;worker_num&#39; &#x3D;&gt; 8,</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<p>我的电脑是 4 核 i5，把工作进程设置为核心数的两倍，然后继续测试 swoole 程序和 nginx 转发的结果。</p>
+<p>nginx 转发的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Server Software:        nginx&#x2F;1.15.12</span><br><span class="line">Server Hostname:        firerabbit-engine.ht</span><br><span class="line">Server Port:            80</span><br><span class="line"></span><br><span class="line">Document Path:          &#x2F;</span><br><span class="line">Document Length:        398 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   59.781 seconds</span><br><span class="line">Complete requests:      10000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5570000 bytes</span><br><span class="line">HTML transferred:       3980000 bytes</span><br><span class="line">Requests per second:    167.28 [#&#x2F;sec] (mean)</span><br><span class="line">Time per request:       597.808 [ms] (mean)</span><br><span class="line">Time per request:       5.978 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          90.99 [Kbytes&#x2F;sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+&#x2F;-sd] median   max</span><br><span class="line">Connect:        0    0   0.8      0      38</span><br><span class="line">Processing:    46  595  84.2    591    1436</span><br><span class="line">Waiting:       39  590  84.2    585    1435</span><br><span class="line">Total:         46  595  84.7    591    1445</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    591</span><br><span class="line">  66%    607</span><br><span class="line">  75%    618</span><br><span class="line">  80%    624</span><br><span class="line">  90%    647</span><br><span class="line">  95%    668</span><br><span class="line">  98%    697</span><br><span class="line">  99%    742</span><br><span class="line"> 100%   1445 (longest request)</span><br></pre></td></tr></table></figure>
+
+<p>直接访问 swoole：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Server Software:        swoole-http-server</span><br><span class="line">Server Hostname:        127.0.0.1</span><br><span class="line">Server Port:            9527</span><br><span class="line"></span><br><span class="line">Document Path:          &#x2F;</span><br><span class="line">Document Length:        398 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   39.114 seconds</span><br><span class="line">Complete requests:      10000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5620000 bytes</span><br><span class="line">HTML transferred:       3980000 bytes</span><br><span class="line">Requests per second:    255.66 [#&#x2F;sec] (mean)</span><br><span class="line">Time per request:       391.139 [ms] (mean)</span><br><span class="line">Time per request:       3.911 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          140.32 [Kbytes&#x2F;sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+&#x2F;-sd] median   max</span><br><span class="line">Connect:        0    0   0.4      0       6</span><br><span class="line">Processing:    61  387  77.4    380    1409</span><br><span class="line">Waiting:       61  387  77.4    380    1409</span><br><span class="line">Total:         67  388  77.6    381    1413</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    381</span><br><span class="line">  66%    395</span><br><span class="line">  75%    405</span><br><span class="line">  80%    413</span><br><span class="line">  90%    433</span><br><span class="line">  95%    452</span><br><span class="line">  98%    494</span><br><span class="line">  99%    543</span><br><span class="line"> 100%   1413 (longest request)</span><br></pre></td></tr></table></figure>
+
+<p>nginx=167.28，swoole=255.66</p>
+<blockquote>
+<p>PHP 和 swoole 未升级前：nginx=186.50，swoole=243.62<br>PHP 和 swoole 升级后：nginx=179.45，swoole=238.16</p>
+</blockquote>
+<p>嗯？？？nginx 的反而下降了？swoole 的倒是有一定的提升。</p>
+<p>也许是因为没有足够的业务，导致测试的结果准确性不高。</p>
+<p>测试就到这里吧，博客系统也还没开始制作，框架也属于半成品，等到完成度比较高的时候再测测看。</p>
 
           
             <br>
@@ -466,7 +484,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/my-swoole-framework-12/" rel="prev" title="从零开始搭建自己的Swoole框架（十二）日志系统">
                                     
@@ -513,7 +531,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-7/" title="从零开始搭建自己的Swoole框架（七）路由动态注入参数" rel="bookmark">从零开始搭建自己的Swoole框架（七）路由动态注入参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-9/" title="从零开始搭建自己的Swoole框架（九）视图blade模板" rel="bookmark">从零开始搭建自己的Swoole框架（九）视图blade模板</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）框架概述" rel="bookmark">从零开始搭建自己的Swoole框架（一）框架概述</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-2/" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案" rel="bookmark">从零开始搭建自己的Swoole框架（二）项目的规划和设计草案</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-7/" title="从零开始搭建自己的Swoole框架（七）路由动态注入参数" rel="bookmark">从零开始搭建自己的Swoole框架（七）路由动态注入参数</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-9/" title="从零开始搭建自己的Swoole框架（九）视图blade模板" rel="bookmark">从零开始搭建自己的Swoole框架（九）视图blade模板</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-2/" title="从零开始搭建自己的Swoole框架（二）项目的规划和设计草案" rel="bookmark">从零开始搭建自己的Swoole框架（二）项目的规划和设计草案</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-1/" title="从零开始搭建自己的Swoole框架（一）框架概述" rel="bookmark">从零开始搭建自己的Swoole框架（一）框架概述</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -700,7 +718,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压测结果"><span class="toc-text">压测结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-反向代理"><span class="toc-text">Nginx 反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接访问-swoole-程序"><span class="toc-text">直接访问 swoole 程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对比结果"><span class="toc-text">对比结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-text">后记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-反向代理-1"><span class="toc-text">Nginx 反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接访问-swoole-程序-1"><span class="toc-text">直接访问 swoole 程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对比结果-1"><span class="toc-text">对比结果</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压测结果"><span class="toc-text">压测结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-反向代理"><span class="toc-text">Nginx 反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接访问-swoole-程序"><span class="toc-text">直接访问 swoole 程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对比结果"><span class="toc-text">对比结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-text">后记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-反向代理-1"><span class="toc-text">Nginx 反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接访问-swoole-程序-1"><span class="toc-text">直接访问 swoole 程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对比结果-1"><span class="toc-text">对比结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工作进程数"><span class="toc-text">工作进程数</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -726,20 +744,20 @@
   
   <br>
   <div>
-    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+    <p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 
   </div>
   <div>
-    Use
+    本站使用
     <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
-    as theme
+    作为主题
     
-      , 
-      total visits
+      ，
+      总访问量为
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      times
+      次
     
-    . 
+    。
   </div>
   
   <div>
@@ -848,15 +866,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "Copied";
-  let COPY_FAILURE = "Copy failed";
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
