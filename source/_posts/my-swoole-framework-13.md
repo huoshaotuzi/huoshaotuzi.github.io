@@ -480,3 +480,107 @@ nginx=179.45，swoole=238.16
 测试的结果也没有太大的变化。
 
 看来，如果想进一步提升 QPS 的话，重点应该是解决阻塞的地方了。
+
+### 工作进程数
+忽然想到提高工作进程数，按道理应该可以提高一定的性能，
+
+编辑 http_server.php 为 swoole 的 http 设置参数：
+
+```
+$http->set([
+    'worker_num' => 8,
+]);
+```
+
+我的电脑是 4 核 i5，把工作进程设置为核心数的两倍，然后继续测试 swoole 程序和 nginx 转发的结果。
+
+nginx 转发的结果：
+
+```
+Server Software:        nginx/1.15.12
+Server Hostname:        firerabbit-engine.ht
+Server Port:            80
+
+Document Path:          /
+Document Length:        398 bytes
+
+Concurrency Level:      100
+Time taken for tests:   59.781 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      5570000 bytes
+HTML transferred:       3980000 bytes
+Requests per second:    167.28 [#/sec] (mean)
+Time per request:       597.808 [ms] (mean)
+Time per request:       5.978 [ms] (mean, across all concurrent requests)
+Transfer rate:          90.99 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.8      0      38
+Processing:    46  595  84.2    591    1436
+Waiting:       39  590  84.2    585    1435
+Total:         46  595  84.7    591    1445
+
+Percentage of the requests served within a certain time (ms)
+  50%    591
+  66%    607
+  75%    618
+  80%    624
+  90%    647
+  95%    668
+  98%    697
+  99%    742
+ 100%   1445 (longest request)
+```
+
+直接访问 swoole：
+
+```
+Server Software:        swoole-http-server
+Server Hostname:        127.0.0.1
+Server Port:            9527
+
+Document Path:          /
+Document Length:        398 bytes
+
+Concurrency Level:      100
+Time taken for tests:   39.114 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      5620000 bytes
+HTML transferred:       3980000 bytes
+Requests per second:    255.66 [#/sec] (mean)
+Time per request:       391.139 [ms] (mean)
+Time per request:       3.911 [ms] (mean, across all concurrent requests)
+Transfer rate:          140.32 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.4      0       6
+Processing:    61  387  77.4    380    1409
+Waiting:       61  387  77.4    380    1409
+Total:         67  388  77.6    381    1413
+
+Percentage of the requests served within a certain time (ms)
+  50%    381
+  66%    395
+  75%    405
+  80%    413
+  90%    433
+  95%    452
+  98%    494
+  99%    543
+ 100%   1413 (longest request)
+```
+
+nginx=167.28，swoole=255.66
+
+> PHP 和 swoole 未升级前：nginx=186.50，swoole=243.62
+> PHP 和 swoole 升级后：nginx=179.45，swoole=238.16
+
+嗯？？？nginx 的反而下降了？swoole 的倒是有一定的提升。
+
+也许是因为没有足够的业务，导致测试的结果准确性不高。
+
+测试就到这里吧，博客系统也还没开始制作，框架也属于半成品，等到完成度比较高的时候再测测看。
