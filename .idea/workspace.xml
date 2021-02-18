@@ -163,6 +163,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -234,7 +235,7 @@
       <workItem from="1613306252696" duration="3246000" />
       <workItem from="1613314960622" duration="1233000" />
       <workItem from="1613316968677" duration="1247000" />
-      <workItem from="1613558504996" duration="5901000" />
+      <workItem from="1613558504996" duration="7512000" />
     </task>
     <servers />
   </component>
