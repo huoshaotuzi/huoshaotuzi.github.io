@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Mac系统修改DNS解析防止域名被劫持</title>
+      <link href="/mac-os-change-dns/"/>
+      <url>/mac-os-change-dns/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们国家的运营商很喜欢劫持网页，然后私自篡改显示结果。</p><p>一方面这些 DNS 解析的速度十分不稳定，另一方面我们也不希望自己的网页任由他们操控。</p><p>劫持网页这种行为已经严重侵犯到我们的个人权益了，以我们一个普通人的身份无法改变任何情况。</p><p>俗话说的好，改变不了别人，就改变自己。</p><p>通过修改本地 DNS 解析即可绕过运营商。</p><h2 id="修改-DNS"><a href="#修改-DNS" class="headerlink" title="修改 DNS"></a>修改 DNS</h2><p>我的是苹果笔记本，点击右上角的 WIFi 图标，然后选择“网络偏好设置”。</p><p>接着在弹出的窗口右下角选择“高级”，然后在顶部导航栏选择“DNS”。</p><p>然后点击左下角的加号按钮，依次输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">223.5.5.5</span><br><span class="line">8.8.8.8</span><br><span class="line">1.1.1.1</span><br></pre></td></tr></table></figure><p>第一个是阿里云的，第二、第三个是谷歌的。</p><p>如此一来我们就不用担心网页会被 DNS 劫持了。</p><h2 id="科普小知识"><a href="#科普小知识" class="headerlink" title="科普小知识"></a>科普小知识</h2><p>访问域名的本质即访问远程服务器上的一个资源，访问域名的时候，</p><p>这个域名需要被解析成一个具体的服务器 IP 地址，</p><p>这个过程就是 DNS 服务器做的事情。</p><p>负载均衡的一种实现方法是直接利用 DNS 解析，比起 nginx 更有效率。</p><h2 id="DNS-劫持的危害"><a href="#DNS-劫持的危害" class="headerlink" title="DNS 劫持的危害"></a>DNS 劫持的危害</h2><p>网络运营商劫持网页加入弹窗广告，这种危害程度算是比较小的，</p><p>因为他们加入的广告一般是淘宝客或者京东联盟之类正规平台。</p><p>但是一些别有用心之人，利用 dns 劫持所做的事情危害程度就远远大得多。</p><p>例如，你访问的是正规的 A 网站，但是某黑客劫持了 DNS 服务商，</p><p>然后将 A 网站的解析记录修改为 B 网站（一般是菠菜、涩情之类的网站），</p><p>而这些网站一般都是杀猪盘，即你在上面花完钱就会跑路那种。</p><p>还有山寨正规网站的钓鱼站，网站页面山寨正规电商平台，</p><p>不小心鉴别很容易把自己的账号密码输入进去，或者是付款到了假的二维码。</p><p>我小时候经常就遇到这种网站，一般是游戏的钓鱼网站，骗你把游戏账号输进去，然后他就可以肆意进行盗号了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 通用技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 系统 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>从零开始搭建自己的Swoole框架（十七）发送邮件</title>
       <link href="/my-swoole-framework-17/"/>
       <url>/my-swoole-framework-17/</url>

@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -18,8 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>Category: Hexo - 火兔博客</title>
+    <title>Mac系统修改DNS解析防止域名被劫持 - 火兔博客</title>
   
+    <meta name="keywords" content="系统">
+  
+  
+    <meta name="description" content="Mac 修改 DNS 解析。">
   
 
   <!-- feed -->
@@ -69,7 +71,7 @@
 <body>
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <p class="title ">火兔博客</p>
@@ -222,25 +224,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-        
-      
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box   reveal ">
+
   
+    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -249,11 +238,13 @@
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/easy-to-start-hexo/">
-      猴子都能学会的hexo博客安装教程
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/mac-os-change-dns/">
+        Mac系统修改DNS解析防止域名被劫持
+      </a>
+    </h1>
+  
 
 
       
@@ -273,20 +264,23 @@
           
         
           
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月1日</p>
-  </a>
-</div>
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>通用技术</p>
+    </a>
+  </div>
+
 
           
         
           
-            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-05-26T19:18:43+08:00">
+            <div class="new-meta-item date">
   <a class='notlink'>
-    <i class="fas fa-save" aria-hidden="true"></i>
-    <p>更新于：2020年5月26日</p>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2021年2月18日</p>
   </a>
 </div>
 
@@ -305,48 +299,214 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      小白都能学会的从零开始照猫画虎hexo博客搭建教程。
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们国家的运营商很喜欢劫持网页，然后私自篡改显示结果。</p>
+<p>一方面这些 DNS 解析的速度十分不稳定，另一方面我们也不希望自己的网页任由他们操控。</p>
+<p>劫持网页这种行为已经严重侵犯到我们的个人权益了，以我们一个普通人的身份无法改变任何情况。</p>
+<p>俗话说的好，改变不了别人，就改变自己。</p>
+<p>通过修改本地 DNS 解析即可绕过运营商。</p>
+<h2 id="修改-DNS"><a href="#修改-DNS" class="headerlink" title="修改 DNS"></a>修改 DNS</h2><p>我的是苹果笔记本，点击右上角的 WIFi 图标，然后选择“网络偏好设置”。</p>
+<p>接着在弹出的窗口右下角选择“高级”，然后在顶部导航栏选择“DNS”。</p>
+<p>然后点击左下角的加号按钮，依次输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">223.5.5.5</span><br><span class="line">8.8.8.8</span><br><span class="line">1.1.1.1</span><br></pre></td></tr></table></figure>
+
+<p>第一个是阿里云的，第二、第三个是谷歌的。</p>
+<p>如此一来我们就不用担心网页会被 DNS 劫持了。</p>
+<h2 id="科普小知识"><a href="#科普小知识" class="headerlink" title="科普小知识"></a>科普小知识</h2><p>访问域名的本质即访问远程服务器上的一个资源，访问域名的时候，</p>
+<p>这个域名需要被解析成一个具体的服务器 IP 地址，</p>
+<p>这个过程就是 DNS 服务器做的事情。</p>
+<p>负载均衡的一种实现方法是直接利用 DNS 解析，比起 nginx 更有效率。</p>
+<h2 id="DNS-劫持的危害"><a href="#DNS-劫持的危害" class="headerlink" title="DNS 劫持的危害"></a>DNS 劫持的危害</h2><p>网络运营商劫持网页加入弹窗广告，这种危害程度算是比较小的，</p>
+<p>因为他们加入的广告一般是淘宝客或者京东联盟之类正规平台。</p>
+<p>但是一些别有用心之人，利用 dns 劫持所做的事情危害程度就远远大得多。</p>
+<p>例如，你访问的是正规的 A 网站，但是某黑客劫持了 DNS 服务商，</p>
+<p>然后将 A 网站的解析记录修改为 B 网站（一般是菠菜、涩情之类的网站），</p>
+<p>而这些网站一般都是杀猪盘，即你在上面花完钱就会跑路那种。</p>
+<p>还有山寨正规网站的钓鱼站，网站页面山寨正规电商平台，</p>
+<p>不小心鉴别很容易把自己的账号密码输入进去，或者是付款到了假的二维码。</p>
+<p>我小时候经常就遇到这种网站，一般是游戏的钓鱼网站，骗你把游戏账号输进去，然后他就可以肆意进行盗号了。</p>
+
+          
+            <br>
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+
+<section class="widget copyright  widget-blur desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>转载请注明出处及链接。</p>
+
+          
+        
+          
+            
+          
+        
+          
+            <p>本文链接：<a href=http://www.huotublog.com/mac-os-change-dns/>http://www.huotublog.com/mac-os-change-dns/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+                
+              
+                
+              
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+        </div>
+        
+          <br>
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
       
         
-          <div class="button readmore">
-            <a href="/easy-to-start-hexo/" class="flat-box">
-              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-              Read More
-            </a>
-          </div>
+          
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%B3%BB%E7%BB%9F/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>系统</p></a></div>
+
+
         
       
     </div>
-    <!-- 
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
-        
-          <a href="/tags/Hexo/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Hexo</a>
-        
-      </div>
-     -->
   </section>
-</article>
 
-          </div>
+
         
+        
+            <div class="prev-next">
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/my-swoole-framework-17/" rel="prev" title="从零开始搭建自己的Swoole框架（十七）发送邮件">
+                                    
+                                        从零开始搭建自己的Swoole框架（十七）发送邮件
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    
       
     
+      
+    
+      
+    
+      
+    
+      
+        
+  
+
+  <section class="widget related_posts  widget-blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
+    
+  </header>
+
+
+    <div class="content">
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/game-developer-stack/" title="游戏菜单系统开发之栈的妙用" rel="bookmark">游戏菜单系统开发之栈的妙用</a></h3></div></li></ul>
+    </div>
   </section>
+
+
+      
+    
+      
+    
+      
+    
   
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
 
   
 
 
-    
   
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Mac系统修改DNS解析防止域名被劫持',
+      tools: true
+    }
+  </script>
+
 
 </div>
 <aside class='l_side'>
@@ -484,94 +644,20 @@
       
     
       
-    
-      
         
-  
 
-  <section class="widget category  widget-blur desktop">
+
+  <section class="widget toc-wrapper  widget-blur desktop mobile">
     
   <header>
     
-      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Hexo/" href="/categories/Hexo/"
-            id="categoriesHexo"
-            ><div class='name'>Hexo</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/JavaScript/" href="/categories/JavaScript/"
-            id="categoriesJavaScript"
-            ><div class='name'>JavaScript</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Linux/" href="/categories/Linux/"
-            id="categoriesLinux"
-            ><div class='name'>Linux</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/MySQL/" href="/categories/MySQL/"
-            id="categoriesMySQL"
-            ><div class='name'>MySQL</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/PHP/" href="/categories/PHP/"
-            id="categoriesPHP"
-            ><div class='name'>PHP</div><div class='badge'>(7)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/composer/" href="/categories/composer/"
-            id="categoriescomposer"
-            ><div class='name'>composer</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/docker/" href="/categories/docker/"
-            id="categoriesdocker"
-            ><div class='name'>docker</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9E%B6%E6%9E%84/" href="/categories/%E6%9E%B6%E6%9E%84/"
-            id="categoriesE69EB6E69E84"
-            ><div class='name'>架构</div><div class='badge'>(18)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%B8%B8%E6%88%8F/" href="/categories/%E6%B8%B8%E6%88%8F/"
-            id="categoriesE6B8B8E6888F"
-            ><div class='name'>游戏</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%B5%84%E6%96%99/" href="/categories/%E8%B5%84%E6%96%99/"
-            id="categoriesE8B584E69699"
-            ><div class='name'>资料</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/" href="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"
-            id="categoriesE9809AE794A8E68A80E69CAF"
-            ><div class='name'>通用技术</div><div class='badge'>(2)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改-DNS"><span class="toc-text">修改 DNS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#科普小知识"><span class="toc-text">科普小知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS-劫持的危害"><span class="toc-text">DNS 劫持的危害</span></a></li></ol>
     </div>
   </section>
 
@@ -580,39 +666,6 @@
     
       
     
-      
-    
-      
-    
-      
-    
-  
-    
-      
-    
-      
-    
-      
-    
-      
-        
-  
-
-  <section class="widget tagcloud  widget-blur desktop">
-    
-  <header>
-    
-      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 16px; color: #8b8b8b">Docker</a> <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px; color: #7e7e7e">Linux</a> <a href="/tags/MAC-OS/" style="font-size: 14px; color: #999">MAC OS</a> <a href="/tags/MySQL/" style="font-size: 20px; color: #707070">MySQL</a> <a href="/tags/Nginx/" style="font-size: 16px; color: #8b8b8b">Nginx</a> <a href="/tags/PHP/" style="font-size: 24px; color: #555">PHP</a> <a href="/tags/Redis/" style="font-size: 18px; color: #7e7e7e">Redis</a> <a href="/tags/Supervisord/" style="font-size: 14px; color: #999">Supervisord</a> <a href="/tags/Swoole/" style="font-size: 22px; color: #636363">Swoole</a> <a href="/tags/WebSite/" style="font-size: 14px; color: #999">WebSite</a> <a href="/tags/centos/" style="font-size: 14px; color: #999">centos</a> <a href="/tags/composer/" style="font-size: 18px; color: #7e7e7e">composer</a> <a href="/tags/docker/" style="font-size: 16px; color: #8b8b8b">docker</a> <a href="/tags/gitlab/" style="font-size: 20px; color: #707070">gitlab</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 20px; color: #707070">技术</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 18px; color: #7e7e7e">架构</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 14px; color: #999">游戏</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 14px; color: #999">游戏开发</a> <a href="/tags/%E7%B3%BB%E7%BB%9F/" style="font-size: 14px; color: #999">系统</a> <a href="/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" style="font-size: 14px; color: #999">解决方案</a>
-    </div>
-  </section>
-
-
       
     
       
