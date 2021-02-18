@@ -304,7 +304,7 @@
           
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>框架现在拥有发送邮件的能力了，但是发送邮件是非常耗时的一件事，</p>
 <p>因此需要用异步任务来解决这个问题。</p>
-<h2 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h2><p>swoole 内置了异步任务处理，参照文档：(<a href="https://wiki.swoole.com/#/start/start_task)[https://wiki.swoole.com/#/start/start_task]" target="_blank" rel="noopener">https://wiki.swoole.com/#/start/start_task)[https://wiki.swoole.com/#/start/start_task]</a></p>
+<h2 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h2><p>swoole 内置了异步任务处理，参照文档：<a href="https://wiki.swoole.com/#/start/start_task" target="_blank" rel="noopener">https://wiki.swoole.com/#/start/start_task</a></p>
 <p>一个简单的异步任务示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$http &#x3D; new Swoole\Http\Server(&#39;0.0.0.0&#39;, 9527);</span><br><span class="line"></span><br><span class="line">$http-&gt;set([</span><br><span class="line">    &#39;task_worker_num&#39; &#x3D;&gt; 1,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">$http-&gt;on(&#39;Request&#39;, function ($request, $response) use ($http) &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 投递任务</span><br><span class="line">    $params &#x3D; [&#39;name&#39; &#x3D;&gt; &#39;花花&#39;];</span><br><span class="line">    $taskID &#x3D; $http-&gt;task($params);</span><br><span class="line">    var_dump(&#39;投递了一个任务，ID：&#39; . $taskID . &#39;，参数：&#39; . json_encode($params, JSON_UNESCAPED_UNICODE));</span><br><span class="line"></span><br><span class="line">    $response-&gt;header(&#39;Content-Type&#39;, &#39;text&#x2F;html; charset&#x3D;utf-8&#39;);</span><br><span class="line">    $response-&gt;end(&#39;&lt;h1&gt;Hello Swoole. #&#39; . rand(1000, 9999) . &#39;&lt;&#x2F;h1&gt;&#39;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;处理异步任务(此回调函数在task进程中执行)</span><br><span class="line">$http-&gt;on(&#39;Task&#39;, function ($serv, $task_id, $reactor_id, $data) &#123;</span><br><span class="line"></span><br><span class="line">    var_dump(&#39;收到任务，开始处理，任务ID：&#39; . $task_id . &#39;，参数：&#39; . json_encode($data, JSON_UNESCAPED_UNICODE));</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 业务逻辑</span><br><span class="line">    $result &#x3D; &#39;那只猫的名字叫做&#39; . $data[&#39;name&#39;];</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;返回任务执行的结果</span><br><span class="line">    $serv-&gt;finish($result);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;处理异步任务的结果(此回调函数在worker进程中执行)</span><br><span class="line">$http-&gt;on(&#39;Finish&#39;, function ($serv, $task_id, $data) &#123;</span><br><span class="line">    &#x2F;&#x2F; 任务执行完成后的回调</span><br><span class="line">    var_dump(&#39;【处理结果】任务ID：&#39; . $task_id . &#39;，返回结果：&#39; . $data);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$http-&gt;start();</span><br></pre></td></tr></table></figure>
 
@@ -471,7 +471,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/my-swoole-framework-17/" rel="prev" title="从零开始搭建自己的Swoole框架（十七）发送邮件">
                                     
@@ -518,7 +518,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-14/" title="从零开始搭建自己的Swoole框架（十四）启动程序优化" rel="bookmark">从零开始搭建自己的Swoole框架（十四）启动程序优化</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-16/" title="从零开始搭建自己的Swoole框架（十六）JWT用户认证" rel="bookmark">从零开始搭建自己的Swoole框架（十六）JWT用户认证</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-17/" title="从零开始搭建自己的Swoole框架（十七）发送邮件" rel="bookmark">从零开始搭建自己的Swoole框架（十七）发送邮件</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-7/" title="从零开始搭建自己的Swoole框架（七）路由动态注入参数" rel="bookmark">从零开始搭建自己的Swoole框架（七）路由动态注入参数</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-14/" title="从零开始搭建自己的Swoole框架（十四）启动程序优化" rel="bookmark">从零开始搭建自己的Swoole框架（十四）启动程序优化</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-16/" title="从零开始搭建自己的Swoole框架（十六）JWT用户认证" rel="bookmark">从零开始搭建自己的Swoole框架（十六）JWT用户认证</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-17/" title="从零开始搭建自己的Swoole框架（十七）发送邮件" rel="bookmark">从零开始搭建自己的Swoole框架（十七）发送邮件</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-9/" title="从零开始搭建自己的Swoole框架（九）视图blade模板" rel="bookmark">从零开始搭建自己的Swoole框架（九）视图blade模板</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -731,20 +731,20 @@
   
   <br>
   <div>
-    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+    <p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 
   </div>
   <div>
-    Use
+    本站使用
     <a href="http://www.huotublog.com/" target="_blank" class="codename">火兔博客</a>
-    as theme
+    作为主题
     
-      , 
-      total visits
+      ，
+      总访问量为
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      times
+      次
     
-    . 
+    。
   </div>
   
   <div>
@@ -853,15 +853,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "Copied";
-  let COPY_FAILURE = "Copy failed";
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
