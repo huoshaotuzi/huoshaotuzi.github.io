@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4959a420-3501-4a63-b6c4-31be13e8270a" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/baidu_tongji.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/_config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/material-x/layout/_partial/footer.ejs" afterDir="false" />
@@ -234,7 +233,7 @@
       <workItem from="1613306252696" duration="3246000" />
       <workItem from="1613314960622" duration="1233000" />
       <workItem from="1613316968677" duration="1247000" />
-      <workItem from="1613558504996" duration="724000" />
+      <workItem from="1613558504996" duration="1063000" />
     </task>
     <servers />
   </component>

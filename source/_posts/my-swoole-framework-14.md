@@ -138,7 +138,6 @@ class HttpServer
 {
     public $server;
     public $router;
-    protected $config;
 
     public function __construct($host, $port, $config = [])
     {
@@ -164,12 +163,6 @@ class HttpServer
         DatabaseManager::setConfig($config[Constant::DATABASE_CONFIG]);
         Logger::setConfig($config[Constant::LOGGER_CONFIG]);
 
-        return $this;
-    }
-
-    public function setConfig($config)
-    {
-        $this->config = $config;
         return $this;
     }
 
