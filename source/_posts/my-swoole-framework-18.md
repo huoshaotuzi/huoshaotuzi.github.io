@@ -19,7 +19,7 @@ description: 为框架添加执行异步任务的能力。
 
 ## 异步任务
 
-swoole 内置了异步任务处理，参照文档：(https://wiki.swoole.com/#/start/start_task)[https://wiki.swoole.com/#/start/start_task]
+swoole 内置了异步任务处理，参照文档：[https://wiki.swoole.com/#/start/start_task](https://wiki.swoole.com/#/start/start_task)
 
 一个简单的异步任务示例：
 
