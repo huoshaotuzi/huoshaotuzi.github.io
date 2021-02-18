@@ -84,8 +84,6 @@ return [
     ],
 ];
 
-return $config;
-
 ```
 
 这个 Constant 类是框架配置的常量，定义如下：
