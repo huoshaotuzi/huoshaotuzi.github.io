@@ -5,6 +5,8 @@
   <!-- SEO相关 -->
   
     
+      <meta name="robots" content="index,follow">
+    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -16,12 +18,10 @@
 
   <!-- 页面元数据 -->
   
-    <title>微服务 - 火兔博客</title>
-  
-    <meta name="keywords" content="架构">
+    <title>火兔博客</title>
   
   
-    <meta name="description" content="微服务是一种应用部署的架构模式。">
+    <meta name="description" content="开发日记。">
   
 
   <!-- feed -->
@@ -71,7 +71,7 @@
 <body>
   
   <div class="cover-wrapper">
-    <cover class='cover post half'>
+    <cover class='cover  full'>
       
         
   <p class="title ">火兔博客</p>
@@ -226,10 +226,14 @@
 
 <div class='l_main'>
   
-
-  
-    <article id="post" class="post white-box   article-type-post" itemscope itemprop="blogPost">
+  <section class="post-list ">
+    
+    
       
+        
+          <div class='post-wrapper'>
+            <article class="post white-box   reveal ">
+  
 
 
   <section class='meta'>
@@ -238,13 +242,11 @@
     <div class="meta" id="header-meta">
       
         
-  
-    <h1 class="title">
-      <a href="/mini-server/">
-        微服务
-      </a>
-    </h1>
-  
+  <h2 class="title">
+    <a href="/easy-to-start-hexo/">
+      猴子都能学会的hexo博客安装教程
+    </a>
+  </h2>
 
 
       
@@ -264,23 +266,20 @@
           
         
           
-            
-  
-  <div class='new-meta-item category'>
-    <a href='/categories/%E6%9E%B6%E6%9E%84/' rel="nofollow">
-      <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>架构</p>
-    </a>
-  </div>
-
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-edit" aria-hidden="true"></i>
+    <p>发布于：2020年3月1日</p>
+  </a>
+</div>
 
           
         
           
-            <div class="new-meta-item date">
+            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-05-26T19:18:43+08:00">
   <a class='notlink'>
-    <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月14日</p>
+    <i class="fas fa-save" aria-hidden="true"></i>
+    <p>更新于：2020年5月26日</p>
   </a>
 </div>
 
@@ -299,235 +298,59 @@
   </section>
 
 
-      <section class="article typo">
-        <div class="article-entry" itemprop="articleBody">
-          
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>微服务是一种服务架构模式，目标是架构师的话，当然不能放过这个知识点。</p>
-<h2 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h2><p>一般的项目架构有两种形式：单体应用和微服务。</p>
-<h3 id="单体应用"><a href="#单体应用" class="headerlink" title="单体应用"></a>单体应用</h3><p>单体应用就是用一套代码实现全部功能。</p>
-<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p>微服务就是把单体应用的代码按照功能拆分出来，形成多套独立的代码，通过某种方式让它们连接在一起，实现完整功能。</p>
-<p>单体应用好比早期的网站开发，用 PHP 搭建的网站：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">...</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;?php echo &quot;hello world!&quot; ?&gt;</span><br><span class="line">    &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
-
-<p>HTML 代码与 PHP 代码混合在一起。</p>
-<p>而随着技术的发展，又推出了 MVC 模式，实现模型、视图、控制器的分离。</p>
-<p>然而问题的本质依然没有改变，还不是要一个人去完成同样的工作？</p>
-<p>技术从未停下发展的脚本，职业的分工越来越明确，开始出现专门写 HTML 和 JavaScript 的前端人员和专门写 PHP 代码的后端人员，前端人员通过一项技术“Ajax”调用后端人员写的接口，使他们看似分离但却紧紧的联系到一起，共同实现一个完整的项目。</p>
-<p>这样的分工方式就叫做微服务。</p>
-<h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>比如有一套系统，包括如下业务：</p>
-<p><img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3518914240,1325113277&fm=26&gp=0.jpg" alt="微服务架构"></p>
-<p>把这些业务拆分出来，单独做成一套系统，然后以某种方式让独立的项目之前能够进行通信，这就完成了一套微服务架构。</p>
-<h2 id="微服务通信模式"><a href="#微服务通信模式" class="headerlink" title="微服务通信模式"></a>微服务通信模式</h2><h3 id="HTTP-通信"><a href="#HTTP-通信" class="headerlink" title="HTTP 通信"></a>HTTP 通信</h3><h3 id="RPC-通信"><a href="#RPC-通信" class="headerlink" title="RPC 通信"></a>RPC 通信</h3><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><h2 id="微服务的优缺点"><a href="#微服务的优缺点" class="headerlink" title="微服务的优缺点"></a>微服务的优缺点</h2><p>优点</p>
-<ul>
-<li>大型项目解耦，提高整体性能</li>
-<li>每个服务都很小，开发人员可以聚焦自己负责的功能模块。</li>
-<li>只需要极少的人来维护一套代码</li>
-<li>可以用不同的语言开发</li>
-</ul>
-<p>缺点</p>
-<ul>
-<li>架构需要花费一定的精力，如果架构得不好，后期反而会变成麻烦</li>
-<li>由于服务分散成很多个，因此难以快速定位错误</li>
-<li>管理成本提高</li>
-</ul>
-
-          
-            <br>
-            
-              
-                
-              
-                
-              
-                
-              
-                
-              
-                
-              
-                
-                  
-
-<section class="widget copyright  widget-blur desktop mobile">
-  <div class='content'>
-    
-      <blockquote>
-        
-          
-            <p>转载请注明出处及链接。</p>
-
-          
-        
-          
-            
-          
-        
-          
-            <p>本文链接：<a href=http://www.huotublog.com/mini-server/>http://www.huotublog.com/mini-server/</a></p>
-          
-        
-      </blockquote>
-    
-  </div>
-</section>
-
-                
-              
-                
-              
-            
-              
-                
-              
-                
-              
-                
-              
-                
-              
-                
-              
-                
-              
-                
-              
-            
-          
-        </div>
-        
-          <br>
-          
-
-
-  <section class='meta' id="footer-meta">
-    <div class='new-meta-box'>
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      小白都能学会的从零开始照猫画虎hexo博客搭建教程。
       
         
-          
-
-        
-      
-        
-          
-  
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>架构</p></a></div>
-
-
+          <div class="button readmore">
+            <a href="/easy-to-start-hexo/" class="flat-box">
+              <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+              Read More
+            </a>
+          </div>
         
       
     </div>
+    <!-- 
+      <div class="full-width auto-padding tags">
+        
+          <a href="/tags/gitlab/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> gitlab</a>
+        
+          <a href="/tags/Hexo/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Hexo</a>
+        
+      </div>
+     -->
   </section>
+</article>
 
-
+          </div>
         
-        
-            <div class="prev-next">
-                
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/trait/" rel="prev" title="Trait - 优雅的复用方法">
-                                  
-                                      Trait - 优雅的复用方法
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
-                
-                    <section class="next">
-                        <span class="art-item-right" aria-hidden="true">
-                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                            <h4>
-                                <a href="/php-fpm/" rel="prev" title="PHP-FPM">
-                                    
-                                        PHP-FPM
-                                    
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
-            </div>
-        
-      </section>
-    </article>
-  
-
-  
-    
       
     
-      
-    
-      
-    
-      
-    
-      
-        
-  
-
-  <section class="widget related_posts  widget-blur desktop mobile">
-    
-  <header>
-    
-      <i class="fas fa-bookmark fa-fw" aria-hidden="true"></i><span class='name'>相关文章</span>
-    
-  </header>
-
-
-    <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-memory-optimize/" title="MySQL占用内存过高优化记录" rel="bookmark">MySQL占用内存过高优化记录</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/split-your-code-file/" title="拆分你的代码" rel="bookmark">拆分你的代码</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li></ul>
-    </div>
   </section>
-
-
-      
+  
     
-      
+      <br>
+      <div class="prev-next">
+        
+          <a class="prev" rel="prev" href="/page/5/">
+            <section class="post prev white-box  widget-blur" >
+              <i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous&nbsp;
+            </section>
+          </a>
+        
+        <p class="current">
+          6 / 6
+        </p>
+        
+      </div>
     
-      
+    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
     
-  
+    
 
   
-    <!-- 显示推荐文章和评论 -->
-
-
-
-  
-
-
-  
-
-
-
-
-<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
-
-
-
-  <script>
-    window.subData = {
-      title: '微服务',
-      tools: true
-    }
-  </script>
 
 
 </div>
@@ -666,20 +489,94 @@
       
     
       
+    
+      
         
+  
 
-
-  <section class="widget toc-wrapper  widget-blur desktop mobile">
+  <section class="widget category  widget-blur desktop">
     
   <header>
     
-      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
     
   </header>
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#架构模式"><span class="toc-text">架构模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单体应用"><span class="toc-text">单体应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微服务"><span class="toc-text">微服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务架构"><span class="toc-text">微服务架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务通信模式"><span class="toc-text">微服务通信模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP-通信"><span class="toc-text">HTTP 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-通信"><span class="toc-text">RPC 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#消息队列"><span class="toc-text">消息队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务的优缺点"><span class="toc-text">微服务的优缺点</span></a></li></ol>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Docker/" href="/categories/Docker/"
+            id="categoriesDocker"
+            ><div class='name'>Docker</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/JavaScript/" href="/categories/JavaScript/"
+            id="categoriesJavaScript"
+            ><div class='name'>JavaScript</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Linux/" href="/categories/Linux/"
+            id="categoriesLinux"
+            ><div class='name'>Linux</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/MySQL/" href="/categories/MySQL/"
+            id="categoriesMySQL"
+            ><div class='name'>MySQL</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Nginx/" href="/categories/Nginx/"
+            id="categoriesNginx"
+            ><div class='name'>Nginx</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/PHP/" href="/categories/PHP/"
+            id="categoriesPHP"
+            ><div class='name'>PHP</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Redis/" href="/categories/Redis/"
+            id="categoriesRedis"
+            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/composer/" href="/categories/composer/"
+            id="categoriescomposer"
+            ><div class='name'>composer</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/docker/" href="/categories/docker/"
+            id="categoriesdocker"
+            ><div class='name'>docker</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E6%9E%B6%E6%9E%84/" href="/categories/%E6%9E%B6%E6%9E%84/"
+            id="categoriesE69EB6E69E84"
+            ><div class='name'>架构</div><div class='badge'>(18)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E6%B8%B8%E6%88%8F/" href="/categories/%E6%B8%B8%E6%88%8F/"
+            id="categoriesE6B8B8E6888F"
+            ><div class='name'>游戏</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E8%B5%84%E6%96%99/" href="/categories/%E8%B5%84%E6%96%99/"
+            id="categoriesE8B584E69699"
+            ><div class='name'>资料</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/" href="/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"
+            id="categoriesE9809AE794A8E68A80E69CAF"
+            ><div class='name'>通用技术</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
     </div>
   </section>
 
@@ -688,6 +585,39 @@
     
       
     
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        
+  
+
+  <section class="widget tagcloud  widget-blur desktop">
+    
+  <header>
+    
+      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/Docker/" style="font-size: 16px; color: #8b8b8b">Docker</a> <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px; color: #7e7e7e">Linux</a> <a href="/tags/MAC-OS/" style="font-size: 14px; color: #999">MAC OS</a> <a href="/tags/MySQL/" style="font-size: 20px; color: #707070">MySQL</a> <a href="/tags/Nginx/" style="font-size: 16px; color: #8b8b8b">Nginx</a> <a href="/tags/PHP/" style="font-size: 24px; color: #555">PHP</a> <a href="/tags/Redis/" style="font-size: 18px; color: #7e7e7e">Redis</a> <a href="/tags/Supervisord/" style="font-size: 14px; color: #999">Supervisord</a> <a href="/tags/Swoole/" style="font-size: 22px; color: #636363">Swoole</a> <a href="/tags/WebSite/" style="font-size: 14px; color: #999">WebSite</a> <a href="/tags/centos/" style="font-size: 14px; color: #999">centos</a> <a href="/tags/composer/" style="font-size: 18px; color: #7e7e7e">composer</a> <a href="/tags/docker/" style="font-size: 16px; color: #8b8b8b">docker</a> <a href="/tags/gitlab/" style="font-size: 20px; color: #707070">gitlab</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 20px; color: #707070">技术</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 18px; color: #7e7e7e">架构</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 14px; color: #999">游戏</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 14px; color: #999">游戏开发</a> <a href="/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" style="font-size: 14px; color: #999">解决方案</a>
+    </div>
+  </section>
+
+
       
     
       
