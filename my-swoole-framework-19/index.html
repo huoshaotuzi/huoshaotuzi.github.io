@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>微服务 - 火兔博客</title>
+    <title>从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！ - 火兔博客</title>
   
-    <meta name="keywords" content="架构">
+    <meta name="keywords" content="PHP,Swoole">
   
   
-    <meta name="description" content="微服务是一种应用部署的架构模式。">
+    <meta name="description" content="最后一步，将框架封包发布到 composer 提供的仓库。">
   
 
   <!-- feed -->
@@ -240,8 +240,8 @@
         
   
     <h1 class="title">
-      <a href="/mini-server/">
-        微服务
+      <a href="/my-swoole-framework-19/">
+        从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！
       </a>
     </h1>
   
@@ -280,7 +280,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2020年3月14日</p>
+    <p>发布于：2021年2月19日</p>
   </a>
 </div>
 
@@ -302,34 +302,58 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>微服务是一种服务架构模式，目标是架构师的话，当然不能放过这个知识点。</p>
-<h2 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h2><p>一般的项目架构有两种形式：单体应用和微服务。</p>
-<h3 id="单体应用"><a href="#单体应用" class="headerlink" title="单体应用"></a>单体应用</h3><p>单体应用就是用一套代码实现全部功能。</p>
-<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p>微服务就是把单体应用的代码按照功能拆分出来，形成多套独立的代码，通过某种方式让它们连接在一起，实现完整功能。</p>
-<p>单体应用好比早期的网站开发，用 PHP 搭建的网站：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">...</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;?php echo &quot;hello world!&quot; ?&gt;</span><br><span class="line">    &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>过年的假期也结束了，大家都陆续上班了。</p>
+<p>2020 年我辞职回家一年也没有实现游戏梦，2021 年还有最后一次为梦想拼搏的机会。</p>
+<p>再加上今年还有买房的梦想，所以今年开始没有太多任性的时间了，</p>
+<p>如果家里有矿的话，我也想要归隐山林，专心钻研技术，无奈。</p>
+<p>今年是毕业第五年的开始，五年……足以让一个人发生巨大的改变，</p>
+<p>而我却连毕业时当架构师的梦想都没有实现，于是退而求其次才想要自己写一个框架。</p>
+<p>即使是现在雏形完成了，但是技术方面还是没有很大的提升。</p>
+<p>原因我很清楚，因为急于求成，因为想要证明自己给某个人看……</p>
+<p>后悔的是大学没有好好学习，然悔之无用。</p>
+<p>看过一部电视剧，里面有一句台词深深的触动了我：“当你觉得一切都晚了的时候，恰恰是最早的时机。”</p>
+<p>在 30 岁之前幡然醒悟，也许是一种值得庆幸的事，如果再晚几年，恐怕翻身的机会只会愈加渺茫。</p>
+<p>所以今年，2021 年，我要把握最后一年的机会，尽全力实现自己的游戏梦。</p>
+<p>一边实现梦想，一边学好技术，打铁还需自身硬，只有自己变强了，才能掌控自己的生活。</p>
+<h2 id="封装扩展包"><a href="#封装扩展包" class="headerlink" title="封装扩展包"></a>封装扩展包</h2><p>关于 composer 如何发布自己的扩展包，我在去年的时候写过一篇比较详细的文章了。</p>
+<p>传送链接：<a href="https://huotublog.com/composer-package/" target="_blank" rel="noopener">https://huotublog.com/composer-package/</a></p>
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><p>因为用到了变量类型声明和返回值声明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public function test(int num) : int &#123;</span><br><span class="line">    return num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>HTML 代码与 PHP 代码混合在一起。</p>
-<p>而随着技术的发展，又推出了 MVC 模式，实现模型、视图、控制器的分离。</p>
-<p>然而问题的本质依然没有改变，还不是要一个人去完成同样的工作？</p>
-<p>技术从未停下发展的脚本，职业的分工越来越明确，开始出现专门写 HTML 和 JavaScript 的前端人员和专门写 PHP 代码的后端人员，前端人员通过一项技术“Ajax”调用后端人员写的接口，使他们看似分离但却紧紧的联系到一起，共同实现一个完整的项目。</p>
-<p>这样的分工方式就叫做微服务。</p>
-<h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>比如有一套系统，包括如下业务：</p>
-<p><img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3518914240,1325113277&fm=26&gp=0.jpg" alt="微服务架构"></p>
-<p>把这些业务拆分出来，单独做成一套系统，然后以某种方式让独立的项目之前能够进行通信，这就完成了一套微服务架构。</p>
-<h2 id="微服务通信模式"><a href="#微服务通信模式" class="headerlink" title="微服务通信模式"></a>微服务通信模式</h2><h3 id="HTTP-通信"><a href="#HTTP-通信" class="headerlink" title="HTTP 通信"></a>HTTP 通信</h3><h3 id="RPC-通信"><a href="#RPC-通信" class="headerlink" title="RPC 通信"></a>RPC 通信</h3><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><h2 id="微服务的优缺点"><a href="#微服务的优缺点" class="headerlink" title="微服务的优缺点"></a>微服务的优缺点</h2><p>优点</p>
+<p>这是 PHP7.4 新增的功能，所以要对 PHP 的版本进行限制。</p>
+<p>修改框架下的 composer.json 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;firerabbit&#x2F;engine&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;基于swoole的个人框架。&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">  &quot;authors&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot;: &quot;火烧兔子&quot;,</span><br><span class="line">      &quot;email&quot;: &quot;huoshaotuzi@icloud.com&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;require&quot;: &#123;</span><br><span class="line">    &quot;php&quot;: &quot;^7.4&quot;,</span><br><span class="line">    &quot;illuminate&#x2F;database&quot;: &quot;^7.30&quot;,</span><br><span class="line">    &quot;xiaoler&#x2F;blade&quot;: &quot;^5.4&quot;,</span><br><span class="line">    &quot;monolog&#x2F;monolog&quot;: &quot;^2.2&quot;,</span><br><span class="line">    &quot;firebase&#x2F;php-jwt&quot;: &quot;^5.2&quot;,</span><br><span class="line">    &quot;phpmailer&#x2F;phpmailer&quot;: &quot;^6.2&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;autoload&quot;: &#123;</span><br><span class="line">    &quot;psr-4&quot;: &#123;</span><br><span class="line">      &quot;FireRabbit\\Engine\\&quot;: &quot;src&#x2F;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;files&quot;: [</span><br><span class="line">      &quot;src&#x2F;function.php&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除了限制 PHP 版本之外，添加了作者和描述信息。</p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>将框架的目录进行一番修改，大致如下：</p>
+<p><img src="https://i.loli.net/2021/02/19/zMH3gN2DjJWoaAU.jpg" alt="QQ20210219-134228.jpg"></p>
+<h2 id="Github-仓库"><a href="#Github-仓库" class="headerlink" title="Github 仓库"></a>Github 仓库</h2><p>Github 上创建一个公开的仓库。</p>
+<p>然后将框架的代码上传至仓库。</p>
+<p><img src="https://i.loli.net/2021/02/19/JpyXLvh6kqHV9AK.jpg" alt="QQ20210219-115347.jpg"></p>
+<h2 id="Packagist-仓库"><a href="#Packagist-仓库" class="headerlink" title="Packagist 仓库"></a>Packagist 仓库</h2><p>接着发布到 composer 仓库。</p>
+<p>地址：<a href="https://packagist.org/" target="_blank" rel="noopener">https://packagist.org/</a></p>
+<p>点击上面的 Submit 按钮，然后把 Github 的仓库地址复制过来，然后提交，检测包名字，没问题就继续点下一步。</p>
+<p>等待 composer 抓取 github 的信息，完成之后显示如下界面：</p>
+<p><img src="https://i.loli.net/2021/02/19/j6VymxTihnfwUJ8.jpg" alt="QQ20210219-120712.jpg"></p>
+<p>说明已经成功传到 composer 的仓库了，现在这个包可供所有人拉取，但包还未指定版本号，因此仍然无法安装成功。</p>
+<h2 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h2><p>任何包都需要有一个版本号，第一个版本可以计作：v1.0.0</p>
+<p>版本号是个人自定义的，我定义的版本号规则如下：</p>
 <ul>
-<li>大型项目解耦，提高整体性能</li>
-<li>每个服务都很小，开发人员可以聚焦自己负责的功能模块。</li>
-<li>只需要极少的人来维护一套代码</li>
-<li>可以用不同的语言开发</li>
+<li>第一个 1，代表大版本，除非框架有翻天覆地的更新，否则这个版本不会改变，一旦大版本号改变就说明原来的代码已经无法保证正常使用了，不应该直接从旧版本升级到新版本，无法保证向下兼容</li>
+<li>第二个 0，代表中版本号，此版本更新说明添加了一些新功能，但是兼容旧版，可以直接升级</li>
+<li>第三个 0，代表小版本号，此版本更新说明一些微不足道的改变，例如优化代码或者结构，不影响正常使用，可以直接升级</li>
 </ul>
-<p>缺点</p>
-<ul>
-<li>架构需要花费一定的精力，如果架构得不好，后期反而会变成麻烦</li>
-<li>由于服务分散成很多个，因此难以快速定位错误</li>
-<li>管理成本提高</li>
-</ul>
+<p>composer 包的版本是通过 git 标签实现的。</p>
+<p>执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0.0 -m &quot;初始版本&quot;</span><br><span class="line">git push origin v1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>发布一个标签之后，回到 Packagist 页面，看看右下角是否有更新，</p>
+<p>如果没有更新，手动点击 Update 按钮，同步完成之后就可以看到右下角多出了一个 v1.0.0。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>现在就可以从远程仓库直接安装框架包了。</p>
+<p>在任意位置创建一个空文件夹，然后进入文件夹，执行命令：<code>composer require firerabbit/engine</code></p>
+<p>具体的使用方法可以参照框架的 readme 文件。</p>
+<h2 id="最后的话"><a href="#最后的话" class="headerlink" title="最后的话"></a>最后的话</h2><p>框架部分大致就到这结束了，后续我还会不断更新框架功能。</p>
+<p>接下来就要开始使用这个框架雏形来开发一个博客系统了。</p>
 
           
             <br>
@@ -363,7 +387,7 @@
           
         
           
-            <p>本文链接：<a href=http://www.huotublog.com/mini-server/>http://www.huotublog.com/mini-server/</a></p>
+            <p>本文链接：<a href=http://www.huotublog.com/my-swoole-framework-19/>http://www.huotublog.com/my-swoole-framework-19/</a></p>
           
         
       </blockquote>
@@ -410,7 +434,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>架构</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/PHP/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>PHP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Swoole/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Swoole</p></a></div>
 
 
         
@@ -423,40 +447,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/trait/" rel="prev" title="Trait - 优雅的复用方法">
-                                  
-                                      Trait - 优雅的复用方法
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
                             <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/php-fpm/" rel="prev" title="PHP-FPM">
+                                <a href="/my-swoole-framework-18/" rel="prev" title="从零开始搭建自己的Swoole框架（十八）异步任务">
                                     
-                                        PHP-FPM
+                                        从零开始搭建自己的Swoole框架（十八）异步任务
                                     
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
+                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
                                 </h6>
                             
                         </span>
@@ -492,7 +497,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mysql-memory-optimize/" title="MySQL占用内存过高优化记录" rel="bookmark">MySQL占用内存过高优化记录</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/split-your-code-file/" title="拆分你的代码" rel="bookmark">拆分你的代码</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-0/" title="从零开始搭建自己的Swoole框架（序章）" rel="bookmark">从零开始搭建自己的Swoole框架（序章）</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-14/" title="从零开始搭建自己的Swoole框架（十四）启动程序优化" rel="bookmark">从零开始搭建自己的Swoole框架（十四）启动程序优化</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-16/" title="从零开始搭建自己的Swoole框架（十六）JWT用户认证" rel="bookmark">从零开始搭建自己的Swoole框架（十六）JWT用户认证</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-17/" title="从零开始搭建自己的Swoole框架（十七）发送邮件" rel="bookmark">从零开始搭建自己的Swoole框架（十七）发送邮件</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-7/" title="从零开始搭建自己的Swoole框架（七）路由动态注入参数" rel="bookmark">从零开始搭建自己的Swoole框架（七）路由动态注入参数</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -524,7 +529,7 @@
 
   <script>
     window.subData = {
-      title: '微服务',
+      title: '从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！',
       tools: true
     }
   </script>
@@ -679,7 +684,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#架构模式"><span class="toc-text">架构模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单体应用"><span class="toc-text">单体应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微服务"><span class="toc-text">微服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务架构"><span class="toc-text">微服务架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务通信模式"><span class="toc-text">微服务通信模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP-通信"><span class="toc-text">HTTP 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-通信"><span class="toc-text">RPC 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#消息队列"><span class="toc-text">消息队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微服务的优缺点"><span class="toc-text">微服务的优缺点</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装扩展包"><span class="toc-text">封装扩展包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置信息"><span class="toc-text">配置信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目结构"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github-仓库"><span class="toc-text">Github 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Packagist-仓库"><span class="toc-text">Packagist 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本号"><span class="toc-text">版本号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后的话"><span class="toc-text">最后的话</span></a></li></ol>
     </div>
   </section>
 
