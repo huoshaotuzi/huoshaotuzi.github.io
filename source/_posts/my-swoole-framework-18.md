@@ -550,3 +550,95 @@ string(12) "发送成功"
 并且邮箱也能正常收到测试邮件。
 
 如此一来，框架的异步任务也算完成了。
+
+## 延迟任务
+swoole 提供了毫秒定时器，可以用来延迟分发任务。
+
+而定时器又分为 after（一次性）与 tick（重复）两种类型。
+
+一次性定时器执行完就会销毁，而重复定时器则会间隔执行，直到手动销毁为止。
+
+Swoole 官方文档：[swoole - 定时器](https://wiki.swoole.com/#/timer)
+
+### 一次性任务
+调用 delay 即可实现延迟发布任务。
+
+### 重复性任务
+例如每隔半小时就将缓存中的数据写入到数据库，或者是爬虫任务每小时执行一次，诸如此类。
+
+### 具体实现
+修改 Task 类，添加对应的方法：
+
+```
+<?php
+/**
+ * Created by PhpStorm
+ * Author：FireRabbit
+ * Date：2021/2/18
+ * Time：20:29
+ **/
+
+
+namespace FireRabbitEngine\Module\Task;
+
+use Swoole\Http\Server;
+use Swoole\Timer;
+
+class Task
+{
+    /**
+     * 分发一个任务
+     * @param Server $server
+     * @param TaskInterface $task
+     * @param array $data
+     * @return int
+     */
+    public static function dispatch(Server $server, string $task, array $data = []): int
+    {
+        $params = [
+            'task' => $task,
+            'data' => $data,
+        ];
+
+        return $server->task($params);
+    }
+
+    /**
+     * 延迟分发任务
+     * @param Server $server
+     * @param int $ms
+     * @param string $task
+     * @param array $data
+     */
+    public static function delay(Server $server, int $ms, string $task, array $data = []): int
+    {
+        $params = [
+            'task' => $task,
+            'data' => $data,
+        ];
+
+        return Timer::after($ms, function () use ($server, $params) {
+            $server->task($params);
+        });
+    }
+
+    public static function tick(Server $server, int $ms, string $task, array $data = []): int
+    {
+        $params = [
+            'task' => $task,
+            'data' => $data,
+        ];
+
+        return Timer::tick(1000, function () use ($server, $params) {
+            $server->task($params);
+        });
+    }
+
+    public static function clear(int $timerID): bool
+    {
+        return Timer::clear($timerID);
+    }
+}
+```
+
+执行延迟任务时，可以返回一个 int 类型的时钟 ID，调用 clear 可以将定时器清除。
