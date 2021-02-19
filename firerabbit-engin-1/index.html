@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>从零开始搭建自己的Swoole框架（序章） - 火兔博客</title>
+    <title>FireRabbit-Engine实战 从零搭建个人博客（一）项目规划 - 火兔博客</title>
   
-    <meta name="keywords" content="PHP,Swoole">
+    <meta name="keywords" content="FireRabbitEngine">
   
   
-    <meta name="description" content="搭建属于自己的框架，也许是每一位程序员的终极梦想。">
+    <meta name="description" content="使用 FireRabbit-Engine 框架从零开始搭建个人博客系统。">
   
 
   <!-- feed -->
@@ -240,8 +240,8 @@
         
   
     <h1 class="title">
-      <a href="/my-swoole-framework-0/">
-        从零开始搭建自己的Swoole框架（序章）
+      <a href="/firerabbit-engin-1/">
+        FireRabbit-Engine实战 从零搭建个人博客（一）项目规划
       </a>
     </h1>
   
@@ -267,9 +267,9 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/%E6%9E%B6%E6%9E%84/' rel="nofollow">
+    <a href='/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>架构</p>
+      <p>项目实战</p>
     </a>
   </div>
 
@@ -280,7 +280,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-edit" aria-hidden="true"></i>
-    <p>发布于：2021年2月4日</p>
+    <p>发布于：2021年2月19日</p>
   </a>
 </div>
 
@@ -302,74 +302,24 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="开发目标及准备说明"><a href="#开发目标及准备说明" class="headerlink" title="开发目标及准备说明"></a>开发目标及准备说明</h2><p>这一篇不包含任何技术代码，如需要直接开始请阅读第（一）章。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>毕业三年，成为架构师！</p>
-<p>这是我毕业时的梦想，结果没有实现。</p>
-<p>现在重拾初心，从零设计一个属于自己的框架！</p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>按照目前市面上的发展来看，</p>
-<p>swoole 毫无疑问是目前 PHP 的天花板，</p>
-<p>而自己在工作的时候做的都是流水线，几乎没机会接触到 swoole。</p>
-<p>于是趁这个机会也学习一下。</p>
-<p>这次设计的框架以开发博客系统作为案例，</p>
-<p>我们不考虑它的适用性，正如标题所写的一样，</p>
-<p>这是属于自己的框架，</p>
-<p>而不是 Laravel 那样可以单独发布的 composer 包。</p>
-<p>所以最终我们会完成一个单体博客应用，</p>
-<p>如果你要把自己的框架做成发布到全网让别人使用你的框架，</p>
-<p>可以了解一下 composer 的扩展包是怎么制作的。</p>
-<p>只要这套框架做完了，</p>
-<p>你自己改造成可以用 <code>composer require xxx/xxx</code> 那样引入的也完全没问题。</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="PHP-环境"><a href="#PHP-环境" class="headerlink" title="PHP 环境"></a>PHP 环境</h3><p>本人使用的是 docker 环境，</p>
-<p>window 系统也可以用 wamp、xampp 等等，</p>
-<p>只要搭好 PHP 环境并且安装了 swoole 扩展就行了。</p>
-<p>windows 系统安装 swoole 扩展比较麻烦，</p>
-<p>如果你不会安装，可以在 windows 系统安装 docker，</p>
-<p>然后再在 docker 里面安装 php 环境。</p>
-<h3 id="Swoole-扩展"><a href="#Swoole-扩展" class="headerlink" title="Swoole 扩展"></a>Swoole 扩展</h3><p>Swoole 官方网站：<a href="https://swoole.com/" target="_blank" rel="noopener">swoole.com</a></p>
-<p>swoole 其实是一个 php 扩展并不是框架，它跟 yaf 一样是基于内存常驻的。</p>
-<p>swoole 依然还在保持着更新，yaf 却 N 年没更新了。</p>
-<p>所以如果要学的话，强烈推荐 swoole 而不是 yaf。</p>
-<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p>因为我们要做的是一个博客系统的单体应用。</p>
-<p>Swoole 对静态文件的处理能力比较弱，</p>
-<p>所以我们的目标是 swoole 做服务器，</p>
-<p>静态文件交给 nginx 处理，</p>
-<p>php 请求转发给 swoole。</p>
-<blockquote>
-<p>单体应用是相对于微服务来说的，通俗的讲即整个项目就只有一个文件夹，而微服务则是把各个模块拆出来，比如用户模块、订单模块诸如此类，还可以把全站的 api 接口拆分出来当成一个项目（前后端分离）</p>
-</blockquote>
-<h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><p>免费的数据库，除了这个还有 Mango，</p>
-<p>但是我没用过，根据你个人兴趣选择即可。</p>
-<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>免费的高性能包括键值对、哈希、集合列表等等处理器。</p>
-<p>用来做缓存和队列任务，文章排行榜等等。</p>
-<h3 id="Composer"><a href="#Composer" class="headerlink" title="Composer"></a>Composer</h3><p>php 的包管理工具，现在的项目还是纯手撸那也太 lower 了。</p>
-<p>我们在开发框架的时候，会像 Laravel 那样依赖一些第三方的包。</p>
-<p>感觉好像有点作弊？</p>
-<p>用 composer 就跟直接拿别人开发好的一样，</p>
-<p>不是说好手撸框架么？</p>
-<p>不用担心，开发框架最核心的是编程思想，</p>
-<p>具体怎么实现，我相信大家看着源码也能模仿出来。</p>
-<p>如果你愿意从写 MySQL 数据连接开始，那也没问题!</p>
-<p>如果你要从最底层的代码开始写，</p>
-<p>那么我建议你将数据库处理、上传组件、缓存处理、队列任务等等，</p>
-<p>把这些都做成单独的 composer 包，</p>
-<p>然后再在框架里引入自己写的 composer 组件包，</p>
-<p>像拼积木一样，看起来很酷对吧！</p>
-<p>这样一个高度定制化的框架就实现了。</p>
-<p>我还真的试过这么做，但是做一个 composer 包就放弃了……</p>
-<p>因为……工作量增加了好几倍。</p>
-<p>很不现实，你做的越细，工作量就越大，</p>
-<p>而我们自己一个人维护不过来，</p>
-<p>所以不推荐一开始就有那么大的野心，</p>
-<p>本篇文章要完成的目标仅仅只是一个单体博客应用而已，</p>
-<p>甚至都不会把框架单独拆分出来（业务逻辑代码也混合在框架里）。</p>
-<p><strong>核心内容是开发框架的编程思想，而不是具体的实现。</strong></p>
-<h3 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h3><p>用 PHPStorm 即可，当然也可以用微软的 VScode。</p>
-<h2 id="最终目标"><a href="#最终目标" class="headerlink" title="最终目标"></a>最终目标</h2><p>在我们学习 PHP 的时候，</p>
-<p>第一个开发的项目是什么？</p>
-<p>我猜大部分人都是博客系统！</p>
-<p>那么，三年前的我和三年后的我，</p>
-<p>制作相同的一套系统会有什么差别呢？</p>
-<p>用毕生（三年）的功力，来开发这套博客系统吧！</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>居然非常不要脸的在标题写上自己引擎的名字了！</p>
+<p>FireRabbit-Engine（火兔引擎）是基于 swoole 的 Laravel 劣质山寨版！</p>
+<p>但是就性能而言，相比 Laravel 的提升非常巨大！</p>
+<p>（这是 swoole 的功劳啊、喂！）</p>
+<p>我要高呼框架的口号：有手就行，火兔引擎！</p>
+<h2 id="项目规划"><a href="#项目规划" class="headerlink" title="项目规划"></a>项目规划</h2><p>为了测试框架的性能和发现框架的不足之处，因此我打算用一个博客系统来测试。</p>
+<p>这个博客系统会包含博客应该具备的基本功能，但绝不是手把手每一步都写得清清楚楚。</p>
+<p>而且我的前端技术也不咋样，于是这个博客系统干脆就不需要 css 代码……</p>
+<h2 id="功能模块"><a href="#功能模块" class="headerlink" title="功能模块"></a>功能模块</h2><p>博客包含以下几个简单模块：</p>
+<ul>
+<li>登录/注册（注册需要验证邮箱，顺便测试异步任务）</li>
+<li>文章的增删改查</li>
+<li>数据库迁移</li>
+<li>权限认证（中间件来实现）</li>
+<li>缓存</li>
+</ul>
+<h2 id="制作周期"><a href="#制作周期" class="headerlink" title="制作周期"></a>制作周期</h2><p>这几个模块只要一晚上就能完成，但是昨天晚上睡眠不足，</p>
+<p>现在头有点昏昏沉沉，如果今天晚上没做完，就留到明天继续。</p>
 
           
             <br>
@@ -403,7 +353,7 @@
           
         
           
-            <p>本文链接：<a href=http://www.huotublog.com/my-swoole-framework-0/>http://www.huotublog.com/my-swoole-framework-0/</a></p>
+            <p>本文链接：<a href=http://www.huotublog.com/firerabbit-engin-1/>http://www.huotublog.com/firerabbit-engin-1/</a></p>
           
         
       </blockquote>
@@ -450,7 +400,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/PHP/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>PHP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Swoole/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Swoole</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/FireRabbitEngine/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>FireRabbitEngine</p></a></div>
 
 
         
@@ -463,40 +413,21 @@
         
             <div class="prev-next">
                 
-                    <section class="prev">
-                        <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
-                            <h4>
-                                <a href="/my-swoole-framework-1/" rel="prev" title="从零开始搭建自己的Swoole框架（一）框架概述">
-                                  
-                                      从零开始搭建自己的Swoole框架（一）框架概述
-                                  
-                                </a>
-                            </h4>
-                            
-                                
-                                <h6 class="tags">
-                                    <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
-                                </h6>
-                            
-                        </span>
-                    </section>
-                
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
                             <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
-                                <a href="/mac-os-internet-slowly-resolved/" rel="prev" title="MAC 系统打开网页速度缓慢问题的解决方法">
+                                <a href="/my-swoole-framework-19/" rel="prev" title="从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！">
                                     
-                                        MAC 系统打开网页速度缓慢问题的解决方法
+                                        从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！
                                     
                                 </a>
                             </h4>
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/MAC-OS/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> MAC OS</a> <a class="tag" href="/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 解决方案</a>
+                                    <a class="tag" href="/tags/FireRabbitEngine/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> FireRabbitEngine</a> <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/Swoole/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Swoole</a>
                                 </h6>
                             
                         </span>
@@ -532,7 +463,7 @@
 
 
     <div class="content">
-      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-14/" title="从零开始搭建自己的Swoole框架（十四）启动程序优化" rel="bookmark">从零开始搭建自己的Swoole框架（十四）启动程序优化</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-19/" title="从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！" rel="bookmark">从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-16/" title="从零开始搭建自己的Swoole框架（十六）JWT用户认证" rel="bookmark">从零开始搭建自己的Swoole框架（十六）JWT用户认证</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-17/" title="从零开始搭建自己的Swoole框架（十七）发送邮件" rel="bookmark">从零开始搭建自己的Swoole框架（十七）发送邮件</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-3/" title="从零开始搭建自己的Swoole框架（三）类的自动加载" rel="bookmark">从零开始搭建自己的Swoole框架（三）类的自动加载</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/mini-server/" title="微服务" rel="bookmark">微服务</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-7/" title="从零开始搭建自己的Swoole框架（七）路由动态注入参数" rel="bookmark">从零开始搭建自己的Swoole框架（七）路由动态注入参数</a></h3></div></li></ul>
+      <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-10/" title="从零开始搭建自己的Swoole框架（十）数据库迁移" rel="bookmark">从零开始搭建自己的Swoole框架（十）数据库迁移</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-11/" title="从零开始搭建自己的Swoole框架（十一）数据库模型" rel="bookmark">从零开始搭建自己的Swoole框架（十一）数据库模型</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-12/" title="从零开始搭建自己的Swoole框架（十二）日志系统" rel="bookmark">从零开始搭建自己的Swoole框架（十二）日志系统</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-15/" title="从零开始搭建自己的Swoole框架（十五）缓存模块" rel="bookmark">从零开始搭建自己的Swoole框架（十五）缓存模块</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-16/" title="从零开始搭建自己的Swoole框架（十六）JWT用户认证" rel="bookmark">从零开始搭建自己的Swoole框架（十六）JWT用户认证</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-14/" title="从零开始搭建自己的Swoole框架（十四）启动程序优化" rel="bookmark">从零开始搭建自己的Swoole框架（十四）启动程序优化</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-17/" title="从零开始搭建自己的Swoole框架（十七）发送邮件" rel="bookmark">从零开始搭建自己的Swoole框架（十七）发送邮件</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/my-swoole-framework-19/" title="从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！" rel="bookmark">从零开始搭建自己的Swoole框架（十九）封包，发到composer仓库！</a></h3></div></li></ul>
     </div>
   </section>
 
@@ -564,7 +495,7 @@
 
   <script>
     window.subData = {
-      title: '从零开始搭建自己的Swoole框架（序章）',
+      title: 'FireRabbit-Engine实战 从零搭建个人博客（一）项目规划',
       tools: true
     }
   </script>
@@ -719,7 +650,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开发目标及准备说明"><span class="toc-text">开发目标及准备说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-环境"><span class="toc-text">PHP 环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Swoole-扩展"><span class="toc-text">Swoole 扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-text">Nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL"><span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis"><span class="toc-text">Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Composer"><span class="toc-text">Composer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDE"><span class="toc-text">IDE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终目标"><span class="toc-text">最终目标</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目规划"><span class="toc-text">项目规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#功能模块"><span class="toc-text">功能模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作周期"><span class="toc-text">制作周期</span></a></li></ol>
     </div>
   </section>
 
