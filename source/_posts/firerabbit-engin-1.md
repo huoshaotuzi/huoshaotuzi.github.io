@@ -1,5 +1,5 @@
 ---
-title: FireRabbit-Engine实战 从零搭建个人博客（一）项目规划
+title: FireRabbit-Engine 实战 从零搭建个人博客（一）项目规划
 date: 2021-02-19 16:56:21
 tags:
 - FireRabbitEngine
