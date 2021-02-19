@@ -4,7 +4,8 @@ date: 2021-02-11 22:33:44
 tags:
  - PHP
  - Swoole
- 
+ - FireRabbitEngine
+
 categories: 架构
 
 description: 路由动态传参给控制器方法。

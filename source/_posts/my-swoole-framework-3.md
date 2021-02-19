@@ -4,7 +4,8 @@ date: 2021-02-06 18:49:48
 tags:
  - PHP
  - Swoole
- 
+ - FireRabbitEngine
+
 categories: 架构
 
 description: 类的自动加载。

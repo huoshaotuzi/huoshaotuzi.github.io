@@ -1,8 +1,11 @@
 ---
-title: 从零开始搭建自己的Swoole框架（十五）缓存模块 date: 2021-02-18 11:30:22 tags:
+title: 从零开始搭建自己的Swoole框架（十五）缓存模块 
+date: 2021-02-18 11:30:22 
 
+tags:
 - PHP
 - Swoole
+- FireRabbitEngine
 
 categories: 架构
 
