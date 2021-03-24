@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title>网站性能优化之静态资源加速</title>
+      <link href="/web-optimize-1/"/>
+      <url>/web-optimize-1/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>图片、css、js 等等不会在用户访问时改变的资源统称静态资源。</p><p>网站的打开速度除了跟代码有关，静态资源也会拖后腿，优化静态资源加载速度比起优化代码更能显著提高访问速度。</p><h2 id="WEB-服务器"><a href="#WEB-服务器" class="headerlink" title="WEB 服务器"></a>WEB 服务器</h2><p>Apache 和 Nginx 是常用的 WEB 服务器。</p><p>Nginx 处理静态资源的速度比 Apache 更快，所以选择 Nginx 可以提高静态资源访问速度。</p><p>Nginx 可以配置静态资源缓存，参考资料：<a href="https://www.w3cschool.cn/nginxsysc/nginxsysc-cache.html" target="_blank" rel="noopener">Nginx 静态资源缓存设置</a></p><h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h2><p>两台电脑的远近距离会影响到访问速度，例如在大陆地区访问国外的服务器就会延迟。</p><p>CDN 即内容分发网络，它会根据就近原则为你分配访问的节点。</p><p>比如在广州有一台服务器，上面保存着图片 A，在美国也有一台服务器，也保存着相同的图片 A，假设你的网站客户群体是全球范围，那么让国内用户访问广州的服务器上面的图片 A，美国用户访问美国服务器的图片 A，这样访问速度就是最快的。</p><p>更细分一点，在广州、上海、福州、香港……等等很多个地区都有一台服务器，这些服务器都保存着图片 A，这样广州的人访问广州的服务器，上海的人访问上海的服务器……这就是内容分发，就近原则访问资源。</p><p>我们个人是没办法做到那么多节点的，只有依靠服务商。</p><p>CDN 的原理就是负载均衡，根据 IP 来分配节点。</p><p>有很多免费的 CDN 服务商，推荐使用 jsdelivr + Github 来作为个人的 CDN。</p><p>Github：<a href="http://github.com/" target="_blank" rel="noopener">http://github.com/</a></p><p>首先到 Github 创建一个账号，然后新建一个仓库，上传一张图片，比如图片名字为：avatar.png。</p><p>然后就可以直接用 jsdelivr 加载这张图片了。</p><p>格式：<code>https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径</code></p><p>版本号不是必须的，但是加上去可以防止用户本地缓存了资源导致没有更新，你可以随意编写自己的版本号，如：@1.0，不过如果你要加上版本号的话，需要用 git 命令打一个版本的标签。</p><p>示例：<a href="https://github.com/laravel/laravel" target="_blank" rel="noopener">https://github.com/laravel/laravel</a></p><p>这是 Laravel 框架的仓库地址，仓库根目录下有一个 <code>webpack.mix.js</code> 文件。</p><p>那么可以访问下面的地址：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;laravel&#x2F;laravel&#x2F;webpack.mix.js</span><br><span class="line">https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;laravel&#x2F;laravel@8.5.15&#x2F;webpack.mix.js</span><br></pre></td></tr></table></figure><p>这样就 OK 了！</p><p>上面的 @8.5.15 是 Laravel 框架已经打好的版本标签。</p><p>在仓库的 tags 页面可以查看所有标签 ：<a href="https://github.com/laravel/laravel/tags" target="_blank" rel="noopener">https://github.com/laravel/laravel/tags</a></p><p>默认不写标签就是引用最新版。</p><p>前端用的最多的 js 即 JQeury 了，仓库地址：<a href="https://github.com/jquery/jquery" target="_blank" rel="noopener">https://github.com/jquery/jquery</a></p><p>可以试着拿这个仓库练习一下，首先是确定自己要用的 JQuery 版本：<a href="https://github.com/jquery/jquery/tags" target="_blank" rel="noopener">https://github.com/jquery/jquery/tags</a></p><p>例如我要引用最新的 v3.6.0，然后发现 dist 里有不同类型的文件：<a href="https://github.com/jquery/jquery/tree/3.6.0/dist" target="_blank" rel="noopener">https://github.com/jquery/jquery/tree/3.6.0/dist</a></p><p>带有 min 即压缩过的，一般我们都是引用这个。 </p><p>可以用下面的链接：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;jquery&#x2F;jquery@3.6.0&#x2F;dist&#x2F;jquery.min.js&quot;&gt;&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure><p>CDN 不止可以用 js、css 等，还可以把图片也上传到自己的 github 仓库，用相同的办法引入即可。</p><blockquote><p>需要注意的是 jsdelivr 可能不太稳定，一旦它挂了你的网站资源就加载不出来了，这也是用 cdn 的风险</p></blockquote><h2 id="图片加载优化"><a href="#图片加载优化" class="headerlink" title="图片加载优化"></a>图片加载优化</h2><p>推荐两个免费图床：</p><p>SM.MS：<a href="http://sm.ms/" target="_blank" rel="noopener">http://sm.ms/</a></p><p>牛图网：<a href="http://niupic.com/" target="_blank" rel="noopener">http://niupic.com/</a></p><p>把图片上传到这两个网站，它们自带 CDN。</p><p>上传图片之前，可以到 TinyPng：<a href="https://tinypng.com/" target="_blank" rel="noopener">https://tinypng.com/</a> 将图片压缩一下，体积减小之后访问的速度也就 更快了。</p><blockquote><p>需要注意的是压缩画质会受损，请根据实际需求选择是否压缩</p></blockquote><p>除此之外，图片的 jpg 格式比起 png 更小，因为 jpg 是压缩的格式，而 png 可以保留透明背景，如果不需要透明背景可以将图片压缩为 jpg 格式。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>FireRabbit-Engine 实战 从零搭建个人博客（四）完结篇</title>
+      <link href="/firerabbit-engin-4/"/>
+      <url>/firerabbit-engin-4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一个多月没更新了，大致总结一下。</p><p>博客已经做完而且上线了，框架也在边写博客业务的时候边更新，具体过程略。</p><p>静态资源使用 CDN 可以实现秒开，AB 测试的结果差强人意，原本一个单纯的框架测试 hello world 时 RPS 可以达到 200-300，而博客上线后，测试 5000 篇文章使用 Redis 缓存的情况下，RPS 只剩下 20-30，太丢 swoole 的脸了……</p><p>总的来说，通过自己写框架的过程还是学到蛮多知识的，尤其是在做自己的游戏的时候，思维方式发生了很大的改变。</p><p>平时写网站几乎用不到的「设计模式」，对写框架和游戏开发来说却是最根本的基础，现在我已经决定好好学一下各种设计模式了。不然以后做游戏开发的时候，代码肯定是乱糟糟的一团。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目实战 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> FireRabbitEngine </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>FireRabbit-Engine 实战 从零搭建个人博客（三）登录与注册</title>
+      <link href="/firerabbit-engin-3/"/>
+      <url>/firerabbit-engin-3/</url>
+      
+        <content type="html"><![CDATA[<h2 id="视图文件"><a href="#视图文件" class="headerlink" title="视图文件"></a>视图文件</h2><p>在 app 下新建一个文件夹 view 用来保存视图模板，</p><p>再创建一个 storage，并继续在 storage 下创建 view_cache 用来保存编译后的视图文件。</p><p>然后修改 app.php：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Constant::VIEW_CONFIG &#x3D;&gt; [</span><br><span class="line">    &#39;path&#39; &#x3D;&gt; __DIR__ . &#39;&#x2F;..&#x2F;view&#39;,</span><br><span class="line">    &#39;cache_path&#39; &#x3D;&gt; __DIR__ . &#39;&#x2F;..&#x2F;storage&#x2F;view_cache&#39;,</span><br><span class="line">],</span><br></pre></td></tr></table></figure><p>此处的文件路径即上述创建的文件夹。</p><h2 id="视图母版"><a href="#视图母版" class="headerlink" title="视图母版"></a>视图母版</h2><p>母版即所有页面共用的代码，比如每个页面都有顶部导航栏跟底部栏，</p><p>只是中间的部分不同，因此只要把内容单独提取出来，顶部和底部的结构可以复用。</p><p>在 view 下新建 layout 用来保存母版，同时创建 app.blade.php：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;zh-cn&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name&#x3D;&quot;viewport&quot;</span><br><span class="line">          content&#x3D;&quot;width&#x3D;device-width, user-scalable&#x3D;no, initial-scale&#x3D;1.0, maximum-scale&#x3D;1.0, minimum-scale&#x3D;1.0&quot;&gt;</span><br><span class="line">    &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;ie&#x3D;edge&quot;&gt;</span><br><span class="line">    &lt;title&gt;火兔博客&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;a href&#x3D;&quot;#&quot;&gt;导航栏&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;</span><br><span class="line">            &lt;td&gt;&lt;a href&#x3D;&quot;#&quot;&gt;导航栏&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;</span><br><span class="line">            &lt;td&gt;&lt;a href&#x3D;&quot;#&quot;&gt;导航栏&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;</span><br><span class="line">            &lt;td&gt;&lt;a href&#x3D;&quot;#&quot;&gt;导航栏&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;&#x2F;tr&gt;</span><br><span class="line">    &lt;&#x2F;table&gt;</span><br><span class="line">    </span><br><span class="line">    @yield(&#39;content&#39;)</span><br><span class="line"></span><br><span class="line">    &lt;hr&#x2F;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;p align&#x3D;&quot;center&quot;&gt;火兔博客©2021&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure><p>中间的 <code>yield(&#39;content&#39;)</code> 即抽取出来的内容页。</p><h2 id="登录-注册页面"><a href="#登录-注册页面" class="headerlink" title="登录/注册页面"></a>登录/注册页面</h2><p>添加登录注册的路由：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$router &#x3D; new \FireRabbit\Engine\Route\Router();</span><br><span class="line"></span><br><span class="line">$router-&gt;setConfig([</span><br><span class="line"></span><br><span class="line">    &#39;namespace&#39; &#x3D;&gt; &#39;App\\Http\\Controller\\&#39;,</span><br><span class="line"></span><br><span class="line">])-&gt;group(function () use ($router) &#123;</span><br><span class="line"></span><br><span class="line">    $router-&gt;get(&#39;&#x2F;login&#39;, &#39;IndexController@login&#39;)-&gt;name(&#39;login&#39;);</span><br><span class="line">    $router-&gt;get(&#39;&#x2F;register&#39;, &#39;IndexController@register&#39;)-&gt;name(&#39;register&#39;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">return $router;</span><br></pre></td></tr></table></figure><p>接着修改控制器：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;**</span><br><span class="line"> * Created by PhpStorm</span><br><span class="line"> * Author：FireRabbit</span><br><span class="line"> * Date：2021&#x2F;2&#x2F;19</span><br><span class="line"> * Time：12:39</span><br><span class="line"> **&#x2F;</span><br><span class="line"></span><br><span class="line">namespace App\Http\Controller;</span><br><span class="line"></span><br><span class="line">use FireRabbit\Engine\Controller\Controller;</span><br><span class="line"></span><br><span class="line">class IndexController extends Controller</span><br><span class="line">&#123;</span><br><span class="line">    public function login()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;show(&#39;login&#39;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function register()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;show(&#39;register&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>接着创建对应的 blade 模板，login.blade.php：</p><p>……</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目实战 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> FireRabbitEngine </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>FireRabbit-Engine 实战 从零搭建个人博客（二）创建博客所需的表</title>
       <link href="/firerabbit-engin-2/"/>
       <url>/firerabbit-engin-2/</url>
