@@ -1523,9 +1523,9 @@
             
             <tag> gitlab </tag>
             
-            <tag> docker </tag>
-            
             <tag> composer </tag>
+            
+            <tag> docker </tag>
             
         </tags>
       
