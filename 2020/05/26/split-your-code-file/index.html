@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="随着业务的增长，一个用来实现业务逻辑的代码文件会变得非常大，尤其是在多人协作的开发中，因为每个人的习惯不同，代码中会出现奇奇怪怪的东西，随着人员流动，后期的接盘侠就变得非常痛苦。"><meta name="keywords" content="架构"><meta name="author" content="火烧兔子"><meta name="copyright" content="火烧兔子"><title>拆分你的代码 | 火兔博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '6.3.0'
+} </script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="火兔博客" type="application/atom+xml">
+</head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%96%87%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">前文概要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E6%BC%94%E5%8F%98"><span class="toc-number">2.</span> <span class="toc-text">架构演变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F-MVC-%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">传统 MVC 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB"><span class="toc-number">4.</span> <span class="toc-text">前后端分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">Service 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%88%92%E5%88%86%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">更多的划分方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-number">7.</span> <span class="toc-text">微服务架构</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://i.loli.net/2021/05/02/JjR7MmfePax3oc2.jpg"></div><div class="author-info__name text-center">火烧兔子</div><div class="author-info__description text-center">这里是火兔博客，火兔兔的小窝。</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">60</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">24</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">17</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">火兔博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a><a class="site-page" target="_blank" rel="noopener" href="http://huotuyouxi.com">游戏博客</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">拆分你的代码</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-05-26</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前文概要"><a href="#前文概要" class="headerlink" title="前文概要"></a>前文概要</h2><p>本文讲述的是如何把一个大文件拆分成许许多多小文件的方法。</p>
+<p>所谓大文件其实没有一个明确定义，暂且规定一个文件如果超过 1000 行就算大文件吧！</p>
+<p>当然也不用死脑筋，一看到代码行数多就得拆分，这完全要看情况，就好比玩游戏辅助的位置就一定得跟射手？如果脑袋不会转弯，对以后学习都很不利。死脑筋在一定程度上等同于“杠精”，本文介绍的是拆分文件的方法，而如何使用取决于一个聪明的孩子。</p>
+<p>拆分文件的目的是解决混乱的逻辑，因为一个文件只要很大，极有可能是混杂了本来不应该出现的东西。拆分之后的小文件可能只有 100-200 行，相比一个 1000 多行的文件，哪个更容易让人看懂？</p>
+<p>（题外话：在我看来辅助是决定游戏成败的关键因素，它的位置与打野一样重，出了辅助装的辅助不会抢经济，也就意味着这个位置可以支援任何一路，帮助中路快速清兵 Gank 上路，或者开局配合队友入侵对面野区，或者在上单被单杀后去守塔并且吃掉本来会被浪费的兵线，或者在打野队友被对面反蓝的时候去支援等等，辅助是很灵活的位置，但是一个死脑筋的人理解范畴就是辅助只有跟了射手才是辅助。）</p>
+<h2 id="架构演变"><a href="#架构演变" class="headerlink" title="架构演变"></a>架构演变</h2><p>技术的演变过程都是朝着分离代码发展。</p>
+<p>最早的 PHP 文件前后端代码混合在一起，相信大家最开始学 PHP 的时候都接触过这种代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// index.php 文件</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">// ...此处省略998行</span><br><span class="line">&lt;h1&gt;&lt;?php echo &quot;hello world!&quot; ?&gt;&lt;/h1&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这种文件又被归为：<code>.phtml</code> 格式，意思是 PHP 代码与 HTML 混合的文件。</p>
+<p>因为 PHP 代码可以嵌入在 HTML 文件中，所以 PHP 又被叫做嵌入式语言。</p>
+<p>可以嵌入其他语言感觉很 Cool，但其实这种做法是非常不可取的，试想一下公司忽然来了一个不懂 HTML 的 PHP 实习生，看着混合着 HTML 和 PHP 代码的文件肯定一脸懵逼。</p>
+<p>为了维护混合代码的项目需要掌握前端知识，后端开发无形中增加了学习成本。</p>
+<blockquote>
+<p>重点知识：HTML 代码与 PHP 代码混合在一起</p>
+</blockquote>
+<p>也就是上面提到的“出现不应该出现的东西”，HTML 代码应该只包含 HTML、JS、CSS 之类的前端方面文件，而用来处理业务逻辑的 PHP 文件里也不应该出现前端的东西。只要出现了本来不应该出现的东西就会导致维护成本增加。</p>
+<h2 id="传统-MVC-模式"><a href="#传统-MVC-模式" class="headerlink" title="传统 MVC 模式"></a>传统 MVC 模式</h2><p>首先介绍一下传统 MVC 模式，</p>
+<p>这是早期用来处理代码文件膨胀的解决方案：</p>
+<p>将代码文件分成：</p>
+<ul>
+<li>Model（模型）处理数据库操作</li>
+<li>View（视图）渲染 HTML 文件</li>
+<li>Controller（控制器）处理请求和响应</li>
+</ul>
+<p>在一定程度上满足了早期的需求，模型文件专门处理数据库的增删改查，而控制器只要实例化模型对象就可以直接调用数据库操作方法，然后把数据传递给视图进行渲染。</p>
+<p>每一步都变得更加专业化了。</p>
+<blockquote>
+<p>模板视图：包括 PHP 代码与 HTML 代码的特殊文件</p>
+</blockquote>
+<p>但 MVC 结构依然没有摆脱代码混合的问题，而是使用了稍微好一些的模板视图（例如：smart 模板、blade 模板）。</p>
+<p>模板视图就是用来处理前端和 PHP 代码，用来最终渲染出 HTML 页面的文件。</p>
+<p>以 Laravel 使用的 blade 模板为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// IndexController.php</span><br><span class="line">class IndexController &#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        // 查询数据库，取 ID=1 的 goods</span><br><span class="line">        $goods = Goods::where(&#x27;id&#x27;, 1)-&gt;first();</span><br><span class="line">        </span><br><span class="line">        return view(&#x27;index&#x27;, compact(&#x27;goods&#x27;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// index.blade.php</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">// ... 省略998行</span><br><span class="line">&#123;&#123; $goods-&gt;name &#125;&#125;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过模板引擎编译后生成如下文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">// ... 省略998行</span><br><span class="line">&lt;?php echo $goods-&gt;name; ?&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说我们现在不需要直接在 HTML 上面写代码，而是在模板文件（index.blade.php）上面写代码。</p>
+<p>但这种方法治标不治本，虽然模板文件是 PHP 文件，但还是夹杂着 HTML。</p>
+<h2 id="前后端分离"><a href="#前后端分离" class="headerlink" title="前后端分离"></a>前后端分离</h2><p>为了分离出 HTML 和 PHP 代码，人们研究出了通过接口调用实现前后端分离的方法。</p>
+<p>这种技术叫做 Ajax，前端通过 JavaScript 发起 HTTP 请求，服务器返回查询的数据，前端再渲染数据。</p>
+<p>整个过程实现了前后端代码的完全分离。</p>
+<blockquote>
+<p>现在我们后端开发人员已经从前端地狱中解放出来了！！</p>
+</blockquote>
+<h2 id="Service-模式"><a href="#Service-模式" class="headerlink" title="Service 模式"></a>Service 模式</h2><p>因为前后端分离，MVC 模式的 View（视图）已经不需要了，</p>
+<p>取而代之的是新出现的 Service（服务）。</p>
+<p>MVC 模式下，所有的业务逻辑都写在 Controller（控制器）上。</p>
+<p>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class GoodsController</span><br><span class="line">&#123;</span><br><span class="line">    public function index() &#123;</span><br><span class="line">        // 按发布时间倒序获取20条商品数据</span><br><span class="line">        $goods = Goods::orderByDesc(&#x27;created_at&#x27;)-&gt;limit(20)-&gt;get();</span><br><span class="line">        // 拼装接口返回数据</span><br><span class="line">        $items = [];</span><br><span class="line">        foreach($goods as $item) &#123;</span><br><span class="line">            $items[&#x27;data&#x27;][] = [</span><br><span class="line">                &#x27;id&#x27; =&gt; $item-&gt;id,</span><br><span class="line">                &#x27;title&#x27; =&gt; $item-&gt;title,</span><br><span class="line">                &#x27;time&#x27; =&gt; $item-&gt;created_at</span><br><span class="line">            ];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 返回接口响应</span><br><span class="line">        return api_response($items);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把所有业务逻辑代码都写在控制器上会导致控制器文件逐渐膨胀。</p>
+<p>控制器的作用是处理请求和响应，我们可以让它更加专业化一点，让它只负责处理请求然后给出响应。</p>
+<p>至于逻辑处理，可以交给第三方：Service（服务）来处理。</p>
+<p>所谓 Service 层只不过是再额外增加一个文件。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class GoodsService &#123;</span><br><span class="line">    </span><br><span class="line">    // 按发布时间倒序获取20条商品数据</span><br><span class="line">    public function getGoodsItems() &#123;</span><br><span class="line">       $goods = Goods::orderByDesc(&#x27;created_at&#x27;)-&gt;limit(20)-&gt;get();</span><br><span class="line">       // 拼装接口返回数据</span><br><span class="line">       $items = [];</span><br><span class="line">       foreach($goods as $item) &#123;</span><br><span class="line">           $items[&#x27;data&#x27;][] = [</span><br><span class="line">               &#x27;id&#x27; =&gt; $item-&gt;id,</span><br><span class="line">               &#x27;title&#x27; =&gt; $item-&gt;title,</span><br><span class="line">               &#x27;time&#x27; =&gt; $item-&gt;created_at</span><br><span class="line">           ];</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       return $goods;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在控制器里只需要实例化出一个 GoodsService 对象，调用方法即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class GoodsController</span><br><span class="line">&#123;</span><br><span class="line">    public function index() &#123;</span><br><span class="line">        $service = new GoodsService();</span><br><span class="line">        $items = $service-&gt;getGoodsItems();</span><br><span class="line">        </span><br><span class="line">        // 返回接口响应</span><br><span class="line">        return api_response($items);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>控制器里面只负责处理请求和给出响应，把逻辑处理交给 Service 处理，这样 Controller 的代码几乎已经没有多少了，以后某个接口出问题可以立即找到对应的控制器方法，大大减少排查问题的时间。</p>
+<p>（把业务逻辑写在控制器里是一个非常让人吐血的事情，作为接盘了不少项目的我深有体会）</p>
+<h2 id="更多的划分方法"><a href="#更多的划分方法" class="headerlink" title="更多的划分方法"></a>更多的划分方法</h2><p>机智的你一定发现，即使增加了 Service 层，业务逻辑代码还是很多啊，把本来囤积在 Controller 的代码移到 Service 有什么意义？</p>
+<p>意义之一就是让每个结构更加专业化，Controller 只处理请求和响应，因为 Controller 如果有太多代码的话，如果一个接口出问题了，你要在 IDE 上面拖动滚轮才能定位到你想要的那个方法上面，然后直接在 Controller 层排查问题。而且 Controller 层如果囤积了太多业务代码，还有其他小伙伴也在修改这个控制器就很容易发生代码冲突造成不必要的麻烦。</p>
+<p>Goods（商品）的相关业务逻辑就交给 GoodsService 处理；User（用户）的业务逻辑就交给 UserService 处理，这样你要修改哪个模块的业务逻辑也很方便不是吗？</p>
+<p>但还是没有解决 Service 层代码囤积问题。</p>
+<p>这里凭经验之谈，其中一个方法就是数据库操作的逻辑移动到 Model 层里面去处理，示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class UserModel extends Model &#123;</span><br><span class="line">    // 添加一名新用户</span><br><span class="line">    public function addUser($username) &#123;</span><br><span class="line">        // user 表增加一条新用户记录</span><br><span class="line">        $user = $this-&gt;create([</span><br><span class="line">            &#x27;username&#x27; =&gt; $username,</span><br><span class="line">        ]);</span><br><span class="line">        </span><br><span class="line">        // 为用户开通支付账户</span><br><span class="line">        UserAccountModel::create([</span><br><span class="line">            &#x27;user_id&#x27; =&gt; $user-&gt;id</span><br><span class="line">        ]);</span><br><span class="line">        </span><br><span class="line">        // ... 其他数据库相关操作</span><br><span class="line">        </span><br><span class="line">        // 返回新创建的 user 对象</span><br><span class="line">        return $user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后 UserService 直接调用 Model 的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$data = request()-&gt;all();</span><br><span class="line">$model  = new UserModel();</span><br><span class="line">$user = $model-&gt;addUser($data);</span><br><span class="line">// ... 处理其他逻辑</span><br></pre></td></tr></table></figure>
+
+<p>这样 Service 层的代码一部分就转移到了 Model 层里去了！</p>
+<p>把所有数据库增删改查的逻辑全部转移到 Model 层，</p>
+<p>而 Service 只要实例化对应的 Model，调用方法（负责处理整体的逻辑）。</p>
+<p>这样 Service 层也可以变得更加专业化。</p>
+<blockquote>
+<p>Model：喵喵喵？把锅甩给我！？</p>
+</blockquote>
+<p>新的问题又来了，Model 层膨胀了！</p>
+<p>OK，用同样的逻辑，我们再分出一个 Action（操作）层。</p>
+<p>新建 Action 类，每一个操作对应一个类文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class UserAddAction &#123;</span><br><span class="line"></span><br><span class="line">    // 创建新用户</span><br><span class="line">    public function add($data) &#123;</span><br><span class="line">        $model = new UserModel();</span><br><span class="line">        $user = $model-&gt;create($data);</span><br><span class="line">        </span><br><span class="line">        return $user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserAccountAddAction &#123;</span><br><span class="line"></span><br><span class="line">    // 开通用户支付账户</span><br><span class="line">    public function add(UserModel $user) &#123;</span><br><span class="line">        $model = new UserAccountModel();</span><br><span class="line">        $data = [</span><br><span class="line">            &#x27;user_id&#x27; =&gt; $user-&gt;id,</span><br><span class="line">            // ... 省略其他数据</span><br><span class="line">        ];</span><br><span class="line">        $account = $model-&gt;create($data);</span><br><span class="line">        </span><br><span class="line">        return $account;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来在 Model 里面只要实例化 Action，然后调用方法就可以了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class UserModel extends Model &#123;</span><br><span class="line">    // 添加一名新用户</span><br><span class="line">    public function addUser($username) &#123;</span><br><span class="line">        // user 表增加一条新用户记录</span><br><span class="line">        $userAddAction = new UserAddAction();</span><br><span class="line">        $data = [</span><br><span class="line">            &#x27;username&#x27; =&gt; $username,</span><br><span class="line">            // .. 其他数据</span><br><span class="line">        ];</span><br><span class="line">        $user = $userAddAction-&gt;add($data);</span><br><span class="line">        </span><br><span class="line">        // 为用户开通支付账户</span><br><span class="line">        $userAccountAddAction = new UserAccountAddAction();</span><br><span class="line">        $data = [</span><br><span class="line">            &#x27;user_id&#x27; =&gt; $user-&gt;id,</span><br><span class="line">            // .. 其他数据</span><br><span class="line">        ];</span><br><span class="line">        $account = $userAccountAddAction-&gt;add($data);</span><br><span class="line">        </span><br><span class="line">        // ... 其他数据库相关操作</span><br><span class="line">        </span><br><span class="line">        // 返回新创建的 user 对象</span><br><span class="line">        return $user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每一个 Action 只对应一个方法，这样 Action 就不会膨胀了。</p>
+<p>业务调用关系如下：</p>
+<blockquote>
+<p>Controller -&gt; Service -&gt; Model -&gt; Action</p>
+</blockquote>
+<p>但代码拆分的缺点就是会让文件变得越来越多，每一个数据库操作就要写一个 Action，以后可能会出现上千个文件，而我们知道 PHP 程序运行时需要加载全部的文件，无疑会降低性能。</p>
+<p>代码变得更好维护的成本是降低性能，代价未免太大了。</p>
+<p>所以优化也要适度，回到标题，如何选择是要看情况进行灵活变通的。</p>
+<h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>微服务架构同样是为了拆分代码，</p>
+<p>把一套系统的各个功能模块拆分成独立的模块，</p>
+<p>每一个小模块都是一个新的项目。</p>
+<p>例如一套系统有用户模块、商品模块、订单模块，</p>
+<p>主项目负责处理请求，然后调用相应的模块，再将数据返回。</p>
+<p>主服务器的作用类似于 Controller 层，</p>
+<p>只负责处理请求和响应，但具体的实现都交给 Service（子模块）去处理。</p>
+<p>把每一个功能都单独立项可以使项目更加专一化，原本一个项目包括了所有模块。</p>
+<blockquote>
+<p>“单体应用”模式</p>
+</blockquote>
+<p>单体应用只需要部署一套项目，项目里就已经包含了完整的模块。</p>
+<p>所有开发人员都在一个项目上进行开发工作。</p>
+<p>单体应用的缺点是随着业务增加会越来越难以维护（因为所有的代码都集中在一个地方）。</p>
+<p>而所有人都在共同维护一套代码，每个人习惯不同，技术水平也不同，</p>
+<p>代码质量参差不齐，新加入的小伙伴也不敢轻易修改老员工的代码。</p>
+<p>（有时候虽然知道老员工写了一个可以直接调用的方法，但新员工依然会产生不信任感，总归不是自己写的代码，万一被原主人改了怎么办？完全不能放心调用。）</p>
+<blockquote>
+<p>单体应用排查 BUG 困难</p>
+</blockquote>
+<p>有时候新来的小伙伴为了找一个 BUG 可能要遍历用户模块、订单模块、商品模块……</p>
+<p>几乎把所有的逻辑代码查了个遍。如果把每个模块都单独拆成小项目交给一个小团队去维护，大家各扫门前雪，用户模块出问题了就让负责用户模块的人去处理，这样大家互不影响，不会出现你删了别人代码，导致别人一脸懵逼的排查了一整天都没找到原因。</p>
+<p>项目拆分成小项目，每个项目的运行速度就会变得更快，大大提高了系统性能。</p>
+<blockquote>
+<p>理想很美好！现实很残酷……</p>
+</blockquote>
+<p>到公司你还是要当打杂的角色，不可能让一个人只负责一个项目，</p>
+<p>往往就是用了微服务架构，你一个人要负责全部的项目（工作量反而增加了）。</p>
+<blockquote>
+<p>不是技术负责人要压榨劳动力……而是他要为项目负责任。</p>
+</blockquote>
+<p>如果他招来的人跑路了，那负责这个模块的功能就没人维护了，所以当你加入微服务架构里，每个团队成员至少也要负责 2 个以上的项目，万一其中一个人跑路还有另一个可以顶替。</p>
+<p>项目变多，单个项目维护成本降低，</p>
+<p>但总体维护成本也会提高，尤其是架构师跑路，谁来接盘就是一个严重问题。</p>
+<p>回到最开始的地方，我们最终还是没能解决接盘侠的问题……</p>
+<p>总之，接盘侠是无可避免的要痛苦的。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">火烧兔子</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://huotublog.com/2020/05/26/split-your-code-file/">http://huotublog.com/2020/05/26/split-your-code-file/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84/">架构</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2020/06/21/mysql-init-action/"><i class="fa fa-chevron-left">  </i><span>MySQL新增用户、修改密码、设置权限</span></a></div><div class="next-post pull-right"><a href="/2020/04/09/mysql-memory-optimize/"><span>MySQL占用内存过高优化记录</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2023 By 火烧兔子</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/local-search.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

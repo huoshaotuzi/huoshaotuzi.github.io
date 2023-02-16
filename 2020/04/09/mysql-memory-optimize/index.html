@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySQL 占用内存高达 34% 优化解决方案。"><meta name="keywords" content="架构,MySQL"><meta name="author" content="火烧兔子"><meta name="copyright" content="火烧兔子"><title>MySQL占用内存过高优化记录 | 火兔博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '6.3.0'
+} </script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="火兔博客" type="application/atom+xml">
+</head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">查询内存占用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">解决思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.</span> <span class="toc-text">解决方案</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://i.loli.net/2021/05/02/JjR7MmfePax3oc2.jpg"></div><div class="author-info__name text-center">火烧兔子</div><div class="author-info__description text-center">这里是火兔博客，火兔兔的小窝。</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">60</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">24</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">17</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">火兔博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a><a class="site-page" target="_blank" rel="noopener" href="http://huotuyouxi.com">游戏博客</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">MySQL占用内存过高优化记录</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-09</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/MySQL/">MySQL</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在腾讯云购买的 1 核 1G 主机，使用 Docker 搭建的 MySQL 内存占用竟然高达 34%！再加上 Docker 其他容器运行起来和系统本身程序占用的内存，总内存高达 80+%，由于其他程序使用了 Redis 作为缓存，1G 内存就剩下 10%+ 可用内存（100MB+），一不小心可能就会让服务器卡成渣甚至直接 GG。</p>
+<p>由于服务器一天的访问量并不多，并发访问也不高，并不需要把 MySQL 优化的多好，只要能正常运行就够了，加上有 Redis 缓存这一层，几乎很少会跑到 MySQL 查询。 </p>
+<p>所以综合起来，MySQL 压根不用担心它会挂掉，可以把默认的优化方案修改一下，以便把占用的内存释放出来。</p>
+<p>优化后的结果如下图：</p>
+<p><img src="https://ae01.alicdn.com/kf/H8de4ff5c012d438f96db914a35d0e207i.png" alt="MySQL优化内存"></p>
+<h2 id="查询内存占用"><a href="#查询内存占用" class="headerlink" title="查询内存占用"></a>查询内存占用</h2><p>使用 <code>top</code> 命令查询当前程序的内存占用情况。</p>
+<p>我们需要关注的部分如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                                                          </span><br><span class="line"> 1751 root      20   0  740212  11140   1476 S  1.2  1.1 106:46.57 barad_agent                                                                                                      </span><br><span class="line"> 1750 root      20   0  164512   8648   1312 S  0.6  0.9  20:52.41 barad_agent                                                                                                      </span><br><span class="line">29245 root      20   0  155148   2380    660 S  0.6  0.2   0:24.18 sshd                                                                                                             </span><br><span class="line">31044 root      20   0  135552   6028   1468 S  0.6  0.6   0:11.02 YDService                                                                                                        </span><br><span class="line">    1 root      20   0   43656   2764   1364 S  0.0  0.3   2:19.11 systemd  </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>PID</code>：进程 ID</li>
+<li><code> %CPU</code>：CPU 占用百分比</li>
+<li><code>%MEM</code>：内存占用百分比</li>
+<li><code>COMMAND</code>：程序命令名称</li>
+</ul>
+<p>如果发现某个不需要的进程占用了过高的内存或 CPU，可以直接使用 <code>kill &lt;PID&gt;</code> 杀掉进程。</p>
+<p>进程杀掉程序就停了，我们不能直接杀掉 MySQL，具体解决思路见下一个步骤。</p>
+<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><p>MySQL 在启动的时候，会占用一部分的内存来作为缓冲区，这样做的原因是可以优化查询速度，我们可以发现只要查询过一次 MySQL，然后用相同的语句再次查询，第二次查询会比第一次更快，这其中就用到了 MySQL 自身的缓存系统。</p>
+<p>MySQL 的缓存机制是当某一个连接访问某张表时，MySQL 会先检查访问的表是否在缓存区中，如果这张表已经在缓存区中打开，那就会直接访问缓存区从而加快查询速度，如果这张表不在缓存区，那就会从实际的数据库文件进行查询，然后再把这张表加入缓存区，以便后续查询加快速度。</p>
+<p>由于这个机制我们的 MySQL 在运行过程占用的内存会逐渐增加，1G 的内存不适合用来做 MySQL 的优化，我们要做的就是去掉 MySQL 用来加快查询的各种机制。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>修改 MySQL 配置文件 <code>my.cnf</code>，找到 <code>[mysqld]</code> 下添加如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">// 此处省略其他配置，添加如下内容</span><br><span class="line">table_open_cache=200</span><br><span class="line">table_definition_cache=400</span><br><span class="line">performance_schema_max_table_instances=400</span><br><span class="line">performance_schema=off</span><br></pre></td></tr></table></figure>
+
+<p>保存然后重启 MySQL，OK！内存已经降到 10%+ 了。</p>
+<p>各个配置项的具体用途：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>table_open_cache</td>
+<td>高速缓存的大小，每当访问一个表时，如果在表缓冲区中还有空间，该表就被打开并放入其中，下次查询该表时首先从高速缓存区查询，如果表在缓存中则直接从缓存查询，从而大幅提高查询速度。</td>
+</tr>
+<tr>
+<td>table_definition_cache</td>
+<td>定义了内存中可打开的表结构数量。</td>
+</tr>
+<tr>
+<td>performance_schema_max_table_instances</td>
+<td>检测的表对象的最大数目。</td>
+</tr>
+<tr>
+<td>performance_schema</td>
+<td>主要用来收集 MySQL 性能参数，启用 performance_schema 之后，server 会持续不间断地监测。【罪魁祸首】</td>
+</tr>
+</tbody></table>
+<p>通过调整前面 3 个配置项的值，占用内存均有 1~3% 程度的降低，罪魁祸首便是 <code>performance_schema</code>，将其设置为 off 之后，内存直接降低了 20%！</p>
+<p>其详细介绍可参考 MySQL 官方文档：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.6/en/performance-schema.html">MySQL Performance Schema</a></p>
+<p>当然除了上面几个配置项之外，MySQL 仍有许多可以优化的配置项，但是现在既然已经实现了自己的目的，就暂时不进行扩展阅读了，以后如果需要更深入的优化，到时候再学也不迟（日均 IP 100+ 根本不用考虑什么优化嘛~）。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">火烧兔子</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://huotublog.com/2020/04/09/mysql-memory-optimize/">http://huotublog.com/2020/04/09/mysql-memory-optimize/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84/">架构</a><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2020/05/26/split-your-code-file/"><i class="fa fa-chevron-left">  </i><span>拆分你的代码</span></a></div><div class="next-post pull-right"><a href="/2020/04/02/game-developer-stack/"><span>游戏菜单系统开发之栈的妙用</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2023 By 火烧兔子</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/local-search.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

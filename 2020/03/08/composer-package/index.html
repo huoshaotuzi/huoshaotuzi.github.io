@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="在使用 composer 的时候，我们几乎都是在用其他人分享出来的包，久而久之，难免会产生开发自己包的想法，不仅可以加深对 composer 的理解程度，同时还可以把自己常用的功能封装起来，作为自己的“小金库”储备起来。"><meta name="keywords" content="composer"><meta name="author" content="火烧兔子"><meta name="copyright" content="火烧兔子"><title>从零开始开发自己的Composer包 | 火兔博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '6.3.0'
+} </script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="火兔博客" type="application/atom+xml">
+</head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-Composer-%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">开发自己的第一个 Composer 包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">创建配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8C%85%E7%9B%AE%E5%BD%95"><span class="toc-number">3.1.</span> <span class="toc-text">创建包目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%8C%85%E7%9A%84%E5%90%8D%E5%AD%97"><span class="toc-number">3.2.</span> <span class="toc-text">输入包的名字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%8C%85%E7%9A%84%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF"><span class="toc-number">3.3.</span> <span class="toc-text">输入包的描述信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E4%BD%9C%E8%80%85%E4%BF%A1%E6%81%AF"><span class="toc-number">3.4.</span> <span class="toc-text">输入作者信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#minimum-stability-%E6%9C%80%E5%B0%8F%E7%A8%B3%E5%AE%9A%E7%89%88%E6%9C%AC"><span class="toc-number">3.5.</span> <span class="toc-text">minimum-stability 最小稳定版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Package-Type-%E5%8C%85%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.6.</span> <span class="toc-text">Package Type 包类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#License-%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.7.</span> <span class="toc-text">License 许可协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%BE%9D%E8%B5%96%E9%A1%B9"><span class="toc-number">3.8.</span> <span class="toc-text">定义依赖项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dev-%E4%BE%9D%E8%B5%96%E9%A1%B9"><span class="toc-number">3.9.</span> <span class="toc-text">dev 依赖项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%A1%AE%E8%AE%A4%E4%BF%A1%E6%81%AF"><span class="toc-number">3.10.</span> <span class="toc-text">最后一步：确认信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%8C%85%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">依赖包的基本结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#src-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">4.1.</span> <span class="toc-text">src 文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tests-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">4.2.</span> <span class="toc-text">tests 文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#README-md-%E6%96%87%E4%BB%B6"><span class="toc-number">4.3.</span> <span class="toc-text">README.md 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#composer-json-%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.</span> <span class="toc-text">composer.json 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LICENSE"><span class="toc-number">4.5.</span> <span class="toc-text">LICENSE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%E8%A7%84%E5%88%99"><span class="toc-number">5.</span> <span class="toc-text">配置自动加载规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8C%85%E7%9A%84%E7%B1%BB%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">创建包的类文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8C%85%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">6.</span> <span class="toc-text">测试包的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0-GitHub"><span class="toc-number">7.</span> <span class="toc-text">上传到 GitHub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0-Packagist"><span class="toc-number">8.</span> <span class="toc-text">上传到 Packagist</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0"><span class="toc-number">9.</span> <span class="toc-text">自动同步版本更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%8C%85%E7%BC%96%E5%86%99%E5%B0%8F%E5%BB%BA%E8%AE%AE"><span class="toc-number">10.</span> <span class="toc-text">依赖包编写小建议</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://i.loli.net/2021/05/02/JjR7MmfePax3oc2.jpg"></div><div class="author-info__name text-center">火烧兔子</div><div class="author-info__description text-center">这里是火兔博客，火兔兔的小窝。</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">60</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">24</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">17</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">火兔博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a><a class="site-page" target="_blank" rel="noopener" href="http://huotuyouxi.com">游戏博客</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">从零开始开发自己的Composer包</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-03-08</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/composer/">composer</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在使用 <code>composer</code> 的时候，我们几乎都是在用其他人分享出来的包，久而久之，难免会产生开发自己包的想法，不仅可以加深对 <code>composer</code> 的理解程度，同时还可以把自己常用的功能封装起来，作为自己的“小金库”储备起来。</p>
+<blockquote>
+<p>使用 <code>composer</code> 开发依赖包是一项非常考验能力的事情，它涉及到一个微型系统的架构，阅读<strong>设计模式</strong>有助于帮助我们开发一个优秀的 <code>composer</code> 依赖包。</p>
+</blockquote>
+<h2 id="开发自己的第一个-Composer-包"><a href="#开发自己的第一个-Composer-包" class="headerlink" title="开发自己的第一个 Composer 包"></a>开发自己的第一个 Composer 包</h2><p><code>composer.json</code> 是 <code>composer</code> 的基础，文件夹目录下存在 <code>composer.json</code> 文件，那么这个文件夹就是一个<strong>资源包</strong>。</p>
+<p>我们可以手动创建 <code>composer.json</code> 文件，不过，我们推荐使用 <code>composer init</code> 命令。</p>
+<blockquote>
+<p>composer init 命令帮助我们自动生成 composer.json，文件可以修改，不必担心按错了什么会产生不好的影响。</p>
+</blockquote>
+<h2 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h2><p><code>composer.json</code> 配置项的字段较多，后续步骤如果对配置文件的字段抱有疑问，可以返回此处查看：<a href="/composer-config">composer.json 详解</a>。</p>
+<p>现在，不需要了解这些。</p>
+<h3 id="创建包目录"><a href="#创建包目录" class="headerlink" title="创建包目录"></a>创建包目录</h3><p>我们的操作是在命令行界面操作的，如果是 Windows 系统，则需要进入 CMD 界面，进入到你的工作磁盘目录下，使用快捷键 <code>Shift + 鼠标右键</code>，在菜单栏中选择进入命令行（DOS 界面）。</p>
+<p>首先，我们需要创建一个包的目录 <code>packagist</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Mac OS 系统</span><br><span class="line">mkdir packagist</span><br><span class="line"></span><br><span class="line"># Windows 系统(可以直接右键创建）</span><br><span class="line">md packagist</span><br><span class="line"></span><br><span class="line"># 创建完成后进入文件夹</span><br><span class="line">cd packagist</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入包的名字"><a href="#输入包的名字" class="headerlink" title="输入包的名字"></a>输入包的名字</h3><p>在 <code>packagist </code> 目录下，执行 <code>composer init</code>，<code>composer</code> 会提示我们设置配置参数信息，如下图：</p>
+<p><img src="https://i.loli.net/2019/08/24/NSPn6GYuE83jcs1.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Package name (&lt;vendor&gt;/&lt;name&gt;) [firerabbit/packagist]:</span><br></pre></td></tr></table></figure>
+
+<p>提示让你输入包的名字，格式为 <code>&lt;vendor&gt;/&lt;name&gt;</code>，<code>vendor</code> 为服务商名字，个人开发可以使用自己在 GitHub 中使用的昵称，<code>name</code> 为包的名字，<code>&lt;vendor&gt;/&lt;name&gt;</code> 不能存在同名，这里设置的名字即后面使用 <code>composer require</code> 的名字。</p>
+<p>中括号内的 <code>[firerabbit/packagist]</code> 是默认值，直接按回车的话就会使用这个名字。</p>
+<h3 id="输入包的描述信息"><a href="#输入包的描述信息" class="headerlink" title="输入包的描述信息"></a>输入包的描述信息</h3><p>包名输入完成后，接下来需要设置 <code>Description</code> （描述）字段，这个字段是包的功能性描述，作为练习包就随便输入啦：</p>
+<p><img src="https://i.loli.net/2019/08/24/y6EWBMhGbZ1V3Qt.png" alt="image.png"></p>
+<h3 id="输入作者信息"><a href="#输入作者信息" class="headerlink" title="输入作者信息"></a>输入作者信息</h3><p>接下来设置 <code>Author</code> (作者信息)，格式为 <code>name example@email.com</code>，输入 n 可以跳过：</p>
+<p><img src="https://i.loli.net/2019/08/24/V7UsaPQpm5LyKqu.png" alt="image.png"></p>
+<h3 id="minimum-stability-最小稳定版本"><a href="#minimum-stability-最小稳定版本" class="headerlink" title="minimum-stability 最小稳定版本"></a>minimum-stability 最小稳定版本</h3><p>通过设置 <code>minimum-stability</code> 的值，来告诉 <code>Composer</code> 当前开发的项目的依赖要求的包的全局稳定性级别，它的值包括：dev、alpha、beta、RC、stable，stable 是默认值。</p>
+<p><img src="https://i.loli.net/2019/08/24/IFecMfkGXYgWU9T.png" alt="image.png"></p>
+<p>稳定性介绍：<a target="_blank" rel="noopener" href="https://learnku.com/php/t/9929/understanding-composers-stability-stability-identity">理解 Composer 的稳定性（Stability）标识
+</a></p>
+<p>我们直接按回车默认值即可。</p>
+<h3 id="Package-Type-包类型"><a href="#Package-Type-包类型" class="headerlink" title="Package Type 包类型"></a>Package Type 包类型</h3><p>接下来设置包的类型：</p>
+<p><img src="https://i.loli.net/2019/08/24/4PMEiWuaXIb2Zyd.png" alt="image.png"></p>
+<p>composer 原生支持以下4种类型：</p>
+<ul>
+<li>library: 默认类型，它会简单的将文件复制到 vendor 目录。</li>
+<li>project: 一个项目，而不是一个库。</li>
+<li>metapackage: 空的包，包含依赖并且需要触发依赖的安装。</li>
+<li>composer-plugin: 一个安装类型为 composer-plugin 的包，它有一个自定义安装类型，可以为其它包提供一个 installler。</li>
+</ul>
+<p>这里我们直接按回车，采用默认的 library。</p>
+<h3 id="License-许可协议"><a href="#License-许可协议" class="headerlink" title="License 许可协议"></a>License 许可协议</h3><p>接下来输入包的许可协议：</p>
+<p><img src="https://i.loli.net/2019/08/24/UW2StviLwyIO9ef.png" alt="image.png"></p>
+<p>包的许可协议，它可以是一个字符串或者字符串数组。</p>
+<p>最常见的许可协议的推荐写法：</p>
+<ul>
+<li>Apache-2.0</li>
+<li>BSD-2-Clause</li>
+<li>BSD-3-Clause</li>
+<li>BSD-4-Clause</li>
+<li>GPL-2.0</li>
+<li>GPL-2.0+</li>
+<li>GPL-3.0</li>
+<li>GPL-3.0+</li>
+<li>LGPL-2.1</li>
+<li>LGPL-2.1+</li>
+<li>LGPL-3.0</li>
+<li>LGPL-3.0+</li>
+<li>MIT</li>
+</ul>
+<p>这里我们输入 MIT （开源许可协议）。</p>
+<h3 id="定义依赖项"><a href="#定义依赖项" class="headerlink" title="定义依赖项"></a>定义依赖项</h3><p>接下来设置依赖项：</p>
+<p><img src="https://i.loli.net/2019/08/24/6iHFcMvR8UK7o2O.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Define your dependencies.</span><br><span class="line"></span><br><span class="line">Would you like to define your dependencies (require) interactively [yes]?</span><br></pre></td></tr></table></figure>
+
+<p>我们的练习项目不需要设置此项，输入 no。</p>
+<h3 id="dev-依赖项"><a href="#dev-依赖项" class="headerlink" title="dev 依赖项"></a>dev 依赖项</h3><p>设置 dev 环境依赖项：</p>
+<p><img src="https://i.loli.net/2019/08/24/LEelWoaq4dwNts2.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Would you like to define your dev dependencies (require-dev) interactively [yes]?</span><br></pre></td></tr></table></figure>
+
+<p>同上，输入 no。</p>
+<h3 id="最后一步：确认信息"><a href="#最后一步：确认信息" class="headerlink" title="最后一步：确认信息"></a>最后一步：确认信息</h3><p>最后一步，确认包的信息：</p>
+<p><img src="https://i.loli.net/2019/08/24/fDkiBObK9QXo1aJ.png" alt="image.png"></p>
+<p>输入 yes，回车，然后查看当前目录即可看到 <code>composer.json</code> 文件。</p>
+<p><code>composer init</code> 命令帮助你自动生成文件，实际上你可以直接在<strong>包的目录下</strong>创建 <code>composer.json</code>，并且输入以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;huotu/test&quot;,</span><br><span class="line">    &quot;description&quot;: &quot;我的第一个包。&quot;,</span><br><span class="line">    &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">    &quot;authors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;火兔兔子&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;huoshaotuzi@icloud.com&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;require&quot;: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本质上两种方式都是一样的。</p>
+<h2 id="依赖包的基本结构"><a href="#依赖包的基本结构" class="headerlink" title="依赖包的基本结构"></a>依赖包的基本结构</h2><p>一个 <code>composer</code> 依赖包的基本结构，以我们上面的 <code>packagist</code> 为例：</p>
+<ul>
+<li>packagist<ul>
+<li>src<ul>
+<li>类文件</li>
+<li>…</li>
+</ul>
+</li>
+<li>tests<ul>
+<li>单元测试文件</li>
+<li>…</li>
+</ul>
+</li>
+<li>README.md</li>
+<li>composer.json</li>
+<li>LICENSE</li>
+</ul>
+</li>
+</ul>
+<h3 id="src-文件夹"><a href="#src-文件夹" class="headerlink" title="src 文件夹"></a>src 文件夹</h3><p><code>src</code> 是包所在的路径，一般我们都会将其命名为 <code>src</code>（业界共识），不建议改成其他的名字。</p>
+<p>开发包的工作就是在这个目录下进行的，你可以在这个目录下创建更多的文件夹来划分不同功能的类。</p>
+<h3 id="tests-文件夹"><a href="#tests-文件夹" class="headerlink" title="tests 文件夹"></a>tests 文件夹</h3><p><code>tests</code> 文件夹用来存放单元测试的，如果你不写的话，这个文件夹可以不要。</p>
+<h3 id="README-md-文件"><a href="#README-md-文件" class="headerlink" title="README.md 文件"></a>README.md 文件</h3><p><code>README.md</code> 是包描述的 Markdown 语法的介绍文档，在 GitHub 中将会自动解析这个文件并且展示出来，每一个包都<strong>应该</strong>要包含 <code>README.md</code> 文件，用来介绍这个包的基本信息和操作方法。</p>
+<p>创建 <code>README.md</code> 文件的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Mac OS</span><br><span class="line">vim README.md</span><br><span class="line"></span><br><span class="line"># Windows 系统</span><br><span class="line">创建 README.txt，保存后改成 .md</span><br><span class="line">如需编辑，右键以文本文档打开即可</span><br></pre></td></tr></table></figure>
+
+<h3 id="composer-json-文件"><a href="#composer-json-文件" class="headerlink" title="composer.json 文件"></a>composer.json 文件</h3><p>包的配置信息。</p>
+<h3 id="LICENSE"><a href="#LICENSE" class="headerlink" title="LICENSE"></a>LICENSE</h3><p>许可协议文本，文本格式。</p>
+<p>练习项目中，我们只需要 <code>src</code> 和 <code>README.md</code> 即可。</p>
+<p>推荐使用 <code>PHPstorm</code> 作为编辑工具，最后我们的包目录结构如图所示：</p>
+<p><img src="https://i.loli.net/2019/08/24/he9UfyOz2W6Z5Qi.png" alt="image.png"></p>
+<h2 id="配置自动加载规则"><a href="#配置自动加载规则" class="headerlink" title="配置自动加载规则"></a>配置自动加载规则</h2><p>为了防止命名空间冲突，开发的包需要配置自动加载，修改 <code>composer.json</code> 添加 <code>autoload</code> 字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;autoload&quot;: &#123;</span><br><span class="line">        &quot;psr-4&quot;: &#123;</span><br><span class="line">            &quot;Huotu\\Test\\&quot;: &quot;src/&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们采用 <code>psr-4</code> 的规范来自动加载包目录下 <code>src</code> 文件夹内的类文件，这里的 <code>&quot;Huotu\\Test\\&quot;</code> 是我们使用的命名空间，<code>\\</code> 不能写成 <code>\</code>，一般而言，命名空间以包的名字来命名。</p>
+<p>完整的 <code>composer.json</code> 配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;huotu/test&quot;,</span><br><span class="line">    &quot;description&quot;: &quot;我的第一个包。&quot;,</span><br><span class="line">    &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">    &quot;authors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;火兔兔子&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;huoshaotuzi@icloud.com&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;require&quot;: &#123;&#125;,</span><br><span class="line">    &quot;autoload&quot;: &#123;</span><br><span class="line">        &quot;psr-4&quot;: &#123;</span><br><span class="line">            &quot;Huotu\\Test\\&quot;: &quot;src/&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建包的类文件"><a href="#创建包的类文件" class="headerlink" title="创建包的类文件"></a>创建包的类文件</h3><p>在 <code>src</code> 目录下创建 <code>Robot.php</code> 文件，我们希望写一个可以自动打招呼的机器人（类）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace Huotu\Test;</span><br><span class="line"></span><br><span class="line">class Robot</span><br><span class="line">&#123;</span><br><span class="line">    public function sayHello($name) &#123;</span><br><span class="line">        echo &#x27;hello,&#x27; . $name . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就完成了一个依赖包的开发，使用者只需要引入这个包就可以调用 <code>Robot</code> 的 <code>sayHello</code> 方法。</p>
+<h2 id="测试包的功能"><a href="#测试包的功能" class="headerlink" title="测试包的功能"></a>测试包的功能</h2><p>我们现在已经写好了一个包，但是开发过程以及准备发布的时候，我们都需要对功能进行调试，你可以在目录下创建一个 <code>test.php</code>，然后运行 <code>php test.php</code> 来测试，不过这样总是不太方便的，尤其是某些有其他依赖的操作（如需要连接数据库、Redis）等等。最好的方法是将包文件放在一个真实的项目里进行测试，下面模拟创造一个 <code>project</code> 来作为我们实际的项目。</p>
+<p>在 <code>packagist</code> 同级目录下，创建一个文件夹 <code>project</code>。</p>
+<p>由于我们本地开发的包并未上传的 Packagist，无法通过 <code>composer require</code> 进行安装，因此我们必须手动配置加载目录，进入 project 文件夹，创建 <code>composer.json</code>：</p>
+<ul>
+<li>project<ul>
+<li>composer.json</li>
+</ul>
+</li>
+</ul>
+<p>编辑 <code>composer.json</code>，输入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;autoload&quot;: &#123;</span><br><span class="line">    &quot;psr-4&quot;: &#123;</span><br><span class="line">      &quot;Huotu\\Test\\&quot;: &quot;../packagist/src/&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建完成后，我们需要执行 <code>composer dump-autoload</code> 来生成自动加载文件。</p>
+<blockquote>
+<p>如果对依赖包添加了新的类或者删除了类，涉及到类文件数量、名称改变的，都需要重新执行 composer dump-autoload，否则无法读取到最新的类文件</p>
+</blockquote>
+<p>执行完成后，在当前目录下生成了 <code>vendor</code> 文件夹，这个文件夹里即包含了我们依赖包的自动加载信息。</p>
+<p><img src="https://i.loli.net/2019/08/24/nCVmNxviFpfJUw5.png" alt="image.png"></p>
+<p>接着一个文件用来测试结果 <code>test.php</code>：</p>
+<ul>
+<li>project<ul>
+<li>composer.json</li>
+<li>test.php</li>
+<li>vendor<ul>
+<li>composer<ul>
+<li>…</li>
+</ul>
+</li>
+<li>autoload.php</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>输入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">require &#x27;./vendor/autoload.php&#x27;;</span><br><span class="line"></span><br><span class="line">use Huotu\Test\Robot;</span><br><span class="line"></span><br><span class="line">$robot = new Robot();</span><br><span class="line">$robot-&gt;sayHello(&#x27;IDCE.COM&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>终端中输入 <code>php test.php</code> 执行结果：</p>
+<p><img src="https://i.loli.net/2019/08/24/BYavLTK2W9JDncZ.png" alt="image.png"></p>
+<p>可以看到我们成功调用自己开发的包了！</p>
+<p>必须将 <code>autoload</code> 引入才能实现自动加载，如果提示找不到类可能就是没有正确引入的关系或者 <code>composer.json</code> 配置的 <code>psr-4</code> 路径不正确。</p>
+<h2 id="上传到-GitHub"><a href="#上传到-GitHub" class="headerlink" title="上传到 GitHub"></a>上传到 GitHub</h2><p>开发完成后，我们需要把包文件上传到 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a>，如果没有账号则注册一个。</p>
+<p>进入个人主页，在左侧的 Repositories（仓库）选择 New 创建一个新的仓库：</p>
+<p><img src="https://i.loli.net/2019/08/24/ISdkXipUAeLfv2c.png" alt="image.png"></p>
+<p>仓库信息，权限要选择 <code>public</code>（公开的），完成后点击 <code>Create repository</code>：</p>
+<p><img src="https://i.loli.net/2019/08/24/FuyLgqBpdAH3W8R.png" alt="image.png"></p>
+<p>创建好的项目：</p>
+<p><img src="https://i.loli.net/2019/08/24/WZdpEtnvL3qCeVX.png" alt="image.png"></p>
+<p>GitHub 十分友好的提示了上传文件的步骤，我们只需要执行以下几个步骤即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;first commit&quot;</span><br><span class="line">git remote add origin https://github.com/huoshaotuzi/test.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>返回 <code>packagist</code> 目录下，我们按照 GitHub 上提示的内容，执行 <code>git init</code>，并添加文件：</p>
+<p><img src="https://i.loli.net/2019/08/24/B1vg4hK95lz2VkC.png" alt="image.png"></p>
+<blockquote>
+<p>注！由于 ide 产生的文件是必须添加 .gitigonre 排除的</p>
+</blockquote>
+<p>然后添加上传的仓库信息，并执行 <code>push</code> 推送到 GitHub 的仓库：</p>
+<p><img src="https://i.loli.net/2019/08/24/FK5Gz1rpVluQLgn.png" alt="image.png"></p>
+<p>返回 GitHub 仓库，刷新页面即可看到上传文件的信息：</p>
+<p><img src="https://i.loli.net/2019/08/24/IbWEe8VnKwmZhCP.png" alt="image.png"></p>
+<h2 id="上传到-Packagist"><a href="#上传到-Packagist" class="headerlink" title="上传到 Packagist"></a>上传到 Packagist</h2><p>如果希望自己的包被其他人安装，就需要将包上传到 Packagist 官网上。</p>
+<p>Packagist 官网：<a target="_blank" rel="noopener" href="https://packagist.org/">https://packagist.org/</a></p>
+<p><img src="https://i.loli.net/2019/08/24/sX6AxhSyfEC9pVg.png" alt="image.png"></p>
+<p>如果没有账号可以注册一个，或者直接使用 GitHub 登录（推荐）。</p>
+<p>登录后，选择右上角的 <code>Submit</code>（提交）：</p>
+<p><img src="https://i.loli.net/2019/08/24/8zhUPTDwsbOt5fa.png" alt="image.png"></p>
+<p>在提交页面会提示你输入 GitHub 上仓库的地址：</p>
+<p><img src="https://i.loli.net/2019/08/24/GQSMnub7JdOxWjH.png" alt="image.png"></p>
+<p>输入刚才创建的仓库地址，点击 <code>Check</code>：</p>
+<p><img src="https://i.loli.net/2019/08/24/qeuQ6oEsWdLl2cF.png" alt="image.png"></p>
+<p>这边会提示一些同名的包，并且出现了 <code>Submit</code> 按钮，我们直接点击 <code>Submit</code>，此时会进入包页面，<code>update</code> 会进入转圈圈状态，表示正在同步包信息，稍等一会刷新页面即可看到包信息。</p>
+<p>到目前为止，已经将包上传到 Packagist 官网了，但是我们还没有设置版本信息，需要返回到包目录下，给这个包打上标签。</p>
+<p>输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0 -m &quot;初始版本&quot;</span><br><span class="line">git push origin v1.0</span><br></pre></td></tr></table></figure>
+
+<p>然后返回 Packagist 官网，点击 <code>update</code> 同步包信息，然后刷新页面就能看到刚刚提交的版本信息了。</p>
+<p>现在，用户可以使用 <code>composer require</code> 命令下载你的包了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require huotu/test:1.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="自动同步版本更新"><a href="#自动同步版本更新" class="headerlink" title="自动同步版本更新"></a>自动同步版本更新</h2><p>每次更新包都需要手动点击 <code>update</code> 十分不便，实际上 GitHub 提供了钩子可以用来推送更新信息到 Packagist，默认情况下已经帮助我们打开了自动更新功能。</p>
+<p>回到 GitHub 的仓库地址，选择 <code>Setting</code>，左侧菜单 <code>Webhook</code>，可以看到配置的推送信息：</p>
+<p><img src="https://user-images.githubusercontent.com/28209810/63644830-3432b800-c724-11e9-98c1-8ee55b76825c.png" alt="webhook"></p>
+<p>每当我们推送新的版本标签到 GitHub 时，Packagist 就会接收到一个 GitHub 的 Hook（钩子）发出的 POST 请求，这样 Packagist 上的包就会与 GitHub 上的同步了。</p>
+<p>如果你不需要自动更新功能，可以点击右侧的 <code>Delete</code> 将其删除，删除后每次更新包都要前往 Packagist 点击 <code>Update</code> 手动进行更新。</p>
+<p>开启自动更新情况下，每次 <code>push</code> 标签后都会自动同步到 Packagist，刷新页面即可看到最新提交的版本：</p>
+<p><img src="https://user-images.githubusercontent.com/28209810/63644872-eff3e780-c724-11e9-9507-f722204a1422.png" alt="new version"></p>
+<h2 id="依赖包编写小建议"><a href="#依赖包编写小建议" class="headerlink" title="依赖包编写小建议"></a>依赖包编写小建议</h2><p>开发依赖包需要要丰富的开发经验，可以多参考其他开源包，尤其是具有团队进行维护的，观察他们是如何区分目录和封装类的，可以学到很多知识。</p>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://learnku.com/docs/php-design-patterns/2018">PHP 设计模式</a></p>
+<p>编写依赖包能得到锻炼和成长的机会，开源自己的包也是一件十分具有成就感的事。</p>
+<blockquote>
+<p>分享，是最好的学习方式 —— IDCE.COM</p>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">火烧兔子</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://huotublog.com/2020/03/08/composer-package/">http://huotublog.com/2020/03/08/composer-package/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/composer/">composer</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2020/03/08/composer-config/"><i class="fa fa-chevron-left">  </i><span>composer配置参数详解</span></a></div><div class="next-post pull-right"><a href="/2020/03/07/ssh-no-password-method/"><span>SSH免密登录原理及方法</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://i.loli.net/2021/05/02/61DLs9VHetxbq2n.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2023 By 火烧兔子</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script src="/js/search/local-search.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
