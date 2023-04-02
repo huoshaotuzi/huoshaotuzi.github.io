@@ -47,6 +47,9 @@
 <p>在配置文件加入两行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">acl myclient src 175.xxx.111.111</span><br><span class="line">http_access allow myclient</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<p>如果要允许所有 IP 访问，可以添加一行 http_access allow all，但这种做法存在巨大风险，可能被他人利用。</p>
+</blockquote>
 <p><code>myclient</code> 是自己定义的一个字符，<code>src</code> 后面跟上你另一台服务器的 IP 地址，然后再设置 <code>http_access</code> 允许 <code>myclient</code> 这个自定义参数，这样就大功告成了，再重新启动一下服务器：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart squid</span><br></pre></td></tr></table></figure>
 
